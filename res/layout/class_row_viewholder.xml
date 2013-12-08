@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:background="#151515"
+    android:focusable="true">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Units: 9"
+        android:id="@+id/class_row_viewholder_units_textview"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentRight="true"
+        android:layout_alignBaseline="@+id/class_row_viewholder_class_name_textview" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Class Name"
+        android:id="@+id/class_row_viewholder_class_name_textview"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="64dp"
+        android:autoText="true"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentEnd="false"
+        android:layout_toStartOf="@id/class_row_viewholder_units_textview" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Progress Label"
+        android:id="@+id/class_row_viewholder_progress_label_textview"
+        android:layout_below="@+id/class_row_viewholder_class_name_textview"
+        android:layout_alignLeft="@+id/class_row_viewholder_class_name_textview"
+        android:paddingTop="5dp" />
+
+</RelativeLayout>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="300dp" android:layout_height="200dp"
+    android:id="@+id/easy_fragment"
+    android:background="#FFBBEE"
+    android:padding="10dp"
+    android:layout_marginTop="40dp"
+    >
+
+    <TextView
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Easy There Buddy"
+        android:id="@+id/easy_fragment_title"
+        android:layout_gravity="center"
+        android:background="#FF0000"
+        android:autoText="true" />
+
+</LinearLayout>

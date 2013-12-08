@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:myapp="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/action_discover"
+        android:title="@string/action_discover"
+        android:orderInCategory="100"
+        myapp:showAsAction="never" />
+    <item android:id="@+id/action_my_classes"
+        android:title="@string/action_my_classes"
+        android:orderInCategory="100"
+        myapp:showAsAction="never" />
+    <item android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:orderInCategory="100"
+        myapp:showAsAction="never" />
+</menu>
