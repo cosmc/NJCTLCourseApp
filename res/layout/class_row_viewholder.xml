@@ -5,7 +5,9 @@
     android:layout_height="wrap_content"
     android:padding="10dp"
     android:background="#151515"
-    android:focusable="true">
+    android:focusable="false"
+    android:focusableInTouchMode="false"
+    android:descendantFocusability="blocksDescendants">
 
     <TextView
         android:layout_width="wrap_content"
@@ -15,7 +17,8 @@
         android:id="@+id/class_row_viewholder_units_textview"
         android:layout_alignParentBottom="false"
         android:layout_alignParentRight="true"
-        android:layout_alignBaseline="@+id/class_row_viewholder_class_name_textview" />
+        android:layout_alignBaseline="@+id/class_row_viewholder_class_name_textview"
+        android:focusable="false" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,10 +28,10 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="64dp"
-        android:autoText="true"
         android:layout_alignParentStart="false"
         android:layout_alignParentEnd="false"
-        android:layout_toStartOf="@id/class_row_viewholder_units_textview" />
+        android:layout_toStartOf="@id/class_row_viewholder_units_textview"
+        android:focusable="false" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -38,6 +41,7 @@
         android:id="@+id/class_row_viewholder_progress_label_textview"
         android:layout_below="@+id/class_row_viewholder_class_name_textview"
         android:layout_alignLeft="@+id/class_row_viewholder_class_name_textview"
-        android:paddingTop="5dp" />
+        android:paddingTop="5dp" 
+        android:focusable="false" />
 
 </RelativeLayout>

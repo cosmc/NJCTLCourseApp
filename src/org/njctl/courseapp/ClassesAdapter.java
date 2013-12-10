@@ -48,5 +48,11 @@ class ClassesAdapter extends ArrayAdapter {
         holder.progressTextView.setText("In Progress");
         return convertView;
     }
+    
+    @Override
+    public boolean isEnabled(int position) {
+        return true;
+    }
+    
 }
 

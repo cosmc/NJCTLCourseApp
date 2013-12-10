@@ -1184,7 +1184,7 @@ containing a value of this type.
          */
         public static final int AppBaseTheme=0x7f0b0084;
         /**  Base application theme. 
-<style name="AppTheme" parent="@style/Theme.AppCompat">
+<style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
  Customize your theme here. 
          */
         public static final int AppTheme=0x7f0b0083;
