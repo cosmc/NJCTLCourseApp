@@ -9,7 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
- 
+
+/**
+ * 
+ * Created by Colin on 12/9/13.
+ *
+ */
+
 public class ExpandableChapterAdapter extends BaseExpandableListAdapter {
  
     private Context _context;

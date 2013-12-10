@@ -7,9 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import org.njctl.courseapp.ClassesAdapter;
+import android.widget.ExpandableListView.OnChildClickListener;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -35,11 +33,14 @@ public class ChapterListFragment extends Fragment {
         ExpandableChapterAdapter adapter = new ExpandableChapterAdapter(getActivity(), mockChapters);
         elv.setAdapter(adapter);
         
-        elv.setOnItemClickListener(new OnItemClickListener() {
-        	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        		Log.w("Click", "" + position);
+        elv.setOnChildClickListener(new OnChildClickListener() {
+        	 
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                Log.w("Item selected:", groupPosition + " " + childPosition);
+                return false;
             }
-        }); 
+        });
 	}
 	
     @Override

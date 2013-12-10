@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import org.njctl.courseapp.ClassesAdapter;
 import android.util.Log;
 
 import java.util.ArrayList;
