@@ -26,17 +26,23 @@ public class ClassesFragment extends Fragment {
 		
         ListView listView = (ListView) getView().findViewById(R.id.classes_fragment_listview);
 		
+        
+        ArrayList<NJCTLChapter> mockChapters = new ArrayList<NJCTLChapter>();
+        mockChapters.add(new NJCTLChapter("1. Kinematics"));
+        mockChapters.add(new NJCTLChapter("2. Electrons"));
+        mockChapters.add(new NJCTLChapter("3. Conformal Field Theories"));
+        
         ArrayList<NJCTLClass> mockClasses = new ArrayList<NJCTLClass>();
-        mockClasses.add(new NJCTLClass("Math"));
-        mockClasses.add(new NJCTLClass("Physics"));
-        mockClasses.add(new NJCTLClass("Chemistry"));
+        mockClasses.add(new NJCTLClass("Math", mockChapters));
+        mockClasses.add(new NJCTLClass("Physics", mockChapters));
+        mockClasses.add(new NJCTLClass("Chemistry", mockChapters));
 
         ClassesAdapter adapter = new ClassesAdapter(getActivity(), 0, mockClasses);
         listView.setAdapter(adapter);
         
         listView.setOnItemClickListener(new OnItemClickListener() {
         	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        		Log.w("Click", "" + position);
+        		Log.w("Class click", "" + position);
             }
         }); 
 	}

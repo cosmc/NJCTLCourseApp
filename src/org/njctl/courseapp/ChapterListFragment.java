@@ -23,14 +23,11 @@ public class ChapterListFragment extends Fragment {
 		
 		super.onActivityCreated(savedInstanceState);
 		
-        ExpandableListView elv = (ExpandableListView) getView().findViewById(R.id.chapter_list_fragment_listview);
+		NJCTLClass theClass = (NJCTLClass) getArguments().get("class"); // Find out which class we're displaying the chapters for.
 		
-        ArrayList<NJCTLChapter> mockChapters = new ArrayList<NJCTLChapter>();
-        mockChapters.add(new NJCTLChapter("1. Kinematics"));
-        mockChapters.add(new NJCTLChapter("2. Electrons"));
-        mockChapters.add(new NJCTLChapter("3. Conformal Field Theories"));
+        ExpandableListView elv = (ExpandableListView) getView().findViewById(R.id.chapter_list_fragment_listview);
 
-        ExpandableChapterAdapter adapter = new ExpandableChapterAdapter(getActivity(), mockChapters);
+        ExpandableChapterAdapter adapter = new ExpandableChapterAdapter(getActivity(), theClass.getContents());
         elv.setAdapter(adapter);
         
         elv.setOnChildClickListener(new OnChildClickListener() {
