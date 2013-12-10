@@ -5,10 +5,14 @@ package org.njctl.courseapp;
  */
 public class NJCTLChapter {
     private int chapterId;
-    private String ChapterTitle;
+    private String chapterTitle;
     private String lectureDocumentId;
     private String homeworkDocumentId;
 
+    public NJCTLChapter(String title) {
+        chapterTitle = title;
+    }
+    
     public void getLecture() {
 
     }
