@@ -13,12 +13,16 @@ public class NJCTLChapter {
         chapterTitle = title;
     }
     
-    public void getLecture() {
-
+    public String getTitle() {
+    	return chapterTitle;
+    }
+    
+    public String getLecture() {
+    	return "";
     }
 
-    public void getHomework() {
-
+    public String getHomework() {
+    	return "";
     }
 
 }
