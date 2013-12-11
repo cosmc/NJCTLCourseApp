@@ -27,7 +27,7 @@ public class ClassesFragment extends Fragment {
         ListView listView = (ListView) getView().findViewById(R.id.classes_fragment_listview);
 		
         Bundle args = getArguments();
-        ArrayList<NJCTLClass> classes = args.getParcelableArrayList("classes");
+        final ArrayList<NJCTLClass> classes = args.getParcelableArrayList("classes");
 
         ClassesAdapter adapter = new ClassesAdapter(getActivity(), 0, classes);
         listView.setAdapter(adapter);
@@ -35,6 +35,11 @@ public class ClassesFragment extends Fragment {
         listView.setOnItemClickListener(new OnItemClickListener() {
         	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         		Log.w("Class click", "" + position);
+        		try {
+        			((ClassNavActivity) getActivity()).showChapters(classes.get(position));
+        		} catch (Exception e) {
+        			Log.w("ERROR", "Activity does not implement ClassNavActivity.");
+        		}
             }
         }); 
 	}

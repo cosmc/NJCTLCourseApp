@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 //import org.njctl.courseapp.R;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements ClassNavActivity {
 
 	public void showClasses(ArrayList<NJCTLClass> classes) {
 		ClassesFragment frag = new ClassesFragment();
