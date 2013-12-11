@@ -1,5 +1,7 @@
 package org.njctl.courseapp;
 
+import java.util.ArrayList;
+
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -14,9 +16,14 @@ import android.view.ViewGroup;
 
 public class MainActivity extends ActionBarActivity {
 
-	public void showClasses() {
+	public void showClasses(ArrayList<NJCTLClass> classes) {
+		ClassesFragment frag = new ClassesFragment();
+		Bundle args = new Bundle();
+		args.putParcelableArrayList("classes", classes);
+		frag.setArguments(args);
+		
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, new ClassesFragment());
+        transaction.replace(R.id.container, frag);
         transaction.addToBackStack("Class List");
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         transaction.commit();
@@ -41,7 +48,17 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         if (savedInstanceState == null) {
-            showClasses();
+        	ArrayList<NJCTLChapter> mockChapters = new ArrayList<NJCTLChapter>();
+            mockChapters.add(new NJCTLChapter("1. Kinematics"));
+            mockChapters.add(new NJCTLChapter("2. Electrons"));
+            mockChapters.add(new NJCTLChapter("3. Conformal Field Theories"));
+            
+            ArrayList<NJCTLClass> mockClasses = new ArrayList<NJCTLClass>();
+            mockClasses.add(new NJCTLClass("Math", mockChapters));
+            mockClasses.add(new NJCTLClass("Physics", mockChapters));
+            mockClasses.add(new NJCTLClass("Chemistry", mockChapters));
+            
+            showClasses(mockClasses);
         }
     }
 
