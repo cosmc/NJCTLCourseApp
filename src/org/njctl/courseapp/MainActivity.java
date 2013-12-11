@@ -1,6 +1,6 @@
 package org.njctl.courseapp;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
@@ -11,19 +11,37 @@ import android.view.View;
 import android.view.ViewGroup;
 
 //import org.njctl.courseapp.R;
-import org.njctl.courseapp.ClassesFragment;
 
 public class MainActivity extends ActionBarActivity {
 
+	public void showClasses() {
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, new ClassesFragment());
+        transaction.addToBackStack("Class List");
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        transaction.commit();
+	}
+	
+	public void showChapters(NJCTLClass theClass) {
+		ChapterListFragment frag = new ChapterListFragment();
+		Bundle args = new Bundle();
+		args.putParcelable("class", theClass);
+		frag.setArguments(args);
+		
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, frag);
+        transaction.addToBackStack("Chapter List for " + theClass.getName());
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        transaction.commit();
+	}
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         if (savedInstanceState == null) {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(R.id.container, new ClassesFragment());
-            transaction.commit();
+            showClasses();
         }
     }
 
