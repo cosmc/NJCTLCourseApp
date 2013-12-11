@@ -23,7 +23,7 @@ public class ChapterListFragment extends Fragment {
 		
 		super.onActivityCreated(savedInstanceState);
 		
-		NJCTLClass theClass = (NJCTLClass) getArguments().get("class"); // Find out which class we're displaying the chapters for.
+		NJCTLClass theClass = (NJCTLClass) getArguments().getParcelable("class"); // Find out which class we're displaying the chapters for.
 		
         ExpandableListView elv = (ExpandableListView) getView().findViewById(R.id.chapter_list_fragment_listview);
 
