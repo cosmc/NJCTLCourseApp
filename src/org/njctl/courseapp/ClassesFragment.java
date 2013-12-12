@@ -50,6 +50,13 @@ public class ClassesFragment extends Fragment {
         return v;
     }
     
+    @Override
+    public void onStart() {
+    	super.onStart();
+    	
+    	// Set the title text to the app name.
+		getActivity().setTitle(R.string.app_name);
+    }
     
     @Override
     public void onAttach(Activity activity) {

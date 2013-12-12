@@ -116,8 +116,6 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity 
         switch (item.getItemId()) {
             case R.id.action_my_classes:
                 return true;
-            case R.id.action_discover:
-                return true;
             case R.id.action_settings:
                 return true;
         }

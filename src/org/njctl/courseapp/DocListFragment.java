@@ -64,6 +64,14 @@ public class DocListFragment extends Fragment {
         return v;
     }
     
+    @Override
+    public void onStart() {
+    	super.onStart();
+    	
+    	// Set the title text to the name of the doc list whose contents are being shown.
+		NJCTLDocList docList = (NJCTLDocList) getArguments().getParcelable("docList");
+		getActivity().setTitle(docList.getName());
+    }
     
     @Override
     public void onAttach(Activity activity) {
