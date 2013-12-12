@@ -62,11 +62,6 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity 
         transaction.commit();
 	}
 	
-	public String getDocStorageRoot() {
-	// Return the path of the root directory for storing the teaching material documents.
-		return "";
-	}
-	
 	/**** End of NJCTLNavActivity Methods ****/
 	
     @Override

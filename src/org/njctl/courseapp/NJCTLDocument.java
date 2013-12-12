@@ -12,7 +12,9 @@ import android.os.Parcelable;
 public class NJCTLDocument implements Parcelable {
 	private String _id;
 	private String _title;
-	private String _relativePath;
+	private String _relativePath; // The path to the document, relative to the app's assets folder.
+	private String _fileName;
+	private String _dataType;
 	
 	public NJCTLDocument(String title) {
 		this._title = title;
@@ -34,6 +36,14 @@ public class NJCTLDocument implements Parcelable {
 	
 	public String getRelativePath() {
 		return this._relativePath;
+	}
+	
+	public String getFileName() {
+		return _fileName;
+	}
+	
+	public String getDataType() {
+		return _dataType;
 	}
 	
     // Methods for Parcelable implementation.

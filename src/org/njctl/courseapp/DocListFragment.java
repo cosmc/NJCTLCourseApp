@@ -10,12 +10,20 @@ import android.widget.ListView;
 import android.widget.ArrayAdapter;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 import android.util.Log;
 import android.net.Uri;
 import android.content.Intent;
+import android.content.Context;
+import android.content.res.Resources;
+import android.content.ActivityNotFoundException;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.io.FileOutputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;  
+import java.io.InputStream; 
 
 /**
  * Created by Colin on 12/12/13.
@@ -46,13 +54,35 @@ public class DocListFragment extends Fragment {
         listView.setOnItemClickListener(new OnItemClickListener() {
         	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         		try {
-	        		File docFile = new File( ((NJCTLNavActivity) getActivity()).getDocStorageRoot() + docs.get(position).getRelativePath() );
+        			
+        			// Get an input stream for the locally stored file.
+	        		InputStream docStream = getActivity().getResources().getAssets().open( docs.get(position).getRelativePath() );
+	        		//create a buffer that has the same size as the InputStream  
+	                byte[] buffer = new byte[docStream.available()];  
+	                //read the text file as a stream, into the buffer  
+	                docStream.read(buffer);
+	                //create a output stream to write the buffer into
+	                // TODO: Context.MODE_WORLD_READABLE is deprecated. Look into replacing this with a ContentProvider.
+	                BufferedOutputStream outStream = new BufferedOutputStream( getActivity().openFileOutput(docs.get(position).getTitle() + ".pdf", Context.MODE_WORLD_READABLE) );  
+	                //write this buffer to the output stream  
+	                outStream.write(buffer);  
+	                //Close the Input and Output streams  
+	                outStream.close();  
+	                docStream.close();
+	        		
+	                // Try to launch the PDF in a PDF viewer.
 	        		Intent intent = new Intent(Intent.ACTION_VIEW);
-	        		Uri data = Uri.fromFile(docFile);
-	        		intent.setDataAndType(data,"application/pdf");
+	        		File docFile = new File(getActivity().getFilesDir(), docs.get(position).getFileName());
+	        		Uri docUri = Uri.fromFile(docFile);
+	        		intent.setDataAndType(docUri,docs.get(position).getDataType());
 	        		startActivity(intent);
-        		} catch (ClassCastException e) {
-        			Log.w("ERROR", "Activity does not implement NJCTLNavActivity.");
+	        		
+        		} catch (IOException e) {
+        			Log.w("ERROR", e.toString());
+        		} catch (ActivityNotFoundException e) {
+        			// Show an error message if the user does not have an appropriate application for opening the document.
+        			Log.w("ERROR", e.toString());
+        			Toast.makeText(getActivity(), "Error: No activity found for viewing datatype " + docs.get(position).getDataType() + ".", Toast.LENGTH_SHORT).show();
         		}
             }
         }); 
