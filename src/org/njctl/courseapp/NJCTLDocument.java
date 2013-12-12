@@ -2,7 +2,6 @@ package org.njctl.courseapp;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import java.util.ArrayList;
 
 /**
  * 
@@ -13,6 +12,7 @@ import java.util.ArrayList;
 public class NJCTLDocument implements Parcelable {
 	private String _id;
 	private String _title;
+	private String _relativePath;
 	
 	public NJCTLDocument(String title, String id) {
 		this._id = id;
@@ -22,6 +22,7 @@ public class NJCTLDocument implements Parcelable {
 	public NJCTLDocument(Parcel in) {
 		this._id = in.readString();
 		this._title = in.readString();
+		this._relativePath = in.readString();
 	}
 
 	public String getId() {
@@ -30,6 +31,10 @@ public class NJCTLDocument implements Parcelable {
 	
 	public String getTitle() {
 		return this._title;
+	}
+	
+	public String getRelativePath() {
+		return this._relativePath;
 	}
 	
     // Methods for Parcelable implementation.
@@ -43,6 +48,7 @@ public class NJCTLDocument implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
     	dest.writeString(this._id);
     	dest.writeString(this._title);
+    	dest.writeString(this._relativePath);
     }
     
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {

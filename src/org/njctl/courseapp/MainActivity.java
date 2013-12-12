@@ -14,9 +14,12 @@ import android.view.ViewGroup;
 
 //import org.njctl.courseapp.R;
 
-public class MainActivity extends ActionBarActivity implements ClassNavActivity {
+public class MainActivity extends ActionBarActivity implements NJCTLNavActivity {
 
+	/**** Start of NJCTLNavActivity Methods ****/
+	
 	public void showClasses(ArrayList<NJCTLClass> classes) {
+	// Populate a ClassFragment with the given list of classes and display it in the container element.
 		ClassesFragment frag = new ClassesFragment();
 		Bundle args = new Bundle();
 		args.putParcelableArrayList("classes", classes);
@@ -30,6 +33,7 @@ public class MainActivity extends ActionBarActivity implements ClassNavActivity 
 	}
 	
 	public void showChapters(NJCTLClass theClass) {
+	// Populate a ChapterListFragment with the chapters of the given class and display it in the container element.
 		ChapterListFragment frag = new ChapterListFragment();
 		Bundle args = new Bundle();
 		args.putParcelable("class", theClass);
@@ -41,6 +45,13 @@ public class MainActivity extends ActionBarActivity implements ClassNavActivity 
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         transaction.commit();
 	}
+	
+	public String getDocStorageRoot() {
+	// Return the path of the root directory for storing the teaching material documents.
+		return "";
+	}
+	
+	/**** End of NJCTLNavActivity Methods ****/
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
