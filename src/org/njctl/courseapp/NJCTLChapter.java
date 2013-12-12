@@ -2,6 +2,7 @@ package org.njctl.courseapp;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import java.util.ArrayList;
 
 /**
  * Created by ying on 11/3/13.
@@ -10,11 +11,11 @@ public class NJCTLChapter implements Parcelable {
 	
     private int chapterId;
     private String chapterTitle;
-    private String lectureDocumentId;
-    private String homeworkDocumentId;
+    private ArrayList<NJCTLDocList> contents;
 
-    public NJCTLChapter(String title) {
-        chapterTitle = title;
+    public NJCTLChapter(String title, ArrayList<NJCTLDocList> cont) {
+        this.chapterTitle = title;
+        this.contents = cont;
     }
     
     // Mandatory Parcelable constructor.
@@ -26,12 +27,8 @@ public class NJCTLChapter implements Parcelable {
     	return chapterTitle;
     }
     
-    public String getLecture() {
-    	return "";
-    }
-
-    public String getHomework() {
-    	return "";
+    public ArrayList<NJCTLDocList> getContents() {
+    	return contents;
     }
     
     
@@ -46,15 +43,14 @@ public class NJCTLChapter implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
     	dest.writeInt(chapterId);
     	dest.writeString(chapterTitle);
-    	dest.writeString(lectureDocumentId);
-    	dest.writeString(homeworkDocumentId);
+    	dest.writeParcelableArray((NJCTLDocList[]) contents.toArray(), flags);
     }
 
     private void readFromParcel(Parcel in) {
-    	chapterId = in.readInt();
-    	chapterTitle = in.readString();
-    	lectureDocumentId = in.readString();
-    	homeworkDocumentId = in.readString();
+    	this.chapterId = in.readInt();
+    	this.chapterTitle = in.readString();
+    	this.contents = new ArrayList<NJCTLDocList>();
+        in.readList(this.contents, NJCTLDocList.class.getClassLoader());
     }
     
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {

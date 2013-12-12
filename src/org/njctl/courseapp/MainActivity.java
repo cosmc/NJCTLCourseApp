@@ -18,6 +18,8 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity 
 
 	/**** Start of NJCTLNavActivity Methods ****/
 	
+	// TODO: Condense the NJCTLNavActivity interface's "show" methods into a single method to avoid repetitiveness.
+	
 	public void showClasses(ArrayList<NJCTLClass> classes) {
 	// Populate a ClassFragment with the given list of classes and display it in the container element.
 		ClassesFragment frag = new ClassesFragment();
@@ -46,6 +48,20 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity 
         transaction.commit();
 	}
 	
+	public void showDocList(NJCTLDocList docList) {
+	// Populate a DocListFragment with the documents of the given document list and display it in the container element.
+		DocListFragment frag = new DocListFragment();
+		Bundle args = new Bundle();
+		args.putParcelable("docList", docList);
+		frag.setArguments(args);
+		
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, frag);
+        transaction.addToBackStack("Document List for " + docList.getName());
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        transaction.commit();
+	}
+	
 	public String getDocStorageRoot() {
 	// Return the path of the root directory for storing the teaching material documents.
 		return "";
@@ -59,10 +75,20 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity 
         setContentView(R.layout.activity_main);
 
         if (savedInstanceState == null) {
+        	ArrayList<NJCTLDocument> mockDocs = new ArrayList<NJCTLDocument>();
+        	mockDocs.add(new NJCTLDocument("A Document"));
+        	mockDocs.add(new NJCTLDocument("Another document!"));
+        	mockDocs.add(new NJCTLDocument("WOOOOooooOOOOoOOOOoo"));
+        	
+        	ArrayList<NJCTLDocList> mockDocLists = new ArrayList<NJCTLDocList>();
+        	mockDocLists.add(new NJCTLDocList("Lecture", mockDocs));
+        	mockDocLists.add(new NJCTLDocList("Homework", mockDocs));
+        	mockDocLists.add(new NJCTLDocList("Lab", mockDocs));
+        	
         	ArrayList<NJCTLChapter> mockChapters = new ArrayList<NJCTLChapter>();
-            mockChapters.add(new NJCTLChapter("1. Kinematics"));
-            mockChapters.add(new NJCTLChapter("2. Electrons"));
-            mockChapters.add(new NJCTLChapter("3. Conformal Field Theories"));
+            mockChapters.add(new NJCTLChapter("1. Kinematics", mockDocLists));
+            mockChapters.add(new NJCTLChapter("2. Electrons", mockDocLists));
+            mockChapters.add(new NJCTLChapter("3. Conformal Field Theories", mockDocLists));
             
             ArrayList<NJCTLClass> mockClasses = new ArrayList<NJCTLClass>();
             mockClasses.add(new NJCTLClass("Math", mockChapters));

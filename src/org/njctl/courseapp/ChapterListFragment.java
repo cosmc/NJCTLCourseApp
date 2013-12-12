@@ -23,7 +23,7 @@ public class ChapterListFragment extends Fragment {
 		
 		super.onActivityCreated(savedInstanceState);
 		
-		NJCTLClass theClass = (NJCTLClass) getArguments().getParcelable("class"); // Find out which class we're displaying the chapters for.
+		final NJCTLClass theClass = (NJCTLClass) getArguments().getParcelable("class"); // Find out which class we're displaying the chapters for.
 		
         ExpandableListView elv = (ExpandableListView) getView().findViewById(R.id.chapter_list_fragment_listview);
 
@@ -35,6 +35,11 @@ public class ChapterListFragment extends Fragment {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 Log.w("Item selected:", groupPosition + " " + childPosition);
+                try {
+        			((NJCTLNavActivity) getActivity()).showDocList(theClass.getContents().get(groupPosition).getContents().get(childPosition));
+        		} catch (ClassCastException e) {
+        			Log.w("ERROR", "Activity does not implement NJCTLNavActivity.");
+        		}
                 return false;
             }
         });

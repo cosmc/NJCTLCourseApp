@@ -32,7 +32,7 @@ public class NJCTLDocList implements Parcelable {
 		return _name;
 	}
 	
-	public ArrayList<NJCTLDocument> getDocs() {
+	public ArrayList<NJCTLDocument> getContents() {
 		return _docs;
 	}
 

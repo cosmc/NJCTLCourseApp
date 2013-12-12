@@ -31,7 +31,8 @@ public class DocListFragment extends Fragment {
         ListView listView = (ListView) getView().findViewById(R.id.doc_list_fragment_listview);
 		
         Bundle args = getArguments();
-        final ArrayList<NJCTLDocument> docs = args.getParcelableArrayList("docs");
+        NJCTLDocList docList = args.getParcelable("docList");
+        final ArrayList<NJCTLDocument> docs = docList.getContents();
 
         int numDocs = docs.size();
         String[] docTitles = new String[numDocs];

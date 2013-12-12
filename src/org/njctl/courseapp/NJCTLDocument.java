@@ -14,8 +14,7 @@ public class NJCTLDocument implements Parcelable {
 	private String _title;
 	private String _relativePath;
 	
-	public NJCTLDocument(String title, String id) {
-		this._id = id;
+	public NJCTLDocument(String title) {
 		this._title = title;
 	}
 	
