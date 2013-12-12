@@ -37,7 +37,7 @@ public class ClassesFragment extends Fragment {
         		Log.w("Class click", "" + position);
         		try {
         			((ClassNavActivity) getActivity()).showChapters(classes.get(position));
-        		} catch (Exception e) {
+        		} catch (ClassCastException e) {
         			Log.w("ERROR", "Activity does not implement ClassNavActivity.");
         		}
             }
