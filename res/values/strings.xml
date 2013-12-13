@@ -8,8 +8,7 @@
     <string name="action_my_classes">My Classes</string>
     <string name="action_discover">Discover</string>
     <string name="title_activity_classes">ClassesActivity</string>
-    <string name="lecture_item_text">Lecture</string>
-    <string name="homework_item_text">Homework</string>
+    <string name="settings_title">Settings</string>
     <string name="course_manifest_rel_path">courses/course_manifest.json</string>
 
 </resources>

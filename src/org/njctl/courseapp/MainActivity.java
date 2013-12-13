@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.util.Log;
 
@@ -173,8 +174,14 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity 
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
             case R.id.action_my_classes:
+            	// Build the class tree!
+            	ArrayList<NJCTLClass> classes = getClassTree( getResources().getString(R.string.course_manifest_rel_path) );
+                // Display the classes!
+                showClasses(classes);
                 return true;
             case R.id.action_settings:
+            	Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            	startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);
