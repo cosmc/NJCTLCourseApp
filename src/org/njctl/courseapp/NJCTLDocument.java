@@ -36,6 +36,8 @@ public class NJCTLDocument implements Parcelable {
 			this._MIMEType = "application/pdf";
 		} else if (extension.equals("xlsx")) {
 			this._MIMEType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+		} else if (extension.equals(".docx")) {
+			this._MIMEType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 		}
 		
 	}
