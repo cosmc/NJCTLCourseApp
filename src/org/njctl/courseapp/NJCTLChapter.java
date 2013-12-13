@@ -3,6 +3,7 @@ package org.njctl.courseapp;
 import android.os.Parcel;
 import android.os.Parcelable;
 import java.util.ArrayList;
+import android.util.Log;
 
 /**
  * Created by ying on 11/3/13.
@@ -43,7 +44,7 @@ public class NJCTLChapter implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
     	dest.writeInt(chapterId);
     	dest.writeString(chapterTitle);
-    	dest.writeParcelableArray((NJCTLDocList[]) contents.toArray(), flags);
+    	dest.writeParcelableArray(contents.toArray(new NJCTLDocList[contents.size()]), 0);
     }
 
     private void readFromParcel(Parcel in) {
@@ -53,7 +54,7 @@ public class NJCTLChapter implements Parcelable {
         in.readList(this.contents, NJCTLDocList.class.getClassLoader());
     }
     
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+    public static final Parcelable.Creator<NJCTLChapter> CREATOR = new Parcelable.Creator<NJCTLChapter>() {
     	
     	public NJCTLChapter createFromParcel(Parcel in) {
     		return new NJCTLChapter(in);

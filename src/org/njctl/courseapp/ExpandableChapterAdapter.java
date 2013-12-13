@@ -42,7 +42,7 @@ public class ExpandableChapterAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition,
             boolean isLastChild, View convertView, ViewGroup parent) {
  
-        final String childText = (String) getChild(groupPosition, childPosition).getName();
+        final String childText = (String) getChild(groupPosition, childPosition).getTitle();
  
         if (convertView == null) {
             LayoutInflater infl = (LayoutInflater) this._context

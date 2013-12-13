@@ -2,6 +2,7 @@ package org.njctl.courseapp;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 /**
  * 
@@ -14,16 +15,37 @@ public class NJCTLDocument implements Parcelable {
 	private String _title;
 	private String _relativePath; // The path to the document, relative to the app's assets folder.
 	private String _fileName;
-	private String _dataType;
+	private String _MIMEType;
 	
-	public NJCTLDocument(String title) {
-		this._title = title;
+	public NJCTLDocument(String relativePath) {
+		this._relativePath = relativePath;
+		String[] segments = relativePath.split("/");
+		this._fileName = segments[segments.length - 1];
+		this._title = _fileName;
+		String[] endstuff = _fileName.split("\\.");
+		String extension;
+		if (endstuff.length > 1) {
+			extension = endstuff[endstuff.length - 1];
+		} else {
+			extension = "";
+		}
+		
+		// Set the MIME type!
+		// TODO: Handle more types.
+		if (extension.equals("pdf")) {
+			this._MIMEType = "application/pdf";
+		} else if (extension.equals("xlsx")) {
+			this._MIMEType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+		}
+		
 	}
 	
 	public NJCTLDocument(Parcel in) {
 		this._id = in.readString();
 		this._title = in.readString();
 		this._relativePath = in.readString();
+		this._fileName = in.readString();
+		this._MIMEType = in.readString();
 	}
 
 	public String getId() {
@@ -42,8 +64,8 @@ public class NJCTLDocument implements Parcelable {
 		return _fileName;
 	}
 	
-	public String getDataType() {
-		return _dataType;
+	public String getMIMEType() {
+		return _MIMEType;
 	}
 	
     // Methods for Parcelable implementation.
@@ -58,9 +80,11 @@ public class NJCTLDocument implements Parcelable {
     	dest.writeString(this._id);
     	dest.writeString(this._title);
     	dest.writeString(this._relativePath);
+    	dest.writeString(this._fileName);
+    	dest.writeString(this._MIMEType);
     }
     
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+    public static final Parcelable.Creator<NJCTLDocument> CREATOR = new Parcelable.Creator<NJCTLDocument>() {
     	public NJCTLDocument createFromParcel(Parcel in) {
     		return new NJCTLDocument(in);
     	}

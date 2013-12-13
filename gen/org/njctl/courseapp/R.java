@@ -1172,6 +1172,7 @@ containing a value of this type.
         public static final int action_my_classes=0x7f0a0011;
         public static final int action_settings=0x7f0a000f;
         public static final int app_name=0x7f0a000d;
+        public static final int course_manifest_rel_path=0x7f0a0016;
         public static final int hello_world=0x7f0a000e;
         public static final int homework_item_text=0x7f0a0015;
         public static final int lecture_item_text=0x7f0a0014;

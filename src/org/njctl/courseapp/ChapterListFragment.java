@@ -55,9 +55,9 @@ public class ChapterListFragment extends Fragment {
     public void onStart() {
     	super.onStart();
     	
-    	// Set the title text to the name of the class whose contents are being shown.
+    	// Set the title text to the title of the class whose contents are being shown.
 		NJCTLClass theClass = (NJCTLClass) getArguments().getParcelable("class"); // Find out which class we're displaying the chapters for.
-		getActivity().setTitle(theClass.getName());
+		getActivity().setTitle(theClass.getTitle());
     }
     
     @Override

@@ -356,6 +356,7 @@ int string action_discover 0x7f0a0012
 int string action_my_classes 0x7f0a0011
 int string action_settings 0x7f0a000f
 int string app_name 0x7f0a000d
+int string course_manifest_rel_path 0x7f0a0016
 int string hello_world 0x7f0a000e
 int string homework_item_text 0x7f0a0015
 int string lecture_item_text 0x7f0a0014

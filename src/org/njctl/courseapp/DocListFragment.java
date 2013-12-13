@@ -74,7 +74,7 @@ public class DocListFragment extends Fragment {
 	        		Intent intent = new Intent(Intent.ACTION_VIEW);
 	        		File docFile = new File(getActivity().getFilesDir(), docs.get(position).getFileName());
 	        		Uri docUri = Uri.fromFile(docFile);
-	        		intent.setDataAndType(docUri,docs.get(position).getDataType());
+	        		intent.setDataAndType(docUri,docs.get(position).getMIMEType());
 	        		startActivity(intent);
 	        		
         		} catch (IOException e) {
@@ -82,7 +82,7 @@ public class DocListFragment extends Fragment {
         		} catch (ActivityNotFoundException e) {
         			// Show an error message if the user does not have an appropriate application for opening the document.
         			Log.w("ERROR", e.toString());
-        			Toast.makeText(getActivity(), "Error: No activity found for viewing datatype " + docs.get(position).getDataType() + ".", Toast.LENGTH_SHORT).show();
+        			Toast.makeText(getActivity(), "Error: No activity found for viewing MIME type " + docs.get(position).getMIMEType() + ".", Toast.LENGTH_SHORT).show();
         		}
             }
         }); 
@@ -98,9 +98,9 @@ public class DocListFragment extends Fragment {
     public void onStart() {
     	super.onStart();
     	
-    	// Set the title text to the name of the doc list whose contents are being shown.
+    	// Set the title text to the title of the doc list whose contents are being shown.
 		NJCTLDocList docList = (NJCTLDocList) getArguments().getParcelable("docList");
-		getActivity().setTitle(docList.getName());
+		getActivity().setTitle(docList.getTitle());
     }
     
     @Override

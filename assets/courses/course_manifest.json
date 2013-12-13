@@ -1,0 +1,13 @@
+{
+	"classes": [
+	{ "title": "Algebra-Based Physics",
+	"chapters" : [
+				{ "title": "0 Preliminaries",
+				  "doclists": [
+				  { "title": "1 Handouts",
+				  	"documents": ["Curriculum-2011-02-01.pdf", "Physics_&_AP_Physics_Pacing_-2012-04-19.xlsx", "Physics_Equation_Sheet-2012-08-01.pdf"] }
+				  ]
+				}
+			]
+	} ]
+}
