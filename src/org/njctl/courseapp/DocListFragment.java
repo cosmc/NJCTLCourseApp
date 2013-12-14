@@ -76,6 +76,7 @@ public class DocListFragment extends Fragment {
 	        		Intent intent = new Intent(Intent.ACTION_VIEW);
 	        		File docFile = new File(getActivity().getFilesDir(), docs.get(position).getFileName());
 	        		docFile.setReadable(true, false);
+	        		docFile.setWritable(true, false); // So that people can take notes in the PDF reader.
 	        		Uri docUri = Uri.fromFile(docFile);
 	        		intent.setDataAndType(docUri,docs.get(position).getMIMEType());
 	        		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
