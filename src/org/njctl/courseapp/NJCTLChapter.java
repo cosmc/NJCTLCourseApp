@@ -10,11 +10,12 @@ import android.util.Log;
  */
 public class NJCTLChapter implements Parcelable {
 	
-    private int chapterId;
+    private String chapterId;
     private String chapterTitle;
     private ArrayList<NJCTLDocList> contents;
 
-    public NJCTLChapter(String title, ArrayList<NJCTLDocList> cont) {
+    public NJCTLChapter(String id, String title, ArrayList<NJCTLDocList> cont) {
+    	this.chapterId = id;
         this.chapterTitle = title;
         this.contents = cont;
     }
@@ -22,6 +23,10 @@ public class NJCTLChapter implements Parcelable {
     // Mandatory Parcelable constructor.
     public NJCTLChapter(Parcel in) {
     	readFromParcel(in);
+    }
+    
+    public String getId() {
+    	return chapterId;
     }
     
     public String getTitle() {
@@ -42,13 +47,13 @@ public class NJCTLChapter implements Parcelable {
     
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-    	dest.writeInt(chapterId);
+    	dest.writeString(chapterId);
     	dest.writeString(chapterTitle);
     	dest.writeParcelableArray(contents.toArray(new NJCTLDocList[contents.size()]), 0);
     }
 
     private void readFromParcel(Parcel in) {
-    	this.chapterId = in.readInt();
+    	this.chapterId = in.readString();
     	this.chapterTitle = in.readString();
     	this.contents = new ArrayList<NJCTLDocList>();
         in.readList(this.contents, NJCTLDocList.class.getClassLoader());

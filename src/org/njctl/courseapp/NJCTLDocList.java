@@ -11,11 +11,12 @@ import java.util.ArrayList;
  */
 
 public class NJCTLDocList implements Parcelable {
-	private int _id;
+	private String _id;
 	private String _title;
 	private ArrayList<NJCTLDocument> _docs;
 	
-	public NJCTLDocList(String title, ArrayList<NJCTLDocument> docs) {
+	public NJCTLDocList(String id, String title, ArrayList<NJCTLDocument> docs) {
+		this._id = id;
 		this._title = title;
 		this._docs = docs;
 	}
@@ -24,7 +25,7 @@ public class NJCTLDocList implements Parcelable {
 		readFromParcel(in);
 	}
 	
-	public int getId() {
+	public String getId() {
 		return _id;
 	}
 	
@@ -45,13 +46,13 @@ public class NJCTLDocList implements Parcelable {
     
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-    	dest.writeInt(_id);
+    	dest.writeString(_id);
     	dest.writeString(_title);
     	dest.writeParcelableArray(_docs.toArray(new NJCTLDocument[_docs.size()]), 0);
     }
     
     private void readFromParcel(Parcel in) {
-    	_id = in.readInt();
+    	_id = in.readString();
     	_title = in.readString();
     	_docs = new ArrayList<NJCTLDocument>();
         in.readList(_docs, NJCTLDocument.class.getClassLoader());

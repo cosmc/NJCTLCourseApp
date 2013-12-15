@@ -100,11 +100,14 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity 
 		// TODO: Okay this is questionable. We probably should have some kind of recursive datatype like "NJCTLContainer" or something.
 		// For now, though, the rules:
 		// - The top level JSON object has a JSON array called "classes".
-		// - Each element of "classes" has a string "title" and a JSON array "chapters".
-		// - Each element of each "chapters" has a string "title" and a JSON array "doclists".
-		// - Each element of each "doclists" has a string "title" and a JSON array "documents".
+		// - Each element of "classes" has a string "id" and a JSON array "chapters".
+		// - Each element of each "chapters" has a string "id" and a JSON array "doclists".
+		// - Each element of each "doclists" has a string "id" and a JSON array "documents".
 		// - Each element of each "documents" is a string indicating the filename.
-		// - The relative path from the assets directory to each document is courses/[classtitle]/[chaptertitle]/[doclisttitle]/[filename]
+		// - The relative path from the assets directory to each document is courses/($class_id)/($chapter_id)/($doclist_id)/[filename]
+		//
+		// The TITLE of an NJCTLCLass is the same as its ID.  The TITLE of a chapter or doclist is equal to id.split("\\.")[1].
+		// The manifest builder script will not include chapters or doclists whose IDs do not include a "."
 		
 		ArrayList<NJCTLClass> njctlClasses = new ArrayList<NJCTLClass>(); // We'll spend the rest of this method filling this dude, and then return him.
 		
@@ -130,14 +133,14 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity 
 						
 						for (int l = 0; l < docs.length(); ++l) {
 							// Construct the path to the document from the assets folder.
-							String pathToDoc = "courses/" + currentClass.getString("title") + "/" + currentChapter.getString("title") + "/" + currentDocList.getString("title") + "/" + docs.getString(l);
+							String pathToDoc = "courses/" + currentClass.getString("id") + "/" + currentChapter.getString("id") + "/" + currentDocList.getString("id") + "/" + docs.getString(l);
 							njctlDocs.add(new NJCTLDocument(pathToDoc)); // Add the document!
 						}
-						njctlDocLists.add(new NJCTLDocList(currentDocList.getString("title"), njctlDocs));
+						njctlDocLists.add(new NJCTLDocList(currentDocList.getString("id"), currentDocList.getString("id").split("\\.")[1], njctlDocs));
 					}
-					njctlChapters.add(new NJCTLChapter(currentChapter.getString("title"), njctlDocLists));
+					njctlChapters.add(new NJCTLChapter(currentChapter.getString("id"), currentChapter.getString("id").split("\\.")[1], njctlDocLists));
 				}
-				njctlClasses.add(new NJCTLClass(currentClass.getString("title"), njctlChapters));
+				njctlClasses.add(new NJCTLClass(currentClass.getString("id"), njctlChapters));
 			}
 		} catch (JSONException e) { Log.w("JSON ERR", e.toString()); }
 		

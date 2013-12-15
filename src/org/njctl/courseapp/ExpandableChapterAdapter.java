@@ -53,7 +53,7 @@ public class ExpandableChapterAdapter extends BaseExpandableListAdapter {
         TextView txtListChild = (TextView) convertView
                 .findViewById(R.id.chapter_list_child_item);
  
-        txtListChild.setText(childText);
+        txtListChild.setText("  "+childText);
         return convertView;
     }
  

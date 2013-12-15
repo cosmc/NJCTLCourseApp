@@ -5,8 +5,8 @@
         android:title="@string/action_my_classes"
         android:orderInCategory="100"
         myapp:showAsAction="never" />
-    <item android:id="@+id/action_settings"
+    <!--<item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="100"
-        myapp:showAsAction="never" />
+        myapp:showAsAction="never" />-->
 </menu>

@@ -44,7 +44,7 @@ class ClassesAdapter extends ArrayAdapter {
         }
         NJCTLClass aClass = classes.get(position);
         holder.classNameTextView.setText(aClass.getTitle());
-        holder.unitsTextView.setText("8");
+        holder.unitsTextView.setText("");
         holder.progressTextView.setText("In Progress");
         return convertView;
     }

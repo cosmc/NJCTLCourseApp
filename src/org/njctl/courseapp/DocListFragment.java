@@ -61,7 +61,7 @@ public class DocListFragment extends Fragment {
 	        		BufferedInputStream docStream = new BufferedInputStream( getActivity().getResources().getAssets().open( docs.get(position).getRelativePath() ) );
 	        		//create a buffer that has the same size as the InputStream  
 	                byte[] buffer = new byte[docStream.available()];
-	                //read the text file as a stream, into the buffer  
+	                //read the text file as a stream, into the buffer
 	                docStream.read(buffer);
 	                //create a output stream to write the buffer into
 	                // TODO: Context.MODE_WORLD_READABLE is deprecated. Look into replacing this with a ContentProvider.
