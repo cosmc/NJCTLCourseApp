@@ -4,7 +4,7 @@
     <item android:id="@+id/action_my_classes"
         android:title="@string/action_my_classes"
         android:orderInCategory="100"
-        myapp:showAsAction="never" />
+        myapp:showAsAction="ifRoom" />
     <!--<item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="100"
