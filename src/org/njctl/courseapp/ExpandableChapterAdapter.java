@@ -1,6 +1,9 @@
 package org.njctl.courseapp;
 
 import java.util.ArrayList;
+
+import org.njctl.courseapp.model.NJCTLChapter;
+import org.njctl.courseapp.model.NJCTLDocList;
  
 import android.content.Context;
 import android.graphics.Typeface;

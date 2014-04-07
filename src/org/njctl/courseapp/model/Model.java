@@ -8,10 +8,6 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.njctl.courseapp.NJCTLChapter;
-import org.njctl.courseapp.NJCTLClass;
-import org.njctl.courseapp.NJCTLDocList;
-import org.njctl.courseapp.NJCTLDocument;
 
 import android.content.res.Resources;
 import android.util.Log;

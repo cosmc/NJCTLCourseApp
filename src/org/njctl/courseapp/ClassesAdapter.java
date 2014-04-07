@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import org.njctl.courseapp.model.NJCTLClass;
+
 /**
  * Created by ying on 11/16/13.
  */

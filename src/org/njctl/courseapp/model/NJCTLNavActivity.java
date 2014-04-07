@@ -1,4 +1,4 @@
-package org.njctl.courseapp;
+package org.njctl.courseapp.model;
 
 import java.util.ArrayList;
 

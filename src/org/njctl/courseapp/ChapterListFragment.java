@@ -12,6 +12,9 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import org.njctl.courseapp.model.NJCTLClass;
+import org.njctl.courseapp.model.NJCTLNavActivity;
+
 /**
  * Created by Colin on 12/9/13.
  */
