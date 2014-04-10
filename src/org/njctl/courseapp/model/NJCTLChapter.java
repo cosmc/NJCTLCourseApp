@@ -12,12 +12,22 @@ public class NJCTLChapter implements Parcelable {
 	
     private String chapterId;
     private String chapterTitle;
-    private ArrayList<NJCTLDocList> contents;
+    private ArrayList<NJCTLDocList> contents = new ArrayList<NJCTLDocList>();
 
     public NJCTLChapter(String id, String title, ArrayList<NJCTLDocList> cont) {
     	this.chapterId = id;
         this.chapterTitle = title;
         this.contents = cont;
+    }
+    
+    public NJCTLChapter(String id, String title) {
+    	this.chapterId = id;
+        this.chapterTitle = title;
+    }
+    
+    public void add(NJCTLDocList docList)
+    {
+    	this.contents.add(docList);
     }
     
     // Mandatory Parcelable constructor.

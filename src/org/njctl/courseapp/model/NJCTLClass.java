@@ -12,11 +12,20 @@ public class NJCTLClass implements Parcelable {
 	
     private int classId;
     private String classTitle;
-    private ArrayList<NJCTLChapter> contents;
+    private ArrayList<NJCTLChapter> contents = new ArrayList<NJCTLChapter>();
 
     public NJCTLClass(String name, ArrayList<NJCTLChapter> chapters) {
         this.classTitle = name;
         this.contents = chapters;
+    }
+    
+    public NJCTLClass(String name) {
+        this.classTitle = name;
+    }
+    
+    public void add(NJCTLChapter chapter)
+    {
+    	this.contents.add(chapter);
     }
     
     // Parcelable constructor.

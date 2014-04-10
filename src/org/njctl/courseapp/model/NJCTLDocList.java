@@ -13,12 +13,22 @@ import java.util.ArrayList;
 public class NJCTLDocList implements Parcelable {
 	private String _id;
 	private String _title;
-	private ArrayList<NJCTLDocument> _docs;
+	private ArrayList<NJCTLDocument> _docs  = new ArrayList<NJCTLDocument>();
 	
 	public NJCTLDocList(String id, String title, ArrayList<NJCTLDocument> docs) {
 		this._id = id;
 		this._title = title;
 		this._docs = docs;
+	}
+	
+	public NJCTLDocList(String id, String title) {
+		this._id = id;
+		this._title = title;
+	}
+	
+	public void add(NJCTLDocument doc)
+	{
+		this._docs.add(doc);
 	}
 	
 	public NJCTLDocList(Parcel in) {

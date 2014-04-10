@@ -57,28 +57,30 @@ public class Model {
 				for (int i = 0; i < classes.length(); ++i) {
 					JSONObject currentClass = classes.getJSONObject(i);
 					JSONArray chapters = currentClass.getJSONArray("chapters");
-					ArrayList<NJCTLChapter> njctlChapters = new ArrayList<NJCTLChapter>();
+					NJCTLClass klass = new NJCTLClass(currentClass.getString("id"));
+					njctlClasses.add(klass);
 					
 					for (int j = 0; j < chapters.length(); ++j) {
 						JSONObject currentChapter = chapters.getJSONObject(j);
 						JSONArray docLists = currentChapter.getJSONArray("doclists");
-						ArrayList<NJCTLDocList> njctlDocLists = new ArrayList<NJCTLDocList>();
+						
+						NJCTLChapter chapter = new NJCTLChapter(currentChapter.getString("id"), currentChapter.getString("id").split("\\.")[1]);
+						klass.add(chapter);
 						
 						for (int k = 0; k < docLists.length(); ++k) {
 							JSONObject currentDocList = docLists.getJSONObject(k);
 							JSONArray docs = currentDocList.getJSONArray("documents");
-							ArrayList<NJCTLDocument> njctlDocs = new ArrayList<NJCTLDocument>();
+							
+							NJCTLDocList docList = new NJCTLDocList(currentDocList.getString("id"), currentDocList.getString("id").split("\\.")[1]);
+							chapter.add(docList);
 							
 							for (int l = 0; l < docs.length(); ++l) {
 								// Construct the path to the document from the assets folder.
 								String pathToDoc = "courses/" + currentClass.getString("id") + "/" + currentChapter.getString("id") + "/" + currentDocList.getString("id") + "/" + docs.getString(l);
-								njctlDocs.add(new NJCTLDocument(pathToDoc)); // Add the document!
+								docList.add(new NJCTLDocument(pathToDoc)); // Add the document!
 							}
-							njctlDocLists.add(new NJCTLDocList(currentDocList.getString("id"), currentDocList.getString("id").split("\\.")[1], njctlDocs));
 						}
-						njctlChapters.add(new NJCTLChapter(currentChapter.getString("id"), currentChapter.getString("id").split("\\.")[1], njctlDocLists));
 					}
-					njctlClasses.add(new NJCTLClass(currentClass.getString("id"), njctlChapters));
 				}
 			} catch (JSONException e) { Log.w("JSON ERR", e.toString()); }
 			
