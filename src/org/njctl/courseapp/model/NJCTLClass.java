@@ -1,6 +1,8 @@
 package org.njctl.courseapp.model;
 
 import java.util.ArrayList;
+import java.util.Date;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
@@ -13,6 +15,7 @@ public class NJCTLClass implements Parcelable {
     private int classId;
     private String classTitle;
     private ArrayList<NJCTLChapter> contents = new ArrayList<NJCTLChapter>();
+    private Date lastUpdate;
 
     public NJCTLClass(String name, ArrayList<NJCTLChapter> chapters) {
         this.classTitle = name;

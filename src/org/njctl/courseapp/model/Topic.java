@@ -2,48 +2,18 @@ package org.njctl.courseapp.model;
 
 import java.util.Date;
 
-public class Topic
+import android.os.Parcel;
+
+public class Topic extends Document
 {
-	private Date lastOpened;
-	private Date lastUpdated;
-	private String url;
-	private String fileAddress;
-	private Integer numOpened;
 	private String hash;
-	private NJCTLDocument doc;
-	private String name;
+	//private Document doc;
 	private Integer size;
 	
-	public String getFileAddressForOpening()
+	public Topic(Parcel in)
 	{
-		numOpened++;
-		lastOpened = new Date();
-		return fileAddress;
-	}
-	
-	public NJCTLDocument getDocument()
-	{
-		return doc;
-	}
-	
-	public Integer getNumOpened()
-	{
-		return numOpened;
-	}
-	
-	public Date getLastOpened()
-	{
-		return lastOpened;
-	}
-	
-	public Date getLastUpdated()
-	{
-		return lastUpdated;
-	}
-	
-	public String getName()
-	{
-		return name;
+		super(in);
+		// TODO Auto-generated constructor stub
 	}
 	
 	public Integer getSize()

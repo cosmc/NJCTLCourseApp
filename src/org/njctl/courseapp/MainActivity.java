@@ -11,7 +11,6 @@ import android.content.Intent;
 import org.njctl.courseapp.model.Model;
 import org.njctl.courseapp.model.NJCTLClass;
 import org.njctl.courseapp.model.NJCTLDocList;
-import org.njctl.courseapp.model.NJCTLNavActivity;
 
 //import org.njctl.courseapp.R;
 

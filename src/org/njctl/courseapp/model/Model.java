@@ -77,7 +77,11 @@ public class Model {
 							for (int l = 0; l < docs.length(); ++l) {
 								// Construct the path to the document from the assets folder.
 								String pathToDoc = "courses/" + currentClass.getString("id") + "/" + currentChapter.getString("id") + "/" + currentDocList.getString("id") + "/" + docs.getString(l);
-								docList.add(new NJCTLDocument(pathToDoc)); // Add the document!
+								
+								Document doc = new Document(docs.getString(l));
+								doc.setPath(pathToDoc);
+								
+								docList.add(doc);
 							}
 						}
 					}

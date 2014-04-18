@@ -13,9 +13,9 @@ import java.util.ArrayList;
 public class NJCTLDocList implements Parcelable {
 	private String _id;
 	private String _title;
-	private ArrayList<NJCTLDocument> _docs  = new ArrayList<NJCTLDocument>();
+	private ArrayList<Document> _docs  = new ArrayList<Document>();
 	
-	public NJCTLDocList(String id, String title, ArrayList<NJCTLDocument> docs) {
+	public NJCTLDocList(String id, String title, ArrayList<Document> docs) {
 		this._id = id;
 		this._title = title;
 		this._docs = docs;
@@ -26,7 +26,7 @@ public class NJCTLDocList implements Parcelable {
 		this._title = title;
 	}
 	
-	public void add(NJCTLDocument doc)
+	public void add(Document doc)
 	{
 		this._docs.add(doc);
 	}
@@ -43,7 +43,7 @@ public class NJCTLDocList implements Parcelable {
 		return _title;
 	}
 	
-	public ArrayList<NJCTLDocument> getContents() {
+	public ArrayList<Document> getContents() {
 		return _docs;
 	}
 
@@ -58,14 +58,14 @@ public class NJCTLDocList implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
     	dest.writeString(_id);
     	dest.writeString(_title);
-    	dest.writeParcelableArray(_docs.toArray(new NJCTLDocument[_docs.size()]), 0);
+    	dest.writeParcelableArray(_docs.toArray(new Document[_docs.size()]), 0);
     }
     
     private void readFromParcel(Parcel in) {
     	_id = in.readString();
     	_title = in.readString();
-    	_docs = new ArrayList<NJCTLDocument>();
-        in.readList(_docs, NJCTLDocument.class.getClassLoader());
+    	_docs = new ArrayList<Document>();
+        in.readList(_docs, Document.class.getClassLoader());
     }
     
     public static final Parcelable.Creator<NJCTLDocList> CREATOR = new Parcelable.Creator<NJCTLDocList>() {

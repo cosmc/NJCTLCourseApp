@@ -28,7 +28,7 @@ import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
 
 import org.njctl.courseapp.model.NJCTLDocList;
-import org.njctl.courseapp.model.NJCTLDocument;
+import org.njctl.courseapp.model.Document;
 
 /**
  * Created by Colin on 12/12/13.
@@ -45,12 +45,12 @@ public class DocListFragment extends Fragment {
 		
         Bundle args = getArguments();
         NJCTLDocList docList = args.getParcelable("docList");
-        final ArrayList<NJCTLDocument> docs = docList.getContents();
+        final ArrayList<Document> docs = docList.getContents();
 
         int numDocs = docs.size();
         String[] docTitles = new String[numDocs];
         for (int i = 0; i < numDocs; ++i) {
-        	docTitles[i] = docs.get(i).getTitle();
+        	docTitles[i] = docs.get(i).getName();
         }
         // TODO: We'll want a custom adapter for displaying DocLists eventually.
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, docTitles);
@@ -61,7 +61,7 @@ public class DocListFragment extends Fragment {
         		try {
         			
         			// Get an input stream for the locally stored file.
-	        		BufferedInputStream docStream = new BufferedInputStream( getActivity().getResources().getAssets().open( docs.get(position).getRelativePath() ) );
+	        		BufferedInputStream docStream = new BufferedInputStream( getActivity().getResources().getAssets().open( docs.get(position).getRelativePathForOpening() ) );
 	        		//create a buffer that has the same size as the InputStream  
 	                byte[] buffer = new byte[docStream.available()];
 	                //read the text file as a stream, into the buffer
