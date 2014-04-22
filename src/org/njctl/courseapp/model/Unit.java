@@ -3,26 +3,35 @@ package org.njctl.courseapp.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 import java.util.ArrayList;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import android.util.Log;
 
 /**
  * Created by ying on 11/3/13.
  */
-public class NJCTLChapter implements Parcelable {
+public class Unit implements Parcelable {
 	
     private String chapterId;
     private String chapterTitle;
     private ArrayList<NJCTLDocList> contents = new ArrayList<NJCTLDocList>();
 
-    public NJCTLChapter(String id, String title, ArrayList<NJCTLDocList> cont) {
+    public Unit(String id, String title, ArrayList<NJCTLDocList> cont) {
     	this.chapterId = id;
         this.chapterTitle = title;
         this.contents = cont;
     }
     
-    public NJCTLChapter(String id, String title) {
+    public Unit(String id, String title) {
     	this.chapterId = id;
         this.chapterTitle = title;
+    }
+    
+    public Unit(JSONObject json)
+    {
+    	
     }
     
     public void add(NJCTLDocList docList)
@@ -31,11 +40,11 @@ public class NJCTLChapter implements Parcelable {
     }
     
     // Mandatory Parcelable constructor.
-    public NJCTLChapter(Parcel in) {
+    public Unit(Parcel in) {
     	readFromParcel(in);
     }
     
-    public String getId() {
+	public String getId() {
     	return chapterId;
     }
     
@@ -69,14 +78,14 @@ public class NJCTLChapter implements Parcelable {
         in.readList(this.contents, NJCTLDocList.class.getClassLoader());
     }
     
-    public static final Parcelable.Creator<NJCTLChapter> CREATOR = new Parcelable.Creator<NJCTLChapter>() {
+    public static final Parcelable.Creator<Unit> CREATOR = new Parcelable.Creator<Unit>() {
     	
-    	public NJCTLChapter createFromParcel(Parcel in) {
-    		return new NJCTLChapter(in);
+    	public Unit createFromParcel(Parcel in) {
+    		return new Unit(in);
     	}
     	
-    	public NJCTLChapter[] newArray(int size) {
-    		return new NJCTLChapter[size];
+    	public Unit[] newArray(int size) {
+    		return new Unit[size];
     	}
     	
     };

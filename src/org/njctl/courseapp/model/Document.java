@@ -61,15 +61,6 @@ public class Document implements Parcelable
 		}
 	}
 
-	public Document(Parcel in)
-	{
-		this.id = in.readString();
-		this.name = in.readString();
-		this.relativePath = in.readString();
-		this.fileName = in.readString();
-		this.MIMEType = in.readString();
-	}
-
 	public String getId()
 	{
 		return this.id;
@@ -124,6 +115,15 @@ public class Document implements Parcelable
 	public int describeContents()
 	{
 		return 0;
+	}
+	
+	public Document(Parcel in)
+	{
+		this.id = in.readString();
+		this.name = in.readString();
+		this.relativePath = in.readString();
+		this.fileName = in.readString();
+		this.MIMEType = in.readString();
 	}
 
 	@Override

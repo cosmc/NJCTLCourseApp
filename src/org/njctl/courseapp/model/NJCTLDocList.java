@@ -2,6 +2,8 @@ package org.njctl.courseapp.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+
 import java.util.ArrayList;
 
 /**

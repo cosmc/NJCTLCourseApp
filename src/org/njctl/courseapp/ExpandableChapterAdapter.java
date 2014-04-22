@@ -2,7 +2,7 @@ package org.njctl.courseapp;
 
 import java.util.ArrayList;
 
-import org.njctl.courseapp.model.NJCTLChapter;
+import org.njctl.courseapp.model.Unit;
 import org.njctl.courseapp.model.NJCTLDocList;
  
 import android.content.Context;
@@ -23,10 +23,10 @@ import android.util.Log;
 public class ExpandableChapterAdapter extends BaseExpandableListAdapter {
  
     private Context _context;
-    private ArrayList<NJCTLChapter> _chapters; // Chapter titles
+    private ArrayList<Unit> _chapters; // Chapter titles
     
  
-    public ExpandableChapterAdapter(Context context, ArrayList<NJCTLChapter> chapters) {
+    public ExpandableChapterAdapter(Context context, ArrayList<Unit> chapters) {
         this._context = context;
         this._chapters = chapters;
     }
@@ -66,7 +66,7 @@ public class ExpandableChapterAdapter extends BaseExpandableListAdapter {
     }
  
     @Override
-    public NJCTLChapter getGroup(int groupPosition) {
+    public Unit getGroup(int groupPosition) {
         return this._chapters.get(groupPosition);
     }
  
