@@ -15,6 +15,14 @@ import android.util.Log;
 public class Model implements AsyncJsonResponse
 {
 	final String NJCTLLOG = "NJCTL";
+	protected ClassRetriever retriever;
+	
+	public void fetchManifest(ClassRetriever retrieverObject)
+	{
+		retriever = retrieverObject;
+		
+		new RetrieveManifestTask().execute(this);
+	}
 
 	public ArrayList<NJCTLClass> getClassTree(String relativePath,
 			Resources resources)
@@ -24,8 +32,6 @@ public class Model implements AsyncJsonResponse
 		StringBuilder text = new StringBuilder();
 		BufferedReader br = null;
 		String line;
-
-		//new RetrieveManifestTask().execute(this);
 
 		// Build a StringBuilder from the manifest file.
 		try {
@@ -173,5 +179,6 @@ public class Model implements AsyncJsonResponse
 			Log.w("JSON ERR", e.toString());
 		}
 		
+		retriever.useClasses(classes);
 	}
 }

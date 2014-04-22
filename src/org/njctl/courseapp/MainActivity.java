@@ -8,15 +8,19 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
+
+import org.njctl.courseapp.model.ClassRetriever;
 import org.njctl.courseapp.model.Model;
 import org.njctl.courseapp.model.NJCTLClass;
 import org.njctl.courseapp.model.NJCTLDocList;
 
 //import org.njctl.courseapp.R;
 
-public class MainActivity extends ActionBarActivity implements NJCTLNavActivity {
+public class MainActivity extends ActionBarActivity implements NJCTLNavActivity, ClassRetriever{
 
 	private Model model = new Model();
+	private ArrayList<NJCTLClass> classes;
+	
 	/**** Start of NJCTLNavActivity Methods ****/
 	
 	// TODO: Condense the NJCTLNavActivity interface's "show" methods into a single method to avoid repetitiveness.
@@ -73,10 +77,10 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity 
         setContentView(R.layout.activity_main);
 
         if (savedInstanceState == null) {
-        	// Build the class tree!
-        	ArrayList<NJCTLClass> classes = model.getClassTree( getResources().getString(R.string.course_manifest_rel_path), getResources());
-            // Display the classes!
-            showClasses(classes);
+        	
+        	useClasses(model.getClassTree( getResources().getString(R.string.course_manifest_rel_path), getResources()));
+            
+            //model.fetchManifest(this);
         }
     }
 
@@ -97,7 +101,7 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity 
         switch (item.getItemId()) {
             case R.id.action_my_classes:
             	// Build the class tree!
-            	ArrayList<NJCTLClass> classes = model.getClassTree( getResources().getString(R.string.course_manifest_rel_path), getResources());
+            	//ArrayList<NJCTLClass> classes = model.getClassTree( getResources().getString(R.string.course_manifest_rel_path), getResources());
                 // Display the classes!
                 showClasses(classes);
                 return true;
@@ -108,5 +112,12 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity 
         }
         return super.onOptionsItemSelected(item);
     }
+
+	@Override
+	public void useClasses(ArrayList<NJCTLClass> classes)
+	{
+		this.classes = classes;
+		showClasses(classes);
+	}
 
 }
