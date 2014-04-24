@@ -25,8 +25,12 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 	
 	// TODO: Condense the NJCTLNavActivity interface's "show" methods into a single method to avoid repetitiveness.
 	
+	public void showSubjects(ArrayList<Subject> subjects) {
+	// Populate a SubjectsFragment with the given list of classes and display it in the container element.
+	}
+	
 	public void showClasses(ArrayList<NJCTLClass> classes) {
-	// Populate a ClassFragment with the given list of classes and display it in the container element.
+	// Populate a ClassesFragment with the given list of classes and display it in the container element.
 		ClassesFragment frag = new ClassesFragment();
 		Bundle args = new Bundle();
 		args.putParcelableArrayList("classes", classes);
