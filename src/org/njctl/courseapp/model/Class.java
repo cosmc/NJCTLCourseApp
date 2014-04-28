@@ -31,6 +31,11 @@ public class Class implements Parcelable {
         this.units = unitList;
     }
     
+    public boolean isDownloaded()
+    {
+    	return true;
+    }
+    
     public Class(String name) {
         this.classTitle = name;
     }

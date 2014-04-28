@@ -84,6 +84,21 @@ public class Subject implements Parcelable {
 		}
     }
     
+    public ArrayList<Class> getClassesDownloaded()
+    {
+    	ArrayList<Class> classList = new ArrayList<Class>();
+    	
+    	for(int i = 0; i < classes.size(); i++)
+    	{
+    		if(classes.get(i).isDownloaded())
+    		{
+    			classList.add(classes.get(i));
+    		}
+    	}
+    	
+    	return classList;
+    }
+    
     public void add(Class aClass)
     {
     	this.classes.add(aClass);
