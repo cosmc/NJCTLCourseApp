@@ -28,9 +28,18 @@ public class Presentation extends Document
 	{
 		try{
 			name = json.getString("title");
-			url = json.getString("uri");
 			
-			String modified = json.getString("last-modified");
+			if(json.has("pdf_uri"))
+			{
+				url = json.getString("pdf_uri");
+			}
+			else
+			{
+				Log.v("NJCTLLOG", "pdf_uri not found for presentation " + name);
+			}
+			
+			
+			String modified = json.getString("date");
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 			lastUpdated = df.parse(modified);
 			/*

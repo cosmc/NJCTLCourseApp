@@ -38,6 +38,21 @@ public class Unit implements Parcelable {
         this.chapterTitle = title;
     }
     
+    public static Unit newInstance(JSONObject json)
+    {
+    	try
+    	{
+    		json.getJSONObject("content").getJSONArray("presentations");
+    		
+    		return new Unit(json);
+    	}
+    	catch(JSONException e)
+    	{
+    		Log.v("NJCTLLOG", "unit contents not found...");
+    		return null;
+    	}
+    }
+    
     public Unit(JSONObject json)
     {
     	try {
@@ -47,15 +62,20 @@ public class Unit implements Parcelable {
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 			lastUpdate = df.parse(modified);
 			
-			JSONArray homeworkList = json.getJSONArray("homework");
-			Log.v("NJCTLLOG", "Looping through " + Integer.toString(homeworkList.length()) + " homeworks...");
+			JSONObject content = json.getJSONObject("content");
 			
-			for(int i = 0; i < homeworkList.length(); i++)
+			if(content.has("homework"))
 			{
-				homeworks.add(new Homework(homeworkList.getJSONObject(i)));
+				JSONArray homeworkList = content.getJSONArray("homework");
+				Log.v("NJCTLLOG", "Looping through " + Integer.toString(homeworkList.length()) + " homeworks...");
+				
+				for(int i = 0; i < homeworkList.length(); i++)
+				{
+					homeworks.add(new Homework(homeworkList.getJSONObject(i)));
+				}
 			}
 			
-			JSONArray presentationList = json.getJSONArray("presentations");
+			JSONArray presentationList = content.getJSONArray("presentations");
 			Log.v("NJCTLLOG", "Looping through " + Integer.toString(presentationList.length()) + " presentations...");
 			
 			for(int i = 0; i < presentationList.length(); i++)

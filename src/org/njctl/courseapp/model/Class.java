@@ -68,7 +68,7 @@ public class Class implements Parcelable {
     {
     	this.subject = subject;
     	
-    	Log.v("NJCTLLOG", json.toString());
+    	//Log.v("NJCTLLOG", json.toString());
     	
     	try {
     		classTitle = json.getString("post_title");
@@ -82,7 +82,12 @@ public class Class implements Parcelable {
 			
 			for(int i = 0; i < unitList.length(); i++)
 			{
-				units.add(new Unit(unitList.getJSONObject(i)));
+				Unit unit = Unit.newInstance(unitList.getJSONObject(i));
+				
+				if(unit != null)
+				{
+					units.add(unit);
+				}
 			}
 			
 		} catch (JSONException e) {

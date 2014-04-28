@@ -17,7 +17,16 @@ public class Homework extends Document
 	{
 		try{
 			name = json.getString("title");
-			url = json.getString("pdf_uri");
+			
+			if(json.has("pdf_uri"))
+			{
+				url = json.getString("pdf_uri");
+			}
+			else
+			{
+				Log.v("NJCTLLOG", "pdf_uri not found for homework " + name);
+			}
+			
 			
 			String modified = json.getString("date");
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);

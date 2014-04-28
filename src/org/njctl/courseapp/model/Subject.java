@@ -66,7 +66,7 @@ public class Subject implements Parcelable {
 			
 			for(int i = 0; i < classList.length(); i++)
 			{
-				Class theClass = new Class(this, classList.getJSONObject(i));
+				Class theClass = Class.newInstance(this, classList.getJSONObject(i));
 				
 				if(theClass != null)
 				{
