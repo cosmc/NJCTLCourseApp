@@ -28,25 +28,41 @@ public class SubjectsFragment extends Fragment {
 		
 		super.onActivityCreated(savedInstanceState);
 		
-        ListView listView = (ListView) getView().findViewById(R.id.subjects_fragment_listview);
+		ListView myClassesListView = (ListView) getView().findViewById(R.id.my_classes_listview);
+        ListView subjectsListView = (ListView) getView().findViewById(R.id.subjects_listview);
 		
         Bundle args = getArguments();
+        final ArrayList<Class> myClasses = args.getParcelableArrayList("myClasses");
         final ArrayList<Subject> subjects = args.getParcelableArrayList("subjects");
 
-        ArrayAdapter<Subject> adapter = new ArrayAdapter<Subject>(getActivity(), 0, subjects);
-        listView.setAdapter(adapter);
+        MyClassesAdapter myClassesAdapter = new MyClassesAdapter(getActivity(), 0, myClasses);
+        myClassesListView.setAdapter(myClassesAdapter);
+        SubjectsAdapter subjectAdapter = new SubjectsAdapter(getActivity(), 0, subjects);
+        subjectsListView.setAdapter(myClassesAdapter);
         
-        listView.setOnItemClickListener(new OnItemClickListener() {
+        myClassesListView.setOnItemClickListener(new OnItemClickListener() {
         	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        		Log.w("Subject click", "" + position);
+        		Log.w("My Classes click", "" + position);
         		try {
-        			((NJCTLNavActivity) getActivity()).showClasses(subjects.get(position)); // TODO NJCTLNavActivity and the getClasses method of MainActivity
-        																					// will need to be updated in order to add subjects. 
+        			((NJCTLNavActivity) getActivity()).showUnits(myClasses.get(position));
         		} catch (ClassCastException e) {
         			Log.w("ERROR", "Activity does not implement NJCTLNavActivity.");
         		}
             }
         }); 
+        
+        subjectsListView.setOnItemClickListener(new OnItemClickListener() {
+        	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        		Log.w("Subject click", "" + position);
+        		try {
+        			((NJCTLNavActivity) getActivity()).showClasses(subjects.get(position)); // TODO NJCTLNavActivity and the showClasses method of MainActivity
+        																					// will need to be updated in order to add subjects. 
+        		} catch (ClassCastException e) {
+        			Log.w("ERROR", "Activity does not implement NJCTLNavActivity.");
+        		}
+            }
+        });
+        
 	}
 	
     @Override
