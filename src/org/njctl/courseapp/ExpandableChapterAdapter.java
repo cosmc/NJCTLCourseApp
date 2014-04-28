@@ -2,6 +2,7 @@ package org.njctl.courseapp;
 
 import java.util.ArrayList;
 
+import org.njctl.courseapp.model.Document;
 import org.njctl.courseapp.model.Unit;
 import org.njctl.courseapp.model.NJCTLDocList;
  
@@ -32,7 +33,7 @@ public class ExpandableChapterAdapter extends BaseExpandableListAdapter {
     }
  
     @Override
-    public NJCTLDocList getChild(int groupPosition, int childPosition) {
+    public Document getChild(int groupPosition, int childPosition) {
     	return units.get(groupPosition).getContents().get(childPosition);
     }
  
@@ -45,7 +46,7 @@ public class ExpandableChapterAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition,
             boolean isLastChild, View convertView, ViewGroup parent) {
  
-        final String childText = (String) getChild(groupPosition, childPosition).getTitle();
+        final String childText = (String) getChild(groupPosition, childPosition).getName();
  
         if (convertView == null) {
             LayoutInflater infl = (LayoutInflater) this._context

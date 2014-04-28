@@ -8,7 +8,7 @@ import org.njctl.courseapp.model.Subject;
 
 public interface NJCTLNavActivity {
 	public void showSubjects(ArrayList<Subject> subjects);
-	/*public void showClasses(ArrayList<NJCTLClass> classes);*/
+	public void showClasses(ArrayList<NJCTLClass> classes);
 	public void showChapters(NJCTLClass theClass);
 	public void showDocList(NJCTLDocList docList);
 }
