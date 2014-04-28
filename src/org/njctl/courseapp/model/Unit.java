@@ -48,12 +48,16 @@ public class Unit implements Parcelable {
 			lastUpdate = df.parse(modified);
 			
 			JSONArray homeworkList = json.getJSONArray("homework");
+			Log.v("NJCTLLOG", "Looping through " + Integer.toString(homeworkList.length()) + " homeworks...");
+			
 			for(int i = 0; i < homeworkList.length(); i++)
 			{
 				homeworks.add(new Homework(homeworkList.getJSONObject(i)));
 			}
 			
 			JSONArray presentationList = json.getJSONArray("presentations");
+			Log.v("NJCTLLOG", "Looping through " + Integer.toString(presentationList.length()) + " presentations...");
+			
 			for(int i = 0; i < presentationList.length(); i++)
 			{
 				presentations.add(new Presentation(presentationList.getJSONObject(i)));
