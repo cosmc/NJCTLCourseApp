@@ -35,8 +35,22 @@ public class Subject implements Parcelable {
         this.subjectTitle = name;
     }
     
+    public static Subject newInstance(JSONObject json)
+    {
+    	try
+    	{
+    		json.getJSONObject("content").getJSONArray("pages");
+    		
+    		return new Subject(json);
+    	}
+    	catch(JSONException e)
+    	{
+    		Log.v("NJCTLLOG", "subject contents not found...");
+    		return null;
+    	}
+    }
+    
     public Subject(JSONObject json)
-    // TODO: This constructor will probably need to pull different stuff out of the JSON.
     {
     	try {
     		subjectTitle = json.getString("post_title");
@@ -45,17 +59,23 @@ public class Subject implements Parcelable {
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 			lastUpdate = df.parse(modified);
 			
-			JSONArray classList = json.getJSONArray("pages");
+			JSONArray classList = json.getJSONObject("content").getJSONArray("pages");
+			Log.v("NJCTLLOG", "Looping through " + Integer.toString(classList.length()) + " classes...");
 			
 			for(int i = 0; i < classList.length(); i++)
 			{
-				classes.add(new Class(this, classList.getJSONObject(i)));
+				Class theClass = new Class(this, classList.getJSONObject(i));
+				
+				if(theClass != null)
+				{
+					classes.add(theClass);
+				}
 			}
 			
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			Log.w("JSON ERR", e.toString());
+			Log.w("JSON ERR", "JSON ERR in Subject: " + e.toString());
 		} catch(ParseException e)
 		{
 			Log.w("JSON ERR", e.toString());

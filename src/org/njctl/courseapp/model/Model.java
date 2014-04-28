@@ -10,7 +10,7 @@ import android.util.Log;
 
 public class Model implements AsyncJsonResponse
 {
-	final String NJCTLLOG = "NJCTL";
+	final String NJCTLLOG = "NJCTLLOG";
 	protected SubjectRetriever retriever;
 	
 	public void fetchManifest(SubjectRetriever retrieverObject)
@@ -27,11 +27,17 @@ public class Model implements AsyncJsonResponse
 		
 		try {
 			JSONArray results = json.getJSONArray("pages");
+
+			Log.v(NJCTLLOG, "Looping through " + Integer.toString(results.length()) + " subjects...");
 			
 			for(int i = 0; i < results.length(); i++)
 			{
-				Subject subject = new Subject(results.getJSONObject(i));
-				subjects.add(subject);
+				Subject subject = Subject.newInstance(results.getJSONObject(i));
+				
+				if(subject != null)
+				{
+					subjects.add(subject);
+				}
 			}
 		}
 		catch (JSONException e)

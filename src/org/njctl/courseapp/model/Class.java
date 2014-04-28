@@ -35,9 +35,35 @@ public class Class implements Parcelable {
         this.classTitle = name;
     }
     
+    public static Class newInstance(Subject subject, JSONObject json)
+    {
+    	String classTitle = "";
+    	
+    	try
+    	{
+    		classTitle = json.getString("post_title");
+    		
+    		json.getJSONObject("content").getJSONArray("pages");
+    		
+    		return new Class(subject, json);
+    	}
+    	catch(JSONException e)
+    	{
+    		if(classTitle != "")
+    		{
+    			classTitle = " for class " + classTitle;
+    		}
+    		
+    		Log.v("NJCTLLOG", "class contents" + classTitle + " not found...");
+    		return null;
+    	}
+    }
+    
     public Class(Subject subject, JSONObject json)
     {
     	this.subject = subject;
+    	
+    	Log.v("NJCTLLOG", json.toString());
     	
     	try {
     		classTitle = json.getString("post_title");
@@ -46,7 +72,8 @@ public class Class implements Parcelable {
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 			lastUpdate = df.parse(modified);
 			
-			JSONArray unitList = json.getJSONArray("pages");
+			JSONArray unitList = json.getJSONObject("content").getJSONArray("pages");
+			Log.v("NJCTLLOG", "Looping through " + Integer.toString(unitList.length()) + " units...");
 			
 			for(int i = 0; i < unitList.length(); i++)
 			{
