@@ -55,8 +55,7 @@ public class SubjectsFragment extends Fragment {
         	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         		Log.w("Subject click", "" + position);
         		try {
-        			((NJCTLNavActivity) getActivity()).showClasses(subjects.get(position)); // TODO NJCTLNavActivity and the showClasses method of MainActivity
-        																					// will need to be updated in order to add subjects. 
+        			((NJCTLNavActivity) getActivity()).showClasses(subjects.get(position));
         		} catch (ClassCastException e) {
         			Log.w("ERROR", "Activity does not implement NJCTLNavActivity.");
         		}

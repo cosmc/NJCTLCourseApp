@@ -27,20 +27,31 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 	
 	// TODO: Condense the NJCTLNavActivity interface's "show" methods into a single method to avoid repetitiveness.
 	
-	public void showSubjects(ArrayList<Subject> subjects) {
+	public void showSubjects(ArrayList<Class> myClasses, ArrayList<Subject> subjects) {
 	// Populate a SubjectsFragment with the given list of classes and display it in the container element.
-	}
-	
-	public void showClasses(ArrayList<Class> classes) {
-	// Populate a ClassesFragment with the given list of classes and display it in the container element.
-		ClassesFragment frag = new ClassesFragment();
+		SubjectsFragment frag = new SubjectsFragment();
 		Bundle args = new Bundle();
-		args.putParcelableArrayList("classes", classes);
+		args.putParcelableArrayList("myClasses", myClasses);
+		args.putParcelableArrayList("subjects", subjects);
 		frag.setArguments(args);
 		
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, frag);
-        transaction.addToBackStack("Class List");
+        transaction.addToBackStack("Subject List");
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        transaction.commit();
+	}
+	
+	public void showClasses(Subject subject) {
+	// Populate a ClassesFragment with the given list of classes and display it in the container element.
+		ClassesFragment frag = new ClassesFragment();
+		Bundle args = new Bundle();
+		args.putParcelable("subject", subject);
+		frag.setArguments(args);
+		
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, frag);
+        transaction.addToBackStack("Class List for " + subject.getTitle());
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         transaction.commit();
 	}
