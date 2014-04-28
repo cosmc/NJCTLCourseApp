@@ -22,7 +22,9 @@ public class Subject implements Parcelable {
 	
     private int subjectId;
     private String subjectTitle;
-    private int colorBarResource = 0;
+    private int bottomColorBarResource = 0;
+    private int bigSideColorBarResource = 0;
+    private int smallSideColorBarResource = 0;
     private ArrayList<Class> classes = new ArrayList<Class>();
     private Date lastUpdate;
 
@@ -80,8 +82,16 @@ public class Subject implements Parcelable {
     	return subjectId;
     }
     
-    public int getColorBarResource() {
-    	return colorBarResource;
+    public int getBottomColorBarResource() {
+    	return bottomColorBarResource;
+    }
+    
+    public int getBigSideColorBarResource() {
+    	return bigSideColorBarResource;
+    }
+    
+    public int getSmallSideColorBarResource() {
+    	return smallSideColorBarResource;
     }
 
     public ArrayList<Class> getContents() {

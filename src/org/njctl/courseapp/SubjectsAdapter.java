@@ -10,23 +10,23 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
-import org.njctl.courseapp.model.Class;
+import org.njctl.courseapp.model.Subject;
 
 /**
  * Created by ying on 11/16/13.
  */
-class MyClassesAdapter extends ArrayAdapter {
+class SubjectsAdapter extends ArrayAdapter {
 
-    private ArrayList<Class> classes;
+    private ArrayList<Subject> contents;
 
     class ViewHolder {
-        TextView classNameTextView;
+        TextView nameTextView;
         ImageView colorBarImageView;
     }
 
-    public MyClassesAdapter(Context context, int resource, ArrayList<Class> classes) {
-        super(context, resource, classes);
-        this.classes = classes;
+    public SubjectsAdapter(Context context, int resource, ArrayList<Subject> contents) {
+        super(context, resource, contents);
+        this.contents = contents;
     }
 
     @Override
@@ -34,17 +34,17 @@ class MyClassesAdapter extends ArrayAdapter {
         ViewHolder holder;
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.my_classes_row_viewholder, parent, false);
+            convertView = inflater.inflate(R.layout.subject_row_viewholder, parent, false);
             holder = new ViewHolder();
-            holder.classNameTextView = (TextView) convertView.findViewById(R.id.my_classes_row_viewholder_class_name_textview);
-            holder.colorBarImageView = (ImageView) convertView.findViewById(R.id.my_classes_row_viewholder_colorbar);
+            holder.nameTextView = (TextView) convertView.findViewById(R.id.subject_row_viewholder_subject_name_textview);
+            holder.colorBarImageView = (ImageView) convertView.findViewById(R.id.subject_row_viewholder_colorbar);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        Class aClass = classes.get(position);
-        holder.classNameTextView.setText(aClass.getTitle());
-        holder.colorBarImageView.setImageResource(aClass.getSubject().getSmallSideColorBarResource()); // TODO Deal with image sources for color bars.
+        Subject subject = contents.get(position);
+        holder.nameTextView.setText(subject.getTitle());
+        holder.colorBarImageView.setImageResource(subject.getBottomColorBarResource()); // TODO Deal with image sources for color bars.
         return convertView;
     }
     
