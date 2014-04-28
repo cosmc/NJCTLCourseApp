@@ -2,6 +2,7 @@ package org.njctl.courseapp;
 
 import java.util.ArrayList;
 
+import org.njctl.courseapp.model.Document;
 import org.njctl.courseapp.model.Unit;
 import org.njctl.courseapp.model.NJCTLDocList;
  
@@ -23,17 +24,17 @@ import android.util.Log;
 public class ExpandableChapterAdapter extends BaseExpandableListAdapter {
  
     private Context _context;
-    private ArrayList<Unit> _chapters; // Chapter titles
+    private ArrayList<Unit> units;
     
  
     public ExpandableChapterAdapter(Context context, ArrayList<Unit> chapters) {
         this._context = context;
-        this._chapters = chapters;
+        this.units = chapters;
     }
  
     @Override
-    public NJCTLDocList getChild(int groupPosition, int childPosition) {
-    	return _chapters.get(groupPosition).getContents().get(childPosition);
+    public Document getChild(int groupPosition, int childPosition) {
+    	return units.get(groupPosition).getContents().get(childPosition);
     }
  
     @Override
@@ -45,7 +46,7 @@ public class ExpandableChapterAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition,
             boolean isLastChild, View convertView, ViewGroup parent) {
  
-        final String childText = (String) getChild(groupPosition, childPosition).getTitle();
+        final String childText = (String) getChild(groupPosition, childPosition).getName();
  
         if (convertView == null) {
             LayoutInflater infl = (LayoutInflater) this._context
@@ -62,17 +63,17 @@ public class ExpandableChapterAdapter extends BaseExpandableListAdapter {
  
     @Override
     public int getChildrenCount(int groupPosition) {
-        return _chapters.get(groupPosition).getContents().size();
+        return units.get(groupPosition).getContents().size();
     }
  
     @Override
     public Unit getGroup(int groupPosition) {
-        return this._chapters.get(groupPosition);
+        return this.units.get(groupPosition);
     }
  
     @Override
     public int getGroupCount() {
-        return this._chapters.size();
+        return this.units.size();
     }
  
     @Override

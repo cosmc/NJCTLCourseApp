@@ -18,7 +18,7 @@ import android.util.Log;
 class RetrieveManifestTask extends AsyncTask<AsyncJsonResponse, Void, JSONObject>
 {
 	final String NJCTLLOG = "NJCTL";
-	private String jsonUrl = "http://www.sandbox-njctl.org/courses/science.json";
+	private String jsonUrl = "http://www.sandbox-njctl.org/courses.json";
 	protected AsyncJsonResponse delegate = null;
 
 	protected JSONObject doInBackground(AsyncJsonResponse... dele)

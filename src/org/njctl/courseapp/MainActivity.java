@@ -9,18 +9,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
 
-import org.njctl.courseapp.model.ClassRetriever;
 import org.njctl.courseapp.model.Model;
-import org.njctl.courseapp.model.NJCTLClass;
+import org.njctl.courseapp.model.Class;
 import org.njctl.courseapp.model.NJCTLDocList;
 import org.njctl.courseapp.model.Subject;
+import org.njctl.courseapp.model.SubjectRetriever;
 
 //import org.njctl.courseapp.R;
 
-public class MainActivity extends ActionBarActivity implements NJCTLNavActivity, ClassRetriever{
+public class MainActivity extends ActionBarActivity implements NJCTLNavActivity, SubjectRetriever{
 
 	private Model model = new Model();
-	private ArrayList<NJCTLClass> classes;
+	private ArrayList<Subject> subjects;
 	
 	/**** Start of NJCTLNavActivity Methods ****/
 	
@@ -30,7 +30,7 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 	// Populate a SubjectsFragment with the given list of classes and display it in the container element.
 	}
 	
-	public void showClasses(ArrayList<NJCTLClass> classes) {
+	public void showClasses(ArrayList<Class> classes) {
 	// Populate a ClassesFragment with the given list of classes and display it in the container element.
 		ClassesFragment frag = new ClassesFragment();
 		Bundle args = new Bundle();
@@ -44,7 +44,7 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
         transaction.commit();
 	}
 	
-	public void showChapters(NJCTLClass theClass) {
+	public void showChapters(Class theClass) {
 	// Populate a ChapterListFragment with the chapters of the given class and display it in the container element.
 		ChapterListFragment frag = new ChapterListFragment();
 		Bundle args = new Bundle();
@@ -83,9 +83,9 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 
         if (savedInstanceState == null) {
         	
-        	useClasses(model.getClassTree( getResources().getString(R.string.course_manifest_rel_path), getResources()));
+        	//useClasses(model.getClassTree( getResources().getString(R.string.course_manifest_rel_path), getResources()));
             
-            //model.fetchManifest(this);
+            model.fetchManifest(this);
         }
     }
 
@@ -108,7 +108,7 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
             	// Build the class tree!
             	//ArrayList<NJCTLClass> classes = model.getClassTree( getResources().getString(R.string.course_manifest_rel_path), getResources());
                 // Display the classes!
-                showClasses(classes);
+                showSubjects(subjects);
                 return true;
             case R.id.action_settings:
             	Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
@@ -119,10 +119,10 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
     }
 
 	@Override
-	public void useClasses(ArrayList<NJCTLClass> classes)
+	public void useSubjects(ArrayList<Subject> subjects)
 	{
-		this.classes = classes;
-		showClasses(classes);
+		this.subjects = subjects;
+		showSubjects(subjects);
 	}
 
 }

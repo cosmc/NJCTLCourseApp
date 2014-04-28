@@ -22,11 +22,15 @@ public class Subject implements Parcelable {
 	
     private int subjectId;
     private String subjectTitle;
+<<<<<<< HEAD
     private int colorBarResource = 0;
     private ArrayList<NJCTLClass> classes = new ArrayList<NJCTLClass>();
+=======
+    private ArrayList<Class> classes = new ArrayList<Class>();
+>>>>>>> c117ec68e9b547d7ca11405bed9e54b4a74e1f77
     private Date lastUpdate;
 
-    public Subject(String name, ArrayList<NJCTLClass> classList) {
+    public Subject(String name, ArrayList<Class> classList) {
         this.subjectTitle = name;
         this.classes = classList;
     }
@@ -49,7 +53,7 @@ public class Subject implements Parcelable {
 			
 			for(int i = 0; i < classList.length(); i++)
 			{
-				classes.add(new NJCTLClass(classList.getJSONObject(i)));
+				classes.add(new Class(this, classList.getJSONObject(i)));
 			}
 			
 		} catch (JSONException e) {
@@ -62,7 +66,7 @@ public class Subject implements Parcelable {
 		}
     }
     
-    public void add(NJCTLClass aClass)
+    public void add(Class aClass)
     {
     	this.classes.add(aClass);
     }
@@ -80,11 +84,15 @@ public class Subject implements Parcelable {
     	return subjectId;
     }
     
+<<<<<<< HEAD
     public int getColorBarResource() {
     	return colorBarResource;
     }
     
     public ArrayList<NJCTLClass> getContents() {
+=======
+    public ArrayList<Class> getContents() {
+>>>>>>> c117ec68e9b547d7ca11405bed9e54b4a74e1f77
     	return classes;
     }
     
@@ -100,14 +108,14 @@ public class Subject implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
     	dest.writeInt(subjectId);
     	dest.writeString(subjectTitle);
-    	dest.writeParcelableArray(classes.toArray(new NJCTLClass[classes.size()]), 0);
+    	dest.writeParcelableArray(classes.toArray(new Class[classes.size()]), 0);
     }
     
     private void readFromParcel(Parcel in) {
     	subjectId = in.readInt();
     	subjectTitle = in.readString();
-    	classes = new ArrayList<NJCTLClass>();
-        in.readList(classes, NJCTLClass.class.getClassLoader());
+    	classes = new ArrayList<Class>();
+        in.readList(classes, Class.class.getClassLoader());
     }
     
     public static final Parcelable.Creator<Subject> CREATOR = new Parcelable.Creator<Subject>() {

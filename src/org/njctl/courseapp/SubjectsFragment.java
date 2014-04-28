@@ -14,7 +14,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-import org.njctl.courseapp.model.NJCTLClass;
+import org.njctl.courseapp.model.Class;
 import org.njctl.courseapp.model.Subject;
 
 /**

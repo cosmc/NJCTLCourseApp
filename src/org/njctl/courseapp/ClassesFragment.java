@@ -13,7 +13,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-import org.njctl.courseapp.model.NJCTLClass;
+import org.njctl.courseapp.model.Class;
 
 /**
  * Created by ying on 11/16/13.
@@ -29,7 +29,7 @@ public class ClassesFragment extends Fragment {
         ListView listView = (ListView) getView().findViewById(R.id.classes_fragment_listview);
 		
         Bundle args = getArguments();
-        final ArrayList<NJCTLClass> classes = args.getParcelableArrayList("classes");
+        final ArrayList<Class> classes = args.getParcelableArrayList("classes");
 
         ClassesAdapter adapter = new ClassesAdapter(getActivity(), 0, classes);
         listView.setAdapter(adapter);
