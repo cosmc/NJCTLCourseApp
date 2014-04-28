@@ -13,6 +13,7 @@ import org.njctl.courseapp.model.ClassRetriever;
 import org.njctl.courseapp.model.Model;
 import org.njctl.courseapp.model.NJCTLClass;
 import org.njctl.courseapp.model.NJCTLDocList;
+import org.njctl.courseapp.model.Subject;
 
 //import org.njctl.courseapp.R;
 
