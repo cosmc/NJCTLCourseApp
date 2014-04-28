@@ -14,10 +14,11 @@ import org.njctl.courseapp.model.Class;
 import org.njctl.courseapp.model.NJCTLDocList;
 import org.njctl.courseapp.model.Subject;
 import org.njctl.courseapp.model.SubjectRetriever;
+import org.njctl.courseapp.model.Unit;
 
 //import org.njctl.courseapp.R;
 
-public class MainActivity extends ActionBarActivity implements NJCTLNavActivity, SubjectRetriever{
+public class MainActivity extends ActionBarActivity implements NJCTLNavActivity, SubjectRetriever {
 
 	private Model model = new Model();
 	private ArrayList<Subject> subjects;
@@ -26,20 +27,31 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 	
 	// TODO: Condense the NJCTLNavActivity interface's "show" methods into a single method to avoid repetitiveness.
 	
-	public void showSubjects(ArrayList<Subject> subjects) {
+	public void showSubjects(ArrayList<Class> myClasses, ArrayList<Subject> subjects) {
 	// Populate a SubjectsFragment with the given list of classes and display it in the container element.
-	}
-	
-	public void showClasses(ArrayList<Class> classes) {
-	// Populate a ClassesFragment with the given list of classes and display it in the container element.
-		ClassesFragment frag = new ClassesFragment();
+		SubjectsFragment frag = new SubjectsFragment();
 		Bundle args = new Bundle();
-		args.putParcelableArrayList("classes", classes);
+		args.putParcelableArrayList("myClasses", myClasses);
+		args.putParcelableArrayList("subjects", subjects);
 		frag.setArguments(args);
 		
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, frag);
-        transaction.addToBackStack("Class List");
+        transaction.addToBackStack("Subject List");
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        transaction.commit();
+	}
+	
+	public void showClasses(Subject subject) {
+	// Populate a ClassesFragment with the given list of classes and display it in the container element.
+		ClassesFragment frag = new ClassesFragment();
+		Bundle args = new Bundle();
+		args.putParcelable("subject", subject);
+		frag.setArguments(args);
+		
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, frag);
+        transaction.addToBackStack("Class List for " + subject.getTitle());
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         transaction.commit();
 	}
@@ -56,6 +68,34 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
         transaction.addToBackStack("Chapter List for " + theClass.getTitle());
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         transaction.commit();
+	}
+	
+	public void showUnits(Class theClass) {
+	// Populate a UnitListFragment with the units of the given class and display it in the container element.
+		UnitListFragment frag = new UnitListFragment();
+		Bundle args = new Bundle();
+		args.putParcelable("class", theClass);
+		frag.setArguments(args);
+		
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, frag);
+        transaction.addToBackStack("Unit List for " + theClass.getTitle());
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        transaction.commit();
+	}
+	
+	public void showTopics(Unit theUnit) {
+	// Populate a TopicListFragment with the topics of the given unit and display it in the container element.
+		TopicListFragment frag = new TopicListFragment();
+		Bundle args = new Bundle();
+		args.putParcelable("unit", theUnit);
+		frag.setArguments(args);
+		
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+	    transaction.replace(R.id.container, frag);
+	    transaction.addToBackStack("Topic List for " + theUnit.getTitle());
+	    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+	    transaction.commit();
 	}
 	
 	public void showDocList(NJCTLDocList docList) {
