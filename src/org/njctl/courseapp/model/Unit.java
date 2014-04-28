@@ -80,7 +80,12 @@ public class Unit implements Parcelable {
 			
 			for(int i = 0; i < presentationList.length(); i++)
 			{
-				presentations.add(new Presentation(presentationList.getJSONObject(i)));
+				Presentation presentation = Presentation.newInstance(presentationList.getJSONObject(i));
+				
+				if(presentation != null)
+				{
+					presentations.add(presentation);
+				}
 			}
 			
 			

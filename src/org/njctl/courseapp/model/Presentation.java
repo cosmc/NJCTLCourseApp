@@ -24,6 +24,29 @@ public class Presentation extends Document
 		// TODO Auto-generated constructor stub
 	}
 	
+	public static Presentation newInstance(JSONObject json)
+	{
+		String presentationTitle = "";
+		
+		try{
+			presentationTitle = json.getString("title");
+			json.getString("date");
+			json.getJSONArray("chunks");
+			
+			return new Presentation(json);
+		}
+		catch(JSONException e)
+		{
+			if(presentationTitle != "")
+    		{
+				presentationTitle = " for " + presentationTitle;
+    		}
+			
+			Log.v("NJCTLLOG", "presentation contents not found" + presentationTitle);
+			return null;
+		}
+	}
+	
 	public Presentation(JSONObject json)
 	{
 		try{
@@ -42,12 +65,14 @@ public class Presentation extends Document
 			String modified = json.getString("date");
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 			lastUpdated = df.parse(modified);
-			/*
-			JSONArray topicsList = json.getJSONArray("topics");
+			
+			JSONArray topicsList = json.getJSONArray("chunks");
+			Log.v("NJCTLLOG", "Looping through " + topicsList.length() + " topics in " + name + " presentation..");
+			
 			for(int i = 0; i < topicsList.length(); i++)
 			{
 				topics.add(new Topic(topicsList.getJSONObject(i)));
-			}*/
+			}
 			
 		}
 		catch(JSONException e)

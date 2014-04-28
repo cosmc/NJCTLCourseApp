@@ -21,9 +21,9 @@ public class Topic extends Document
 	public Topic(JSONObject json)
 	{
 		try{
-			name = json.getString("name");
-			url = json.getString("uri");
-			hash = json.getString("hash");
+			name = json.getString("label");
+			url = json.getString("pdf_uri");
+			hash = json.getString("pdf_md5");
 			//size = json.getString("size");
 			
 			String modified = json.getString("mtime");
