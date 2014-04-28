@@ -12,7 +12,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-import org.njctl.courseapp.model.NJCTLClass;
+import org.njctl.courseapp.model.Class;
 
 /**
  * Created by Colin on 12/9/13.
@@ -25,7 +25,7 @@ public class ChapterListFragment extends Fragment {
 		
 		super.onActivityCreated(savedInstanceState);
 		
-		final NJCTLClass theClass = (NJCTLClass) getArguments().getParcelable("class"); // Find out which class we're displaying the chapters for.
+		final Class theClass = (Class) getArguments().getParcelable("class"); // Find out which class we're displaying the chapters for.
 		
         ExpandableListView elv = (ExpandableListView) getView().findViewById(R.id.chapter_list_fragment_listview);
 
@@ -58,7 +58,7 @@ public class ChapterListFragment extends Fragment {
     	super.onStart();
     	
     	// Set the title text to the title of the class whose contents are being shown.
-		NJCTLClass theClass = (NJCTLClass) getArguments().getParcelable("class"); // Find out which class we're displaying the chapters for.
+		Class theClass = (Class) getArguments().getParcelable("class"); // Find out which class we're displaying the chapters for.
 		getActivity().setTitle(theClass.getTitle());
     }
     

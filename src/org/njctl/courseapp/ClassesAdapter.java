@@ -9,14 +9,14 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import org.njctl.courseapp.model.NJCTLClass;
+import org.njctl.courseapp.model.Class;
 
 /**
  * Created by ying on 11/16/13.
  */
 class ClassesAdapter extends ArrayAdapter {
 
-    private ArrayList<NJCTLClass> classes;
+    private ArrayList<Class> classes;
 
     class ViewHolder {
         TextView classNameTextView;
@@ -24,7 +24,7 @@ class ClassesAdapter extends ArrayAdapter {
         TextView unitsTextView;
     }
 
-    public ClassesAdapter(Context context, int resource, ArrayList<NJCTLClass> classes) {
+    public ClassesAdapter(Context context, int resource, ArrayList<Class> classes) {
         super(context, resource, classes);
         this.classes = classes;
 
@@ -44,7 +44,7 @@ class ClassesAdapter extends ArrayAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        NJCTLClass aClass = classes.get(position);
+        Class aClass = classes.get(position);
         holder.classNameTextView.setText(aClass.getTitle());
         holder.unitsTextView.setText("");
         holder.progressTextView.setText("In Progress");

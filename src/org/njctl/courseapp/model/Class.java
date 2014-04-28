@@ -18,24 +18,27 @@ import android.util.Log;
 /**
  * Created by ying on 11/3/13.
  */
-public class NJCTLClass implements Parcelable {
+public class Class implements Parcelable {
 	
-    private int classId;
-    private String classTitle;
-    private ArrayList<Unit> units = new ArrayList<Unit>();
-    private Date lastUpdate;
+	protected int classId;
+    protected String classTitle;
+    protected ArrayList<Unit> units = new ArrayList<Unit>();
+    protected Date lastUpdate;
+    protected Subject subject;
 
-    public NJCTLClass(String name, ArrayList<Unit> unitList) {
+    public Class(String name, ArrayList<Unit> unitList) {
         this.classTitle = name;
         this.units = unitList;
     }
     
-    public NJCTLClass(String name) {
+    public Class(String name) {
         this.classTitle = name;
     }
     
-    public NJCTLClass(JSONObject json)
+    public Class(Subject subject, JSONObject json)
     {
+    	this.subject = subject;
+    	
     	try {
     		classTitle = json.getString("post_title");
     		
@@ -60,13 +63,18 @@ public class NJCTLClass implements Parcelable {
 		}
     }
     
+    public Subject getSubject()
+    {
+    	return subject;
+    }
+    
     public void add(Unit chapter)
     {
     	this.units.add(chapter);
     }
     
     // Parcelable constructor.
-    public NJCTLClass(Parcel in) {
+    public Class(Parcel in) {
     	readFromParcel(in);
     }
     
@@ -104,12 +112,12 @@ public class NJCTLClass implements Parcelable {
         in.readList(units, Unit.class.getClassLoader());
     }
     
-    public static final Parcelable.Creator<NJCTLClass> CREATOR = new Parcelable.Creator<NJCTLClass>() {
-    	public NJCTLClass createFromParcel(Parcel in) {
-    		return new NJCTLClass(in);
+    public static final Parcelable.Creator<Class> CREATOR = new Parcelable.Creator<Class>() {
+    	public Class createFromParcel(Parcel in) {
+    		return new Class(in);
     	}
-    	public NJCTLClass[] newArray(int size) {
-    		return new NJCTLClass[size];
+    	public Class[] newArray(int size) {
+    		return new Class[size];
     	}
     };
     

@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.content.Intent;
 
 import org.njctl.courseapp.model.Model;
-import org.njctl.courseapp.model.NJCTLClass;
+import org.njctl.courseapp.model.Class;
 import org.njctl.courseapp.model.NJCTLDocList;
 import org.njctl.courseapp.model.Subject;
 import org.njctl.courseapp.model.SubjectRetriever;
@@ -30,7 +30,7 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 	// Populate a SubjectsFragment with the given list of classes and display it in the container element.
 	}
 	
-	public void showClasses(ArrayList<NJCTLClass> classes) {
+	public void showClasses(ArrayList<Class> classes) {
 	// Populate a ClassesFragment with the given list of classes and display it in the container element.
 		ClassesFragment frag = new ClassesFragment();
 		Bundle args = new Bundle();
@@ -44,7 +44,7 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
         transaction.commit();
 	}
 	
-	public void showChapters(NJCTLClass theClass) {
+	public void showChapters(Class theClass) {
 	// Populate a ChapterListFragment with the chapters of the given class and display it in the container element.
 		ChapterListFragment frag = new ChapterListFragment();
 		Bundle args = new Bundle();
