@@ -22,12 +22,8 @@ public class Subject implements Parcelable {
 	
     private int subjectId;
     private String subjectTitle;
-<<<<<<< HEAD
     private int colorBarResource = 0;
-    private ArrayList<NJCTLClass> classes = new ArrayList<NJCTLClass>();
-=======
     private ArrayList<Class> classes = new ArrayList<Class>();
->>>>>>> c117ec68e9b547d7ca11405bed9e54b4a74e1f77
     private Date lastUpdate;
 
     public Subject(String name, ArrayList<Class> classList) {
@@ -84,15 +80,11 @@ public class Subject implements Parcelable {
     	return subjectId;
     }
     
-<<<<<<< HEAD
     public int getColorBarResource() {
     	return colorBarResource;
     }
-    
-    public ArrayList<NJCTLClass> getContents() {
-=======
+
     public ArrayList<Class> getContents() {
->>>>>>> c117ec68e9b547d7ca11405bed9e54b4a74e1f77
     	return classes;
     }
     
