@@ -14,6 +14,7 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import org.njctl.courseapp.model.Class;
+import org.njctl.courseapp.model.Subject;
 
 /**
  * Created by ying on 11/16/13.
@@ -29,16 +30,16 @@ public class ClassesFragment extends Fragment {
         ListView listView = (ListView) getView().findViewById(R.id.classes_fragment_listview);
 		
         Bundle args = getArguments();
-        final ArrayList<Class> classes = args.getParcelableArrayList("classes");
+        final Subject subject = args.getParcelable("subject");
 
-        ClassesAdapter adapter = new ClassesAdapter(getActivity(), 0, classes);
+        ClassesAdapter adapter = new ClassesAdapter(getActivity(), 0, subject.getContents());
         listView.setAdapter(adapter);
         
         listView.setOnItemClickListener(new OnItemClickListener() {
         	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         		Log.w("Class click", "" + position);
         		try {
-        			((NJCTLNavActivity) getActivity()).showChapters(classes.get(position));
+        			((NJCTLNavActivity) getActivity()).showUnits(subject.getContents().get(position));
         		} catch (ClassCastException e) {
         			Log.w("ERROR", "Activity does not implement NJCTLNavActivity.");
         		}
