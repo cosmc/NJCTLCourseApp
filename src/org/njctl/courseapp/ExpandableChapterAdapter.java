@@ -23,17 +23,17 @@ import android.util.Log;
 public class ExpandableChapterAdapter extends BaseExpandableListAdapter {
  
     private Context _context;
-    private ArrayList<Unit> _chapters; // Chapter titles
+    private ArrayList<Unit> units;
     
  
     public ExpandableChapterAdapter(Context context, ArrayList<Unit> chapters) {
         this._context = context;
-        this._chapters = chapters;
+        this.units = chapters;
     }
  
     @Override
     public NJCTLDocList getChild(int groupPosition, int childPosition) {
-    	return _chapters.get(groupPosition).getContents().get(childPosition);
+    	return units.get(groupPosition).getContents().get(childPosition);
     }
  
     @Override
@@ -62,17 +62,17 @@ public class ExpandableChapterAdapter extends BaseExpandableListAdapter {
  
     @Override
     public int getChildrenCount(int groupPosition) {
-        return _chapters.get(groupPosition).getContents().size();
+        return units.get(groupPosition).getContents().size();
     }
  
     @Override
     public Unit getGroup(int groupPosition) {
-        return this._chapters.get(groupPosition);
+        return this.units.get(groupPosition);
     }
  
     @Override
     public int getGroupCount() {
-        return this._chapters.size();
+        return this.units.size();
     }
  
     @Override

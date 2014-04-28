@@ -7,18 +7,23 @@ import android.os.Parcelable;
 
 public class Document implements Parcelable
 {
-	private String id;
-	private String name;
-	private String relativePath; // The path to the document, relative to the
+	protected String id;
+	protected String name;
+	protected String relativePath; // The path to the document, relative to the
 									// app's assets folder.
-	private String url;
-	private String fileName;
-	private String MIMEType;
-	private Date lastOpened;
-	private Date lastUpdated;
-	private Integer numOpened = 0;
+	protected String url;
+	protected String fileName;
+	protected String MIMEType;
+	protected Date lastOpened;
+	protected Date lastUpdated;
+	protected Integer numOpened = 0;
 	
 	private DocumentState state;
+	
+	public Document()
+	{
+		
+	}
 
 	public Document(String name)
 	{

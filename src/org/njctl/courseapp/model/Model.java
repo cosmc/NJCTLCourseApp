@@ -15,15 +15,15 @@ import android.util.Log;
 public class Model implements AsyncJsonResponse
 {
 	final String NJCTLLOG = "NJCTL";
-	protected ClassRetriever retriever;
+	protected SubjectRetriever retriever;
 	
-	public void fetchManifest(ClassRetriever retrieverObject)
+	public void fetchManifest(SubjectRetriever retrieverObject)
 	{
 		retriever = retrieverObject;
 		
 		new RetrieveManifestTask().execute(this);
 	}
-
+/*
 	public ArrayList<NJCTLClass> getClassTree(String relativePath,
 			Resources resources)
 	{
@@ -158,11 +158,12 @@ public class Model implements AsyncJsonResponse
 		return njctlClasses; // Now I can't look up from my screen without
 								// seeing curly braces everywhere.
 
-	}
+	}*/
 
 	@Override
 	public void processJson(JSONObject json)
 	{
+		/*
 		ArrayList<NJCTLClass> classes = new ArrayList<NJCTLClass>();
 		
 		try {
@@ -177,8 +178,10 @@ public class Model implements AsyncJsonResponse
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			Log.w("JSON ERR", e.toString());
-		}
+		}*/
 		
-		retriever.useClasses(classes);
+		ArrayList<Subject> subjects = new ArrayList<Subject>();
+		
+		retriever.useSubjects(subjects);
 	}
 }
