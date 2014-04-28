@@ -24,7 +24,7 @@
         android:focusable="false" />
     
     <ImageView
-        android:id="@+id/subject_row_viewholder_colorbar"
+        android:id="@+id/my_classes_row_viewholder_colorbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/subject_row_viewholder_subject_name_textview"
