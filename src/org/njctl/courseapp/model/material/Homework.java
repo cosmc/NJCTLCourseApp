@@ -24,7 +24,7 @@ public class Homework extends Document
 			}
 			else
 			{
-				Log.v("NJCTLLOG", "pdf_uri not found for homework " + name);
+				Log.w("NJCTLLOG", "                pdf_uri not found for homework " + name);
 			}
 			
 			

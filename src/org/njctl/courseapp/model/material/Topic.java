@@ -25,21 +25,17 @@ public class Topic extends Document
 			url = json.getString("pdf_uri");
 			hash = json.getString("pdf_md5");
 			//size = json.getString("size");
-			
+			/*
 			String modified = json.getString("mtime");
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 			lastUpdated = df.parse(modified);
-			
-			
+			*/
+			Log.i("NJCTLLOG", "                Topic " + name + " successfully created.");
 			
 		}
 		catch(JSONException e)
 		{
-			Log.w("JSON ERR", e.toString());
-		}
-		catch (ParseException e)
-		{
-			Log.w("PARSE ERR", e.toString());
+			Log.w("JSON ERR", "                " + e.toString());
 		}
 	}
 	

@@ -24,7 +24,7 @@ public class Lab extends Document
 			}
 			else
 			{
-				Log.v("NJCTLLOG", "pdf_uri not found for lab " + name);
+				Log.w("NJCTLLOG", "                pdf_uri not found for lab " + name);
 			}
 			
 			

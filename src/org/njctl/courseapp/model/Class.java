@@ -61,7 +61,7 @@ public class Class implements Parcelable {
     			classTitle = " for class " + classTitle;
     		}
     		
-    		Log.v("NJCTLLOG", "class contents" + classTitle + " not found...");
+    		Log.w("NJCTLLOG", "        class contents" + classTitle + " not found...");
     		return null;
     	}
     }
@@ -80,7 +80,7 @@ public class Class implements Parcelable {
 			lastUpdate = df.parse(modified);
 			
 			JSONArray unitList = json.getJSONObject("content").getJSONArray("pages");
-			Log.v("NJCTLLOG", "Looping through " + Integer.toString(unitList.length()) + " units...");
+			Log.v("NJCTLLOG", "        Looping through " + Integer.toString(unitList.length()) + " units...");
 			
 			for(int i = 0; i < unitList.length(); i++)
 			{

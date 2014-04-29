@@ -42,15 +42,18 @@ public class Unit implements Parcelable {
     
     public static Unit newInstance(JSONObject json)
     {
+    	String name = "";
     	try
     	{
+    		name = json.getString("post_title");
     		json.getJSONObject("content").getJSONArray("presentations");
     		
     		return new Unit(json);
     	}
     	catch(JSONException e)
     	{
-    		Log.v("NJCTLLOG", "unit contents not found...");
+    		if(name != "") name = " for " + name;
+    		Log.w("NJCTLLOG", "            unit contents " + name + "not found...");
     		return null;
     	}
     }
@@ -69,7 +72,7 @@ public class Unit implements Parcelable {
 			if(content.has("homework"))
 			{
 				JSONArray homeworkList = content.getJSONArray("homework");
-				Log.v("NJCTLLOG", "Looping through " + Integer.toString(homeworkList.length()) + " homeworks...");
+				Log.v("NJCTLLOG", "            Looping through " + Integer.toString(homeworkList.length()) + " homeworks...");
 				
 				for(int i = 0; i < homeworkList.length(); i++)
 				{
@@ -78,7 +81,7 @@ public class Unit implements Parcelable {
 			}
 			
 			JSONArray presentationList = content.getJSONArray("presentations");
-			Log.v("NJCTLLOG", "Looping through " + Integer.toString(presentationList.length()) + " presentations...");
+			Log.v("NJCTLLOG", "            Looping through " + Integer.toString(presentationList.length()) + " presentations...");
 			
 			for(int i = 0; i < presentationList.length(); i++)
 			{

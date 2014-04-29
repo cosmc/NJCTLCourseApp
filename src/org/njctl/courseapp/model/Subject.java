@@ -47,7 +47,7 @@ public class Subject implements Parcelable {
     	}
     	catch(JSONException e)
     	{
-    		Log.v("NJCTLLOG", "subject contents not found...");
+    		Log.w("NJCTLLOG", "    subject contents not found...");
     		return null;
     	}
     }
@@ -62,7 +62,7 @@ public class Subject implements Parcelable {
 			lastUpdate = df.parse(modified);
 			
 			JSONArray classList = json.getJSONObject("content").getJSONArray("pages");
-			Log.v("NJCTLLOG", "Looping through " + Integer.toString(classList.length()) + " classes...");
+			Log.v("NJCTLLOG", "    Looping through " + Integer.toString(classList.length()) + " classes...");
 			
 			for(int i = 0; i < classList.length(); i++)
 			{

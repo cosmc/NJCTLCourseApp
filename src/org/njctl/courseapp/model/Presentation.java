@@ -29,10 +29,12 @@ public class Presentation extends Document
 	public static Presentation newInstance(JSONObject json)
 	{
 		String presentationTitle = "";
+		String date = "";
+		String reason = "";
 		
 		try{
 			presentationTitle = json.getString("title");
-			json.getString("date");
+			date = json.getString("date");
 			json.getJSONArray("chunks");
 			
 			return new Presentation(json);
@@ -43,8 +45,10 @@ public class Presentation extends Document
     		{
 				presentationTitle = " for " + presentationTitle;
     		}
+			if(date != "" && presentationTitle != "")
+				reason = " because no chunks (topics) were found.";
 			
-			Log.v("NJCTLLOG", "presentation contents not found" + presentationTitle);
+			Log.w("NJCTLLOG", "                presentation contents not found" + presentationTitle + reason);
 			return null;
 		}
 	}
@@ -60,7 +64,7 @@ public class Presentation extends Document
 			}
 			else
 			{
-				Log.v("NJCTLLOG", "pdf_uri not found for presentation " + name);
+				Log.w("NJCTLLOG", "pdf_uri not found for presentation " + name);
 			}
 			
 			
@@ -69,7 +73,7 @@ public class Presentation extends Document
 			lastUpdated = df.parse(modified);
 			
 			JSONArray topicsList = json.getJSONArray("chunks");
-			Log.v("NJCTLLOG", "Looping through " + topicsList.length() + " topics in " + name + " presentation..");
+			Log.v("NJCTLLOG", "                Looping through " + topicsList.length() + " topics in " + name + " presentation..");
 			
 			for(int i = 0; i < topicsList.length(); i++)
 			{
@@ -79,11 +83,11 @@ public class Presentation extends Document
 		}
 		catch(JSONException e)
 		{
-			Log.w("JSON ERR", e.toString());
+			Log.w("JSON ERR", "                " + e.toString());
 		}
 		catch (ParseException e)
 		{
-			Log.w("PARSE ERR", e.toString());
+			Log.w("PARSE ERR", "                " + e.toString());
 		}
 	}
 
