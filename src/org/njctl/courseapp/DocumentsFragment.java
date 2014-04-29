@@ -14,7 +14,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-import org.njctl.courseapp.model.Document;
+import org.njctl.courseapp.model.material.*;
 import org.njctl.courseapp.model.Unit;
 
 /**
@@ -28,7 +28,7 @@ public class DocumentsFragment extends Fragment {
 		
 		super.onActivityCreated(savedInstanceState);
 		
-        ListView topicsListView = (ListView) getView().findViewById(R.id.topics_listview);
+        ListView presentaionsListView = (ListView) getView().findViewById(R.id.presentations_listview);
         ListView handoutsListView = (ListView) getView().findViewById(R.id.handouts_listview);
         ListView homeworkListView = (ListView) getView().findViewById(R.id.homework_listview);
         ListView labsListView = (ListView) getView().findViewById(R.id.labs_listview);
@@ -36,20 +36,20 @@ public class DocumentsFragment extends Fragment {
         Bundle args = getArguments();
         final Unit unit = args.getParcelable("unit");
 
-        ArrayAdapter<Document> topicsAdapter = new ArrayAdapter<Document>(getActivity(), 0, unit.getTopics());
-        topicsListView.setAdapter(topicsAdapter);
-        ArrayAdapter<Document> handoutsAdapter = new ArrayAdapter<Document>(getActivity(), 0, unit.getHandouts());
+        ArrayAdapter<Presentation> presentationsAdapter = new ArrayAdapter<Presentation>(getActivity(), 0, unit.getPresentations());
+        presentationsListView.setAdapter(presentationsAdapter);
+        ArrayAdapter<Handout> handoutsAdapter = new ArrayAdapter<Handout>(getActivity(), 0, unit.getHandouts());
         handoutsListView.setAdapter(handoutsAdapter);
-        ArrayAdapter<Document> homeworkAdapter = new ArrayAdapter<Document>(getActivity(), 0, unit.getHomework());
+        ArrayAdapter<Homework> homeworkAdapter = new ArrayAdapter<Homework>(getActivity(), 0, unit.getHomeworks());
         topicsListView.setAdapter(homeworkAdapter);
-        ArrayAdapter<Document> labsAdapter = new ArrayAdapter<Document>(getActivity(), 0, unit.getLabs());
+        ArrayAdapter<Lab> labsAdapter = new ArrayAdapter<Lab>(getActivity(), 0, unit.getLabs());
         topicsListView.setAdapter(labsAdapter);
         
-        topicsListView.setOnItemClickListener(new OnItemClickListener() {
+        presentationsListView.setOnItemClickListener(new OnItemClickListener() {
         	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        		Log.w("Topic click", "" + position);
+        		Log.w("Presentation click", "" + position);
         		try {
-        			((NJCTLNavActivity) getActivity()).openDocument(unit.getTopics().get(position));
+        			((NJCTLNavActivity) getActivity()).openDocument(unit.getPresentations().get(position));
         		} catch (ClassCastException e) {
         			Log.w("ERROR", "Activity does not implement NJCTLNavActivity.");
         		}
