@@ -7,6 +7,10 @@
     <string name="text">New Button</string>
     <string name="action_my_classes">My Classes</string>
     <string name="list_title_my_classes">My Classes</string>
+    <string name="list_title_topics">Topics</string>
+    <string name="list_title_handouts">Handouts</string>
+    <string name="list_title_homework">Homework</string>
+    <string name="list_title_labs">Labs</string>
     <string name="action_discover">Discover</string>
     <string name="title_activity_classes">ClassesActivity</string>
     <string name="settings_title">Settings</string>

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ArrayAdapter;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.util.Log;
@@ -14,32 +15,32 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import org.njctl.courseapp.model.Class;
-import org.njctl.courseapp.model.Subject;
+import org.njctl.courseapp.model.Unit;
 
 /**
- * Created by ying on 11/16/13.
+ * Created by Colin on 28 April 2014.
  */
 
-public class ClassesFragment extends Fragment {
+public class UnitsFragment extends Fragment {
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		
 		super.onActivityCreated(savedInstanceState);
 		
-        ListView listView = (ListView) getView().findViewById(R.id.classes_fragment_listview);
+        ListView listView = (ListView) getView().findViewById(R.id.units_fragment_listview);
 		
         Bundle args = getArguments();
-        final Subject subject = args.getParcelable("subject");
+        final Class theClass = args.getParcelable("class");
 
-        ClassesAdapter adapter = new ClassesAdapter(getActivity(), 0, subject.getContents());
+        ArrayAdapter<Unit> adapter = new ArrayAdapter<Unit>(getActivity(), 0, theClass.getContents());
         listView.setAdapter(adapter);
         
         listView.setOnItemClickListener(new OnItemClickListener() {
         	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        		Log.w("Class click", "" + position);
+        		Log.w("Unit click", "" + position);
         		try {
-        			((NJCTLNavActivity) getActivity()).showUnits(subject.getContents().get(position));
+        			((NJCTLNavActivity) getActivity()).showDocuments(theClass.getContents().get(position));
         		} catch (ClassCastException e) {
         			Log.w("ERROR", "Activity does not implement NJCTLNavActivity.");
         		}
@@ -49,7 +50,7 @@ public class ClassesFragment extends Fragment {
 	
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.classes_fragment, container, false);   
+        View v = inflater.inflate(R.layout.units_fragment, container, false);   
         return v;
     }
     
@@ -58,8 +59,8 @@ public class ClassesFragment extends Fragment {
     	super.onStart();
     	
     	// Set the title text to the app name.
-    	Subject subject = (Subject) getArguments().getParcelable("subject");
-		getActivity().setTitle(subject.getTitle());
+    	Class theClass = (Class) getArguments().getParcelable("class");
+		getActivity().setTitle(theClass.getTitle());
     }
     
     @Override

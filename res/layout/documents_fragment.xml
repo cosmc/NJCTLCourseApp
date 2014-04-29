@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:background="#FFFFFF"
+    android:focusable="false"
+    android:focusableInTouchMode="false"
+    android:descendantFocusability="blocksDescendants">
+
+<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="25sp"
+        android:text="@string/list_title_topics"
+        android:id="@+id/my_classes_textview"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentEnd="false"
+        android:focusable="false" />
+
+<ListView
+    android:background="#FFFFFF"
+    android:id="@+id/topics_listview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+</ListView>
+
+<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="25sp"
+        android:text="@string/list_title_handouts"
+        android:id="@+id/my_classes_textview"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentEnd="false"
+        android:focusable="false" />
+
+<ListView
+    android:background="#FFFFFF"
+    android:id="@+id/handouts_listview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+</ListView>
+
+<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="25sp"
+        android:text="@string/list_title_homework"
+        android:id="@+id/my_classes_textview"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentEnd="false"
+        android:focusable="false" />
+
+<ListView
+    android:background="#FFFFFF"
+    android:id="@+id/homework_listview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+</ListView>
+
+<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="25sp"
+        android:text="@string/list_title_labs"
+        android:id="@+id/my_classes_textview"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentEnd="false"
+        android:focusable="false" />
+
+<ListView
+    android:background="#FFFFFF"
+    android:id="@+id/labs_listview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+</ListView>
+
+</LinearLayout>

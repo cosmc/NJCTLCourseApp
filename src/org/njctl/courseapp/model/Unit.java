@@ -96,6 +96,23 @@ public class Unit implements Parcelable {
     	return contents;
     }
     
+    // TODO: Make these methods actually return the objects that they are meant to!
+    
+    public ArrayList<Document> getTopics() {
+    	return contents;
+    }
+    
+    public ArrayList<Document> getHandouts() {
+    	return contents;
+    }
+    
+    public ArrayList<Document> getHomework() {
+    	return contents;
+    }
+    
+    public ArrayList<Document> getLabs() {
+    	return contents;
+    }
     
     // Mandatory Parcelable methods.
     

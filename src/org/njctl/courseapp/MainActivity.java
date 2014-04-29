@@ -15,6 +15,7 @@ import org.njctl.courseapp.model.NJCTLDocList;
 import org.njctl.courseapp.model.Subject;
 import org.njctl.courseapp.model.SubjectRetriever;
 import org.njctl.courseapp.model.Unit;
+import org.njctl.courseapp.model.Document;
 
 //import org.njctl.courseapp.R;
 
@@ -79,7 +80,7 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 	
 	public void showUnits(Class theClass) {
 	// Populate a UnitListFragment with the units of the given class and display it in the container element.
-		UnitListFragment frag = new UnitListFragment();
+		UnitsFragment frag = new UnitsFragment();
 		Bundle args = new Bundle();
 		args.putParcelable("class", theClass);
 		frag.setArguments(args);
@@ -91,16 +92,16 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
         transaction.commit();
 	}
 	
-	public void showTopics(Unit theUnit) {
+	public void showDocuments(Unit theUnit) {
 	// Populate a TopicListFragment with the topics of the given unit and display it in the container element.
-		TopicListFragment frag = new TopicListFragment();
+		DocumentsFragment frag = new DocumentsFragment();
 		Bundle args = new Bundle();
 		args.putParcelable("unit", theUnit);
 		frag.setArguments(args);
 		
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 	    transaction.replace(R.id.container, frag);
-	    transaction.addToBackStack("Topic List for " + theUnit.getTitle());
+	    transaction.addToBackStack("Document List for " + theUnit.getTitle());
 	    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 	    transaction.commit();
 	}
@@ -117,6 +118,10 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
         transaction.addToBackStack("Document List for " + docList.getTitle());
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         transaction.commit();
+	}
+	
+	public void openDocument(Document doc) {
+	// Open a document for viewing in another app.
 	}
 	
 	/**** End of NJCTLNavActivity Methods ****/
