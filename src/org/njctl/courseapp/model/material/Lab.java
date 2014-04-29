@@ -13,6 +13,11 @@ import android.util.Log;
 
 public class Lab extends Document
 {
+	public static Lab newInstance(JSONObject json)
+	{
+		return new Lab(json);
+	}
+	
 	public Lab(JSONObject json)
 	{
 		try{

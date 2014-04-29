@@ -13,6 +13,11 @@ import android.util.Log;
 
 public class Handout extends Document
 {
+	public static Handout newInstance(JSONObject json)
+	{
+		return new Handout(json);
+	}
+	
 	public Handout(JSONObject json)
 	{
 		try{

@@ -18,7 +18,7 @@ import android.util.Log;
 /**
  * Created by ying on 11/3/13.
  */
-public class Class implements Parcelable {
+public class Class implements Parcelable, DownloadFinishListener {
 	
 	protected int classId;
     protected String classTitle;
@@ -27,6 +27,7 @@ public class Class implements Parcelable {
     protected Subject subject;
     protected boolean subscribed = false;
     protected boolean downloaded = false;
+    protected DownloadFinishListener downloadListener;
 
     public Class(String name, ArrayList<Unit> unitList) {
         this.classTitle = name;
@@ -35,12 +36,29 @@ public class Class implements Parcelable {
     
     public boolean isDownloaded()
     {
-    	return true;
+    	return downloaded;
     }
     
     public Class(String name) {
         this.classTitle = name;
     }
+    
+    public void subscribe(DownloadFinishListener listener)
+    {
+    	subscribed = true;
+    	
+    }
+    
+	public void onClassDownloaded(Class theClass)
+	{
+		//TODO: Check md5 sums.
+		downloaded = true;
+		
+		if(downloadListener != null)
+		{
+			downloadListener.onClassDownloaded(this);
+		}
+	}
     
     public static Class newInstance(Subject subject, JSONObject json)
     {
@@ -159,5 +177,5 @@ public class Class implements Parcelable {
     		return new Class[size];
     	}
     };
-    
+
 }

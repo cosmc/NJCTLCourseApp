@@ -15,7 +15,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.njctl.courseapp.model.material.Document;
+import org.njctl.courseapp.model.material.Handout;
 import org.njctl.courseapp.model.material.Homework;
+import org.njctl.courseapp.model.material.Lab;
 
 /**
  * Created by ying on 11/3/13.
@@ -27,7 +29,10 @@ public class Unit implements Parcelable {
     private ArrayList<Document> contents = new ArrayList<Document>();
     private ArrayList<Homework> homeworks = new ArrayList<Homework>();
     private ArrayList<Presentation> presentations = new ArrayList<Presentation>();
+    private ArrayList<Lab> labs = new ArrayList<Lab>();
+    private ArrayList<Handout> handouts = new ArrayList<Handout>();
     private Date lastUpdate;
+    protected final static String HW = "homework", PRES = "presentations", HANDOUT = "handouts", LABS = "labs";
 
     public Unit(String id, String title, ArrayList<Document> cont) {
     	this.chapterId = id;
@@ -46,14 +51,21 @@ public class Unit implements Parcelable {
     	try
     	{
     		name = json.getString("post_title");
-    		json.getJSONObject("content").getJSONArray("presentations");
+    		
+    		JSONObject content = json.getJSONObject("content");
+    		
+    		if(!content.has(HW) && !content.has(PRES) && !content.has(HANDOUT) && !content.has(LABS))
+    		{
+    			//Throws exception
+    			content.getJSONArray("presentations");
+    		}
     		
     		return new Unit(json);
     	}
     	catch(JSONException e)
     	{
     		if(name != "") name = " for " + name;
-    		Log.w("NJCTLLOG", "            unit contents " + name + "not found...");
+    		Log.w("NJCTLLOG", "            unit contents" + name + " not found...");
     		return null;
     	}
     }
@@ -69,9 +81,9 @@ public class Unit implements Parcelable {
 			
 			JSONObject content = json.getJSONObject("content");
 			
-			if(content.has("homework"))
+			if(content.has(HW))
 			{
-				JSONArray homeworkList = content.getJSONArray("homework");
+				JSONArray homeworkList = content.getJSONArray(HW);
 				Log.v("NJCTLLOG", "            Looping through " + Integer.toString(homeworkList.length()) + " homeworks...");
 				
 				for(int i = 0; i < homeworkList.length(); i++)
@@ -80,19 +92,53 @@ public class Unit implements Parcelable {
 				}
 			}
 			
-			JSONArray presentationList = content.getJSONArray("presentations");
-			Log.v("NJCTLLOG", "            Looping through " + Integer.toString(presentationList.length()) + " presentations...");
-			
-			for(int i = 0; i < presentationList.length(); i++)
+			if(content.has(PRES))
 			{
-				Presentation presentation = Presentation.newInstance(presentationList.getJSONObject(i));
+				JSONArray presentationList = content.getJSONArray(PRES);
+				Log.v("NJCTLLOG", "            Looping through " + Integer.toString(presentationList.length()) + " presentations...");
 				
-				if(presentation != null)
+				for(int i = 0; i < presentationList.length(); i++)
 				{
-					presentations.add(presentation);
+					Presentation presentation = Presentation.newInstance(presentationList.getJSONObject(i));
+					
+					if(presentation != null)
+					{
+						presentations.add(presentation);
+					}
 				}
 			}
 			
+			if(content.has(LABS))
+			{
+				JSONArray labList = content.getJSONArray(LABS);
+				Log.v("NJCTLLOG", "            Looping through " + Integer.toString(labList.length()) + " labs...");
+				
+				for(int i = 0; i < labList.length(); i++)
+				{
+					Lab lab = Lab.newInstance(labList.getJSONObject(i));
+					
+					if(lab != null)
+					{
+						labs.add(lab);
+					}
+				}
+			}
+			
+			if(content.has(HANDOUT))
+			{
+				JSONArray labList = content.getJSONArray(HANDOUT);
+				Log.v("NJCTLLOG", "            Looping through " + Integer.toString(labList.length()) + " handouts...");
+				
+				for(int i = 0; i < labList.length(); i++)
+				{
+					Handout handout = Handout.newInstance(labList.getJSONObject(i));
+					
+					if(handout != null)
+					{
+						handouts.add(handout);
+					}
+				}
+			}
 			
 		} catch (JSONException e) {
 			e.printStackTrace();

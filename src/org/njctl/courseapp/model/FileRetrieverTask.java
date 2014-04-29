@@ -9,56 +9,52 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.njctl.courseapp.model.useful.Tripel;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
-class RetrieveManifestTask extends AsyncTask<AsyncJsonResponse, Void, JSONObject>
+/**
+ * 
+ * Tripel containing URL, request content type, and listener.
+ */
+class FileRetrieverTask extends AsyncTask<Tripel<String,String,AsyncStringResponse>, Void, String>
 {
 	final String NJCTLLOG = "NJCTL";
-	private String jsonUrl = "http://www.sandbox-njctl.org/courses.json";
-	protected AsyncJsonResponse delegate = null;
+	protected AsyncStringResponse delegate = null;
+	protected String url, contentType = "text/plain";
 
-	protected JSONObject doInBackground(AsyncJsonResponse... dele)
+	protected String doInBackground(Tripel<String,String,AsyncStringResponse>... request)
 	{
 		try {
-			if(dele.length != 1)
+			if(request.length != 1 || !(request[0].x instanceof String) || !(request[0].y instanceof String) || !(request[0].z instanceof AsyncStringResponse))
 				throw new Exception();
 		
-		delegate = dele[0];
+			url = request[0].x;
+			contentType = request[0].y;
+			delegate = request[0].z;
 		
 		} catch (Exception e) {
 			e.printStackTrace();
 			Log.w(NJCTLLOG, e.toString());
 		}
 		
-		try {
-			JSONObject json = new JSONObject(getHTML());
-
-			return json;
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			Log.w(NJCTLLOG, e.toString());
-		}
-
-		return null;
+		return getString();
 	}
 
-	protected void onPostExecute(JSONObject result)
+	protected void onPostExecute(String result)
 	{
-		delegate.processJson(result);
+		delegate.processString(result);
 	}
 
-	protected String getHTML()
+	protected String getString()
 	{
 		DefaultHttpClient httpclient = new DefaultHttpClient(
 				new BasicHttpParams());
 
-		HttpPost httppost = new HttpPost(jsonUrl);
-		httppost.setHeader("Content-type", "application/json");
+		HttpPost httppost = new HttpPost(url);
+		httppost.setHeader("Content-type", contentType);
+		//httppost.setHeader("Content-type", "application/json");
 
 		InputStream inputStream = null;
 
