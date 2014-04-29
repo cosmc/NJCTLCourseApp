@@ -9,6 +9,8 @@ import java.util.Locale;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.njctl.courseapp.model.material.Document;
+import org.njctl.courseapp.model.material.Topic;
 
 import android.os.Parcel;
 import android.util.Log;

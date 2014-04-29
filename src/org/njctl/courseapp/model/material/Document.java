@@ -1,11 +1,15 @@
-package org.njctl.courseapp.model;
+package org.njctl.courseapp.model.material;
 
 import java.util.Date;
+
+import org.njctl.courseapp.model.DocumentState;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Document implements Parcelable
+// Homework, Topic, Handout, Lab
+
+public abstract class Document implements Parcelable
 {
 	protected String id;
 	protected String name;
@@ -140,7 +144,7 @@ public class Document implements Parcelable
 		dest.writeString(this.fileName);
 		dest.writeString(this.MIMEType);
 	}
-
+/*
 	public static final Parcelable.Creator<Document> CREATOR = new Parcelable.Creator<Document>() {
 		public Document createFromParcel(Parcel in)
 		{
@@ -151,5 +155,5 @@ public class Document implements Parcelable
 		{
 			return new Document[size];
 		}
-	};
+	};*/
 }

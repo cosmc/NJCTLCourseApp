@@ -1,4 +1,4 @@
-package org.njctl.courseapp.model;
+package org.njctl.courseapp.model.material;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -11,9 +11,9 @@ import org.json.JSONObject;
 import android.os.Parcel;
 import android.util.Log;
 
-public class Homework extends Document
+public class Lab extends Document
 {
-	public Homework(JSONObject json)
+	public Lab(JSONObject json)
 	{
 		try{
 			name = json.getString("title");
@@ -24,7 +24,7 @@ public class Homework extends Document
 			}
 			else
 			{
-				Log.v("NJCTLLOG", "pdf_uri not found for homework " + name);
+				Log.v("NJCTLLOG", "pdf_uri not found for lab " + name);
 			}
 			
 			
@@ -44,7 +44,7 @@ public class Homework extends Document
 	}
 	
 
-	public Homework(Parcel in)
+	public Lab(Parcel in)
 	{
 		super(in);
 		// TODO Auto-generated constructor stub

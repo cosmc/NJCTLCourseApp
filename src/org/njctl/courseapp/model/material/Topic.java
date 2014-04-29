@@ -1,4 +1,4 @@
-package org.njctl.courseapp.model;
+package org.njctl.courseapp.model.material;
 
 import java.text.DateFormat;
 import java.text.ParseException;

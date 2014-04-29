@@ -25,6 +25,8 @@ public class Class implements Parcelable {
     protected ArrayList<Unit> units = new ArrayList<Unit>();
     protected Date lastUpdate;
     protected Subject subject;
+    protected boolean subscribed = false;
+    protected boolean downloaded = false;
 
     public Class(String name, ArrayList<Unit> unitList) {
         this.classTitle = name;

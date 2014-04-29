@@ -6,6 +6,8 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import org.njctl.courseapp.model.material.Document;
+
 /**
  * 
  * Created by Colin on 12/12/13.
