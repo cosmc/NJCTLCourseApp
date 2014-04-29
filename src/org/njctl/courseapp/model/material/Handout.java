@@ -1,4 +1,4 @@
-package org.njctl.courseapp.model;
+package org.njctl.courseapp.model.material;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -11,13 +11,27 @@ import org.json.JSONObject;
 import android.os.Parcel;
 import android.util.Log;
 
-public class Homework extends Document
+public class Handout extends Document
 {
-	public Homework(JSONObject json)
+	public static Handout newInstance(JSONObject json)
+	{
+		return new Handout(json);
+	}
+	
+	public Handout(JSONObject json)
 	{
 		try{
 			name = json.getString("title");
-			url = json.getString("pdf_uri");
+			
+			if(json.has("pdf_uri"))
+			{
+				url = json.getString("pdf_uri");
+			}
+			else
+			{
+				Log.w("NJCTLLOG", "                pdf_uri not found for handout " + name);
+			}
+			
 			
 			String modified = json.getString("date");
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
@@ -35,7 +49,7 @@ public class Homework extends Document
 	}
 	
 
-	public Homework(Parcel in)
+	public Handout(Parcel in)
 	{
 		super(in);
 		// TODO Auto-generated constructor stub
