@@ -45,6 +45,26 @@ public class Unit implements Parcelable {
         this.chapterTitle = title;
     }
     
+    public ArrayList<Homework> getHomeworks()
+    {
+    	return homeworks;
+    }
+    
+    public ArrayList<Presentation> getPresentations()
+    {
+    	return presentations;
+    }
+    
+    public ArrayList<Lab> getLabs()
+    {
+    	return labs;
+    }
+    
+    public ArrayList<Handout> getHandouts()
+    {
+    	return handouts;
+    }
+    
     public static Unit newInstance(JSONObject json)
     {
     	String name = "";

@@ -10,6 +10,9 @@ import java.text.DateFormat;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.njctl.courseapp.model.subscribe.ClassDownloader;
+import org.njctl.courseapp.model.subscribe.DownloadFinishListener;
+import org.njctl.courseapp.model.subscribe.Downloader;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -18,7 +21,7 @@ import android.util.Log;
 /**
  * Created by ying on 11/3/13.
  */
-public class Class implements Parcelable, DownloadFinishListener {
+public class Class implements Parcelable, DownloadFinishListener<Class> {
 	
 	protected int classId;
     protected String classTitle;
@@ -27,7 +30,7 @@ public class Class implements Parcelable, DownloadFinishListener {
     protected Subject subject;
     protected boolean subscribed = false;
     protected boolean downloaded = false;
-    protected DownloadFinishListener downloadListener;
+    protected DownloadFinishListener<Class> downloadListener;
 
     public Class(String name, ArrayList<Unit> unitList) {
         this.classTitle = name;
@@ -43,10 +46,17 @@ public class Class implements Parcelable, DownloadFinishListener {
         this.classTitle = name;
     }
     
-    public void subscribe(DownloadFinishListener listener)
+    public void subscribe(DownloadFinishListener<Class> listener)
     {
     	subscribed = true;
     	
+    	ClassDownloader dl = new Downloader();
+    	dl.downloadClass(this, this);
+    }
+    
+    public ArrayList<Unit> getUnits()
+    {
+    	return units;
     }
     
 	public void onClassDownloaded(Class theClass)
