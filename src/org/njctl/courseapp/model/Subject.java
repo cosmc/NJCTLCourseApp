@@ -21,7 +21,7 @@ import android.util.Log;
 public class Subject implements Parcelable {
 	
     private int subjectId;
-    private String subjectTitle;
+    private String title;
     private int bottomColorBarResource = 0;
     private int bigSideColorBarResource = 0;
     private int smallSideColorBarResource = 0;
@@ -29,12 +29,12 @@ public class Subject implements Parcelable {
     private Date lastUpdate;
 
     public Subject(String name, ArrayList<Class> classList) {
-        this.subjectTitle = name;
+        this.title = name;
         this.classes = classList;
     }
     
     public Subject(String name) {
-        this.subjectTitle = name;
+        this.title = name;
     }
     
     public static Subject newInstance(JSONObject json)
@@ -55,7 +55,7 @@ public class Subject implements Parcelable {
     public Subject(JSONObject json)
     {
     	try {
-    		subjectTitle = json.getString("post_title");
+    		title = json.getString("post_title");
     		
 			String modified = json.getString("post_modified");
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
@@ -110,7 +110,7 @@ public class Subject implements Parcelable {
     }
     
     public String getTitle() {
-    	return subjectTitle;
+    	return title;
     }
     
     public int getId() {
@@ -144,13 +144,13 @@ public class Subject implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
     	dest.writeInt(subjectId);
-    	dest.writeString(subjectTitle);
+    	dest.writeString(title);
     	dest.writeParcelableArray(classes.toArray(new Class[classes.size()]), 0);
     }
     
     private void readFromParcel(Parcel in) {
     	subjectId = in.readInt();
-    	subjectTitle = in.readString();
+    	title = in.readString();
     	classes = new ArrayList<Class>();
         in.readList(classes, Class.class.getClassLoader());
     }
