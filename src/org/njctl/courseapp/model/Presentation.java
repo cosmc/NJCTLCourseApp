@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 
 import org.json.JSONArray;
@@ -15,15 +16,20 @@ import org.njctl.courseapp.model.material.Topic;
 import android.os.Parcel;
 import android.util.Log;
 
-public class Presentation extends Document
+public class Presentation
 {
-	private String topicsJsonUrl = "http://content-archive.sandbox-njctl.org/courses/science/ap-physics-b/kinematics-2/kinematics-presentation-2/kinematics-presentation-2.json";
+	protected String name;
+	protected Date lastUpdated;
 	private ArrayList<Topic> topics = new ArrayList<Topic>();
 	
 	public Presentation(Parcel in)
 	{
-		super(in);
-		// TODO Auto-generated constructor stub
+
+	}
+	
+	public boolean isDownloaded()
+	{
+		return true;
 	}
 	
 	public static Presentation newInstance(JSONObject json)
@@ -57,7 +63,7 @@ public class Presentation extends Document
 	{
 		try{
 			name = json.getString("title");
-			
+			/*
 			if(json.has("pdf_uri"))
 			{
 				url = json.getString("pdf_uri");
@@ -65,7 +71,7 @@ public class Presentation extends Document
 			else
 			{
 				Log.w("NJCTLLOG", "pdf_uri not found for presentation " + name);
-			}
+			}*/
 			
 			
 			String modified = json.getString("date");

@@ -26,7 +26,6 @@ public class Unit implements Parcelable {
 	
     private String chapterId;
     private String chapterTitle;
-    private ArrayList<Document> contents = new ArrayList<Document>();
     private ArrayList<Homework> homeworks = new ArrayList<Homework>();
     private ArrayList<Presentation> presentations = new ArrayList<Presentation>();
     private ArrayList<Lab> labs = new ArrayList<Lab>();
@@ -34,15 +33,34 @@ public class Unit implements Parcelable {
     private Date lastUpdate;
     protected final static String HW = "homework", PRES = "presentations", HANDOUT = "handouts", LABS = "labs";
 
-    public Unit(String id, String title, ArrayList<Document> cont) {
-    	this.chapterId = id;
-        this.chapterTitle = title;
-        this.contents = cont;
-    }
-    
     public Unit(String id, String title) {
     	this.chapterId = id;
         this.chapterTitle = title;
+    }
+    
+    public boolean isDownloaded()
+    {
+    	for(int i = 0; i < homeworks.size(); i++)
+    	{
+    		if(!homeworks.get(i).isDownloaded())
+    			return false;
+    	}
+    	for(int i = 0; i < presentations.size(); i++)
+    	{
+    		if(!presentations.get(i).isDownloaded())
+    			return false;
+    	}
+    	for(int i = 0; i < labs.size(); i++)
+    	{
+    		if(!labs.get(i).isDownloaded())
+    			return false;
+    	}
+    	for(int i = 0; i < handouts.size(); i++)
+    	{
+    		if(!handouts.get(i).isDownloaded())
+    			return false;
+    	}
+    	return true;
     }
     
     public ArrayList<Homework> getHomeworks()
@@ -170,11 +188,6 @@ public class Unit implements Parcelable {
 		}
     }
     
-    public void add(Document docList)
-    {
-    	this.contents.add(docList);
-    }
-    
     // Mandatory Parcelable constructor.
     public Unit(Parcel in) {
     	readFromParcel(in);
@@ -186,10 +199,6 @@ public class Unit implements Parcelable {
     
     public String getTitle() {
     	return chapterTitle;
-    }
-    
-    public ArrayList<Document> getContents() {
-    	return contents;
     }
     
     // Mandatory Parcelable methods.
@@ -204,7 +213,7 @@ public class Unit implements Parcelable {
     	dest.writeString(chapterId);
     	dest.writeString(chapterTitle);
     	dest.writeParcelableArray(homeworks.toArray(new Homework[homeworks.size()]), 0);
-    	dest.writeParcelableArray(presentations.toArray(new Presentation[presentations.size()]), 0);
+    	//dest.writeParcelableArray(presentations.toArray(new Presentation[presentations.size()]), 0);
     	//dest.writeParcelableArray(contents.toArray(new NJCTLDocList[contents.size()]), 0);
     }
 
