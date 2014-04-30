@@ -11,7 +11,6 @@ import org.njctl.courseapp.model.material.Document;
 public interface NJCTLNavActivity {
 	public void showSubjects(ArrayList<Subject> subjects);
 	public void showClasses(Subject subject);
-	public void showChapters(Class theClass);
 	public void showUnits(Class theClass);
 	public void showDocuments(Unit theUnit);
 	public void showDocList(NJCTLDocList docList);
