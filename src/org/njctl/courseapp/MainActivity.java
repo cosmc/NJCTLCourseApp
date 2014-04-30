@@ -1,12 +1,22 @@
 package org.njctl.courseapp;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 
 import org.njctl.courseapp.model.Model;
@@ -175,7 +185,44 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 	@Override
 	public void openDocument(org.njctl.courseapp.model.material.Document doc)
 	{
-		//TODO dunno whats supposed to happen here Colin!
+		try {
+			
+			// Get an input stream for the locally stored file.
+    		BufferedInputStream docStream = new BufferedInputStream( getResources().getAssets().open( doc.getRelativePathForOpening() ) );
+    		//create a buffer that has the same size as the InputStream  
+            byte[] buffer = new byte[docStream.available()];
+            //read the text file as a stream, into the buffer
+            docStream.read(buffer);
+            //create a output stream to write the buffer into
+            // TODO: Context.MODE_WORLD_READABLE is deprecated. Look into replacing this with a ContentProvider.
+            BufferedOutputStream outStream = new BufferedOutputStream( openFileOutput(doc.getFileName(), Context.MODE_WORLD_READABLE) );  
+            //write this buffer to the output stream  
+            outStream.write(buffer);  
+            //Close the Input and Output streams  
+            outStream.close();  
+            docStream.close();
+    		
+            // Try to launch the PDF in a PDF viewer.
+    		Intent intent = new Intent(Intent.ACTION_VIEW);
+    		File docFile = new File(getFilesDir(), doc.getFileName());
+    		docFile.setReadable(true, false);
+    		docFile.setWritable(true, false); // So that people can take notes in the PDF reader.
+    		Uri docUri = Uri.fromFile(docFile);
+    		intent.setDataAndType(docUri,doc.getMIMEType());
+    		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    		startActivity(intent);
+    		
+		} catch (ActivityNotFoundException e) {
+			// Show an error message if the user does not have an appropriate application for opening the document.
+			Log.w("ERROR", e.toString());
+			Toast.makeText(this, "Error: No activity found for viewing MIME type " + doc.getMIMEType() + ".", Toast.LENGTH_SHORT).show();
+		} catch (FileNotFoundException e) {
+			// Show an error message if the file isn't there.
+			Log.w("ERROR", e.toString());
+			Toast.makeText(this, "Error: Could not open file / file not found.", Toast.LENGTH_SHORT).show();
+		} catch (IOException e) {
+			Log.w("ERROR", e.toString());
+		}
 	}
 
 }
