@@ -38,7 +38,8 @@ public class ChapterListFragment extends Fragment {
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 Log.w("Item selected:", groupPosition + " " + childPosition);
                 try {
-        			((NJCTLNavActivity) getActivity()).showDocList(theClass.getContents().get(groupPosition).getContents().get(childPosition));
+                	//TODO dunno whats supposed to happen here Colin, but this doesnt work.
+        			//((NJCTLNavActivity) getActivity()).showDocList(theClass.getContents().get(groupPosition).getContents().get(childPosition));
         		} catch (ClassCastException e) {
         			Log.w("ERROR", "Activity does not implement NJCTLNavActivity.");
         		}

@@ -15,7 +15,6 @@ import org.njctl.courseapp.model.NJCTLDocList;
 import org.njctl.courseapp.model.Subject;
 import org.njctl.courseapp.model.SubjectRetriever;
 import org.njctl.courseapp.model.Unit;
-import org.njctl.courseapp.model.Document;
 
 //import org.njctl.courseapp.R;
 
@@ -120,10 +119,6 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
         transaction.commit();
 	}
 	
-	public void openDocument(Document doc) {
-	// Open a document for viewing in another app.
-	}
-	
 	/**** End of NJCTLNavActivity Methods ****/
 	
 	
@@ -175,6 +170,12 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 	{
 		this.subjects = subjects;
 		showSubjects(subjects);
+	}
+
+	@Override
+	public void openDocument(org.njctl.courseapp.model.material.Document doc)
+	{
+		//TODO dunno whats supposed to happen here Colin!
 	}
 
 }

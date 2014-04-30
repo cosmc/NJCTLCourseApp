@@ -2,9 +2,8 @@ package org.njctl.courseapp;
 
 import java.util.ArrayList;
 
-import org.njctl.courseapp.model.Document;
+import org.njctl.courseapp.model.material.Document;
 import org.njctl.courseapp.model.Unit;
-import org.njctl.courseapp.model.NJCTLDocList;
  
 import android.content.Context;
 import android.graphics.Typeface;
@@ -13,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
-import android.util.Log;
 
 /**
  * 

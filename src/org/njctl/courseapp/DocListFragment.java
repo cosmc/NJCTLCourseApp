@@ -28,7 +28,7 @@ import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
 
 import org.njctl.courseapp.model.NJCTLDocList;
-import org.njctl.courseapp.model.Document;
+import org.njctl.courseapp.model.material.Document;
 
 /**
  * Created by Colin on 12/12/13.

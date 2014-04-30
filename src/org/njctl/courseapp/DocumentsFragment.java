@@ -15,6 +15,7 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import org.njctl.courseapp.model.material.*;
+import org.njctl.courseapp.model.Presentation;
 import org.njctl.courseapp.model.Unit;
 
 /**
@@ -28,7 +29,7 @@ public class DocumentsFragment extends Fragment {
 		
 		super.onActivityCreated(savedInstanceState);
 		
-        ListView presentaionsListView = (ListView) getView().findViewById(R.id.presentations_listview);
+        ListView presentationsListView = (ListView) getView().findViewById(R.id.presentations_listview);
         ListView handoutsListView = (ListView) getView().findViewById(R.id.handouts_listview);
         ListView homeworkListView = (ListView) getView().findViewById(R.id.homework_listview);
         ListView labsListView = (ListView) getView().findViewById(R.id.labs_listview);
@@ -41,10 +42,12 @@ public class DocumentsFragment extends Fragment {
         ArrayAdapter<Handout> handoutsAdapter = new ArrayAdapter<Handout>(getActivity(), 0, unit.getHandouts());
         handoutsListView.setAdapter(handoutsAdapter);
         ArrayAdapter<Homework> homeworkAdapter = new ArrayAdapter<Homework>(getActivity(), 0, unit.getHomeworks());
+        //TODO Colin, this doesnt work yet..
+        /*
         topicsListView.setAdapter(homeworkAdapter);
         ArrayAdapter<Lab> labsAdapter = new ArrayAdapter<Lab>(getActivity(), 0, unit.getLabs());
         topicsListView.setAdapter(labsAdapter);
-        
+        */
         presentationsListView.setOnItemClickListener(new OnItemClickListener() {
         	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         		Log.w("Presentation click", "" + position);
@@ -71,7 +74,7 @@ public class DocumentsFragment extends Fragment {
         	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         		Log.w("Homework click", "" + position);
         		try {
-        			((NJCTLNavActivity) getActivity()).openDocument(unit.getHomework().get(position));
+        			((NJCTLNavActivity) getActivity()).openDocument(unit.getHomeworks().get(position));
         		} catch (ClassCastException e) {
         			Log.w("ERROR", "Activity does not implement NJCTLNavActivity.");
         		}
