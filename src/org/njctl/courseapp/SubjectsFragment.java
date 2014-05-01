@@ -28,7 +28,7 @@ public class SubjectsFragment extends Fragment {
 		
 		super.onActivityCreated(savedInstanceState);
 		
-		//ListView myClassesListView = (ListView) getView().findViewById(R.id.my_classes_listview);
+		ListView myClassesListView = (ListView) getView().findViewById(R.id.my_classes_listview);
         ListView subjectsListView = (ListView) getView().findViewById(R.id.subjects_listview);
 		
         Bundle args = getArguments();
@@ -41,10 +41,10 @@ public class SubjectsFragment extends Fragment {
         }
 
         MyClassesAdapter myClassesAdapter = new MyClassesAdapter(getActivity(), 0, myClasses);
-        //myClassesListView.setAdapter(myClassesAdapter);
+        myClassesListView.setAdapter(myClassesAdapter);
         SubjectsAdapter subjectAdapter = new SubjectsAdapter(getActivity(), 0, subjects);
         subjectsListView.setAdapter(subjectAdapter);
-        /*
+        
         myClassesListView.setOnItemClickListener(new OnItemClickListener() {
         	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         		Log.w("My Classes click", "" + position);
@@ -55,7 +55,7 @@ public class SubjectsFragment extends Fragment {
         		}
             }
         }); 
-        */
+        
         subjectsListView.setOnItemClickListener(new OnItemClickListener() {
         	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         		Log.w("Subject click", "" + position);

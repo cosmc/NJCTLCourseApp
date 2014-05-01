@@ -29,7 +29,7 @@ public class UnitsFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 		
         ListView listView = (ListView) getView().findViewById(R.id.units_fragment_listview);
-		
+        
         Bundle args = getArguments();
         final Class theClass = args.getParcelable("class");
 
@@ -45,12 +45,12 @@ public class UnitsFragment extends Fragment {
         			Log.w("ERROR", "Activity does not implement NJCTLNavActivity.");
         		}
             }
-        }); 
+        });
 	}
 	
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.units_fragment, container, false);   
+        View v = inflater.inflate(R.layout.units_fragment, container, false);
         return v;
     }
     
