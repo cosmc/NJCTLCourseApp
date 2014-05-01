@@ -33,7 +33,7 @@ public class Handout extends Document
 			}
 			
 			
-			String modified = json.getString("date");
+			String modified = json.getString("post_modified");
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 			lastUpdated = df.parse(modified);
 			
