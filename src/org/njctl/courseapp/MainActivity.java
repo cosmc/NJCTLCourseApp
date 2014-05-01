@@ -147,7 +147,7 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
-            case R.id.action_my_classes:
+            case R.id.action_home:
             	// Build the class tree!
             	//ArrayList<NJCTLClass> classes = model.getClassTree( getResources().getString(R.string.course_manifest_rel_path), getResources());
                 // Display the classes!
