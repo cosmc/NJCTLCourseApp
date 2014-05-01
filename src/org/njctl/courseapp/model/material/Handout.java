@@ -21,7 +21,7 @@ public class Handout extends Document
 	public Handout(JSONObject json)
 	{
 		try{
-			name = json.getString("title");
+			name = json.getString("post_title");
 			
 			if(json.has("pdf_uri"))
 			{

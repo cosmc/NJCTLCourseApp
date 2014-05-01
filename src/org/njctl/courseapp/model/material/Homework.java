@@ -16,7 +16,7 @@ public class Homework extends Document
 	public Homework(JSONObject json)
 	{
 		try{
-			name = json.getString("title");
+			name = json.getString("post_title");
 			
 			if(json.has("pdf_uri"))
 			{

@@ -8,6 +8,7 @@ import java.util.Locale;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.njctl.courseapp.model.Presentation;
 
 import android.os.Parcel;
 import android.util.Log;
@@ -17,13 +18,16 @@ public class Topic extends Document
 	private String hash;
 	//private Document doc;
 	private Integer size;
+	protected Presentation presentation;
 	
-	public Topic(JSONObject json)
+	public Topic(Presentation presentation, String id, JSONObject json)
 	{
 		try{
 			name = json.getString("label");
 			url = json.getString("pdf_uri");
 			hash = json.getString("pdf_md5");
+			this.id = id;
+			this.presentation = presentation;
 			//size = json.getString("size");
 			/*
 			String modified = json.getString("mtime");

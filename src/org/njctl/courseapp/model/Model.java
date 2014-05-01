@@ -12,7 +12,7 @@ import android.util.Log;
 public class Model implements AsyncStringResponse
 {
 	final String NJCTLLOG = "NJCTLLOG";
-	private String jsonUrl = "http://www.sandbox-njctl.org/courses.json";
+	private String jsonUrl = "http://sandbox-njctl.org/courses.json?for-app=1";
 	
 	protected SubjectRetriever retriever;
 	
@@ -34,7 +34,7 @@ public class Model implements AsyncStringResponse
 			JSONObject json = new JSONObject(jsonString);
 			
 			
-			JSONArray results = json.getJSONArray("pages");
+			JSONArray results = json.getJSONObject("content").getJSONArray("pages");
 
 			Log.v(NJCTLLOG, "Looping through " + Integer.toString(results.length()) + " subjects...");
 			

@@ -20,7 +20,8 @@ public class Presentation
 {
 	protected String name;
 	protected Date lastUpdated;
-	private ArrayList<Topic> topics = new ArrayList<Topic>();
+	protected String id;
+	protected ArrayList<Topic> topics = new ArrayList<Topic>();
 	
 	public Presentation(Parcel in)
 	{
@@ -39,8 +40,9 @@ public class Presentation
 		String reason = "";
 		
 		try{
-			presentationTitle = json.getString("title");
-			date = json.getString("date");
+			presentationTitle = json.getString("post_title");
+			date = json.getString("post_modified");
+			json.getString("ID");
 			json.getJSONArray("chunks");
 			
 			return new Presentation(json);
@@ -62,7 +64,7 @@ public class Presentation
 	public Presentation(JSONObject json)
 	{
 		try{
-			name = json.getString("title");
+			name = json.getString("post_title");
 			/*
 			if(json.has("pdf_uri"))
 			{
@@ -74,16 +76,18 @@ public class Presentation
 			}*/
 			
 			
-			String modified = json.getString("date");
+			String modified = json.getString("post_modified");
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 			lastUpdated = df.parse(modified);
+			
+			id = json.getString("ID");
 			
 			JSONArray topicsList = json.getJSONArray("chunks");
 			Log.v("NJCTLLOG", "                Looping through " + topicsList.length() + " topics in " + name + " presentation..");
 			
 			for(int i = 0; i < topicsList.length(); i++)
 			{
-				topics.add(new Topic(topicsList.getJSONObject(i)));
+				topics.add(new Topic(this, id, topicsList.getJSONObject(i)));
 			}
 			
 		}
