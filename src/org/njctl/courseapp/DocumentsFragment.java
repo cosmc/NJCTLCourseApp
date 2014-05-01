@@ -52,7 +52,8 @@ public class DocumentsFragment extends Fragment {
         	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         		Log.w("Presentation click", "" + position);
         		try {
-        			((NJCTLNavActivity) getActivity()).openDocument(unit.getPresentations().get(position));
+        			//TODO
+        			//((NJCTLNavActivity) getActivity()).openDocument(unit.getPresentations().get(position));
         		} catch (ClassCastException e) {
         			Log.w("ERROR", "Activity does not implement NJCTLNavActivity.");
         		}

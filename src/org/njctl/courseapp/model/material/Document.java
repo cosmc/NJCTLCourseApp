@@ -28,7 +28,7 @@ public abstract class Document implements Parcelable
 	{
 		
 	}
-
+	
 	public Document(String name)
 	{
 		this.name = name;

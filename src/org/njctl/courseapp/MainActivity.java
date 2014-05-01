@@ -73,20 +73,6 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
         transaction.commit();
 	}
 	
-	public void showChapters(Class theClass) {
-	// Populate a ChapterListFragment with the chapters of the given class and display it in the container element.
-		ChapterListFragment frag = new ChapterListFragment();
-		Bundle args = new Bundle();
-		args.putParcelable("class", theClass);
-		frag.setArguments(args);
-		
-		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, frag);
-        transaction.addToBackStack("Chapter List for " + theClass.getTitle());
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        transaction.commit();
-	}
-	
 	public void showUnits(Class theClass) {
 	// Populate a UnitListFragment with the units of the given class and display it in the container element.
 		UnitsFragment frag = new UnitsFragment();

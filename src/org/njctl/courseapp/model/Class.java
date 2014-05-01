@@ -39,7 +39,15 @@ public class Class implements Parcelable, DownloadFinishListener<Class> {
     
     public boolean isDownloaded()
     {
-    	return downloaded;
+    	//return true;
+    	//return downloaded;
+    	
+    	for(int i = 0; i < units.size(); i++)
+    	{
+    		if(!units.get(i).isDownloaded())
+    			return false;
+    	}
+    	return true;
     }
     
     public Class(String name) {
