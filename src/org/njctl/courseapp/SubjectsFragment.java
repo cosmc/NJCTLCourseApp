@@ -18,7 +18,7 @@ import org.njctl.courseapp.model.Class;
 import org.njctl.courseapp.model.Subject;
 
 /**
- * Created by ying on 11/16/13.
+ * Created by Colin on ??.
  */
 
 public class SubjectsFragment extends Fragment {
