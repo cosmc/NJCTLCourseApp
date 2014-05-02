@@ -1,16 +1,16 @@
 package org.njctl.courseapp;
 
+import java.util.ArrayList;
+
+import org.njctl.courseapp.model.Class;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 import android.widget.ImageView;
-
-import java.util.ArrayList;
-
-import org.njctl.courseapp.model.Class;
+import android.widget.TextView;
 
 /**
  * Created by ying on 11/16/13.

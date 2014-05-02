@@ -1,22 +1,21 @@
 package org.njctl.courseapp;
 
+import org.njctl.courseapp.model.Presentation;
+import org.njctl.courseapp.model.Unit;
+import org.njctl.courseapp.model.material.Handout;
+import org.njctl.courseapp.model.material.Homework;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.ArrayAdapter;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.util.Log;
-
-import java.util.ArrayList;
-
-import org.njctl.courseapp.model.material.*;
-import org.njctl.courseapp.model.Presentation;
-import org.njctl.courseapp.model.Unit;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 /**
  * Created by Colin on 28 April 2014.

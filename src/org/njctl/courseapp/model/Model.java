@@ -7,12 +7,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.njctl.courseapp.model.useful.Tripel;
 
+import android.content.Context;
 import android.util.Log;
 
 public class Model implements AsyncStringResponse
 {
 	final String NJCTLLOG = "NJCTLLOG";
 	private String jsonUrl = "http://sandbox-njctl.org/courses.json?for-app=1";
+	protected Context context;
 	
 	protected SubjectRetriever retriever;
 	
@@ -25,7 +27,6 @@ public class Model implements AsyncStringResponse
 		new FileRetrieverTask().execute(request);
 	}
 
-	@Override
 	public void processString(String jsonString)
 	{
 		ArrayList<Subject> subjects = new ArrayList<Subject>();

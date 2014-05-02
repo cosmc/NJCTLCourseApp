@@ -7,6 +7,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.njctl.courseapp.model.Class;
+import org.njctl.courseapp.model.Model;
+import org.njctl.courseapp.model.Subject;
+import org.njctl.courseapp.model.SubjectRetriever;
+import org.njctl.courseapp.model.Unit;
+
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -15,16 +24,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.content.Intent;
-
-import org.njctl.courseapp.model.Model;
-import org.njctl.courseapp.model.Class;
-import org.njctl.courseapp.model.NJCTLDocList;
-import org.njctl.courseapp.model.Subject;
-import org.njctl.courseapp.model.SubjectRetriever;
-import org.njctl.courseapp.model.Unit;
 
 //import org.njctl.courseapp.R;
 
@@ -100,7 +99,7 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 	    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 	    transaction.commit();
 	}
-	
+	/*
 	public void showDocList(NJCTLDocList docList) {
 	// Populate a DocListFragment with the documents of the given document list and display it in the container element.
 		DocListFragment frag = new DocListFragment();
@@ -114,7 +113,7 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         transaction.commit();
 	}
-	
+	*/
 	/**** End of NJCTLNavActivity Methods ****/
 	
 	

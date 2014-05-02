@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
@@ -52,15 +53,16 @@ class FileRetrieverTask extends AsyncTask<Tripel<String,String,AsyncStringRespon
 		DefaultHttpClient httpclient = new DefaultHttpClient(
 				new BasicHttpParams());
 
-		HttpPost httppost = new HttpPost(url);
-		httppost.setHeader("Content-type", contentType);
-		//httppost.setHeader("Content-type", "application/json");
+		HttpGet httpget = new HttpGet(url);
+		httpget.setHeader("Content-type", contentType);
+		//httpget.setHeader("Content-Encoding", "gzip, deflate");
+		//httpget.setHeader("Content-type", "application/json");
 
 		InputStream inputStream = null;
 
 		try {
 			Log.v(NJCTLLOG, "executing http query..");
-			HttpResponse response = httpclient.execute(httppost);
+			HttpResponse response = httpclient.execute(httpget);
 			HttpEntity entity = response.getEntity();
 
 			inputStream = entity.getContent();

@@ -1,30 +1,33 @@
 package org.njctl.courseapp.model;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.text.DateFormat;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.j256.ormlite.table.DatabaseTable;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-/**
- * Created by ying on 11/3/13.
- */
+@DatabaseTable(tableName = "subjects")
 public class Subject implements Parcelable {
 	
     private int subjectId;
+    
     private String title;
+    
     private int bottomColorBarResource = 0;
     private int bigSideColorBarResource = 0;
     private int smallSideColorBarResource = 0;
+    
     private ArrayList<Class> classes = new ArrayList<Class>();
     private Date lastUpdate;
 

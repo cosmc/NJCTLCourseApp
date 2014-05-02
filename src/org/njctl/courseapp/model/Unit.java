@@ -1,9 +1,5 @@
 package org.njctl.courseapp.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.util.Log;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,10 +10,13 @@ import java.util.Locale;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.njctl.courseapp.model.material.Document;
 import org.njctl.courseapp.model.material.Handout;
 import org.njctl.courseapp.model.material.Homework;
 import org.njctl.courseapp.model.material.Lab;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
 
 /**
  * Created by ying on 11/3/13.
