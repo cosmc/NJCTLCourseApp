@@ -8,9 +8,12 @@ import java.util.Locale;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.j256.ormlite.table.DatabaseTable;
+
 import android.os.Parcel;
 import android.util.Log;
 
+@DatabaseTable
 public class Homework extends Document
 {
 	public Homework(JSONObject json)

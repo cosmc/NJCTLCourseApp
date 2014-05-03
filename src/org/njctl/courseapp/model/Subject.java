@@ -11,26 +11,47 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-@DatabaseTable(tableName = "subjects")
-public class Subject implements Parcelable {
-	
-    private int subjectId;
+@DatabaseTable
+public class Subject implements Parcelable
+{
+	@DatabaseField(id = true)
+    private String name;
     
+	@DatabaseField
     private String title;
     
+	@DatabaseField
+    private Date lastUpdate;
+	
     private int bottomColorBarResource = 0;
     private int bigSideColorBarResource = 0;
     private int smallSideColorBarResource = 0;
     
     private ArrayList<Class> classes = new ArrayList<Class>();
-    private Date lastUpdate;
-
+    
+    Subject()
+    {
+    	
+    }
+    
+    public String getId()
+    {
+    	return name;
+    }
+    
+    //Dao<Subject, String> accountDao =
+    //		  DaoManager.createDao(connectionSource, Subject.class);
+    
+/*
     public Subject(String name, ArrayList<Class> classList) {
         this.title = name;
         this.classes = classList;
@@ -39,7 +60,7 @@ public class Subject implements Parcelable {
     public Subject(String name) {
         this.title = name;
     }
-    
+    */
     public static Subject newInstance(JSONObject json)
     {
     	try
@@ -116,10 +137,6 @@ public class Subject implements Parcelable {
     	return title;
     }
     
-    public int getId() {
-    	return subjectId;
-    }
-    
     public int getBottomColorBarResource() {
     	return bottomColorBarResource;
     }
@@ -138,7 +155,6 @@ public class Subject implements Parcelable {
     
     
     // Methods for Parcelable implementation.
-    
     @Override
     public int describeContents() {
     	return 0;
@@ -146,13 +162,13 @@ public class Subject implements Parcelable {
     
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-    	dest.writeInt(subjectId);
+    	//dest.writeInt(subjectId);
     	dest.writeString(title);
     	dest.writeParcelableArray(classes.toArray(new Class[classes.size()]), 0);
     }
     
     private void readFromParcel(Parcel in) {
-    	subjectId = in.readInt();
+    	//subjectId = in.readInt();
     	title = in.readString();
     	classes = new ArrayList<Class>();
         in.readList(classes, Class.class.getClassLoader());

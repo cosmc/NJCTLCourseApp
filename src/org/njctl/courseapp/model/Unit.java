@@ -14,13 +14,13 @@ import org.njctl.courseapp.model.material.Handout;
 import org.njctl.courseapp.model.material.Homework;
 import org.njctl.courseapp.model.material.Lab;
 
+import com.j256.ormlite.table.DatabaseTable;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-/**
- * Created by ying on 11/3/13.
- */
+@DatabaseTable
 public class Unit implements Parcelable {
 	
     private String chapterId;

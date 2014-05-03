@@ -14,13 +14,13 @@ import org.njctl.courseapp.model.subscribe.ClassDownloader;
 import org.njctl.courseapp.model.subscribe.DownloadFinishListener;
 import org.njctl.courseapp.model.subscribe.Downloader;
 
+import com.j256.ormlite.table.DatabaseTable;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-/**
- * Created by ying on 11/3/13.
- */
+@DatabaseTable
 public class Class implements Parcelable, DownloadFinishListener<Class> {
 	
 	protected int classId;

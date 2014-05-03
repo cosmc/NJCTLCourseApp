@@ -4,9 +4,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.njctl.courseapp.model.Presentation;
 
+import com.j256.ormlite.table.DatabaseTable;
+
 import android.os.Parcel;
 import android.util.Log;
 
+@DatabaseTable
 public class Topic extends Document
 {
 	private String hash;

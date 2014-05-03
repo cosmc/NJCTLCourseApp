@@ -29,7 +29,7 @@ import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity implements NJCTLNavActivity, SubjectRetriever {
 
-	private Model model = new Model();
+	private Model model;
 	private ArrayList<Subject> subjects;
 	
 	/**** Start of NJCTLNavActivity Methods ****/
@@ -120,6 +120,9 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+    	
+    	model = new Model(this);
+    	
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 

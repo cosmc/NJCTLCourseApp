@@ -1,0 +1,20 @@
+#
+# generated on 2014/05/02 05:51:40
+#
+# --table-start--
+dataClass=org.njctl.courseapp.model.Subject
+tableName=subjects
+# --table-fields-start--
+# --field-start--
+fieldName=name
+indexName=subjects_name_idx
+# --field-end--
+# --field-start--
+fieldName=title
+# --field-end--
+# --field-start--
+fieldName=lastUpdate
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
