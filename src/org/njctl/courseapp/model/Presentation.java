@@ -13,8 +13,10 @@ import org.json.JSONObject;
 import org.njctl.courseapp.model.material.Handout;
 import org.njctl.courseapp.model.material.Topic;
 
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import android.os.Parcel;
@@ -23,10 +25,17 @@ import android.util.Log;
 @DatabaseTable
 public class Presentation
 {
-	protected String name;
-	protected Date lastUpdated;
+	@DatabaseField(id = true)
 	protected String id;
-	protected ArrayList<Topic> topics = new ArrayList<Topic>();
+	
+	@DatabaseField
+	protected String name;
+	
+	@DatabaseField
+	protected Date lastUpdated;
+	
+	@ForeignCollectionField(eager = true)
+	protected ForeignCollection<Topic> topics;
 	
 	@DatabaseField(canBeNull = false, foreign = true)
 	protected Unit unit;
@@ -43,6 +52,11 @@ public class Presentation
     Presentation()
     {
     	
+    }
+    
+    public Unit getUnit()
+    {
+    	return unit;
     }
 	
 	public boolean isDownloaded()
@@ -69,14 +83,23 @@ public class Presentation
 	
 	public static Presentation get(Unit unit, JSONObject json)
 	{
-		try {
-			if (checkJSON(json)) {
-				if (dao.idExists(json.getInt("ID"))) {
+		try
+		{
+			if (checkJSON(json))
+			{
+				if (dao.idExists(json.getInt("ID")))
+				{
 					Presentation content = dao.queryForId(json.getInt("ID"));
-					content.setProperties(json);
-					dao.update(content);
+					
+					if(content.setProperties(json))
+					{
+						dao.update(content);
+					}
+					
 					return content;
-				} else {
+				}
+				else
+				{
 					Presentation content = new Presentation(unit, json);
 					dao.create(content);
 
@@ -90,45 +113,52 @@ public class Presentation
 		}
 	}
 	
-	protected void setProperties(JSONObject json)
+	protected boolean setProperties(JSONObject json)
 	{
-		try{
-			name = json.getString("post_title");
-			/*
-			if(json.has("pdf_uri"))
+		try
+		{
+			String modified = json.getString("post_modified");
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+			Date newLastUpdated = df.parse(modified);
+			
+			// Check if Presentation is already up to date.
+			if(lastUpdated == null || newLastUpdated.after(lastUpdated))
 			{
-				url = json.getString("pdf_uri");
+				lastUpdated = newLastUpdated;
+				name = json.getString("post_title");
+				id = json.getString("ID");
+				
+				JSONArray topicsList = json.getJSONArray("chunks");
+				Log.v("NJCTLLOG", "                Looping through " + topicsList.length() + " topics in " + name + " presentation..");
+				
+				for(int i = 0; i < topicsList.length(); i++)
+				{
+					Topic topic = Topic.get(this, topicsList.getJSONObject(i));
+					topics.add(topic);
+				}
+				
+				return true;
 			}
 			else
 			{
-				Log.w("NJCTLLOG", "pdf_uri not found for presentation " + name);
-			}*/
-			
-			
-			String modified = json.getString("post_modified");
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-			lastUpdated = df.parse(modified);
-			
-			id = json.getString("ID");
-			
-			JSONArray topicsList = json.getJSONArray("chunks");
-			Log.v("NJCTLLOG", "                Looping through " + topicsList.length() + " topics in " + name + " presentation..");
-			
-			for(int i = 0; i < topicsList.length(); i++)
-			{
-				Topic topic = Topic.get(this, topicsList.getJSONObject(i));
-				topics.add(topic);
+				return false;
 			}
-			
 		}
 		catch(JSONException e)
 		{
 			Log.w("JSON ERR", "                " + e.toString());
+			return false;
 		}
 		catch (ParseException e)
 		{
 			Log.w("PARSE ERR", "                " + e.toString());
+			return false;
 		}
+	}
+	
+	public ArrayList<Topic> getTopics()
+	{
+		return new ArrayList<Topic>(topics);
 	}
 	
 	public Presentation(Unit theUnit, JSONObject json)

@@ -1,6 +1,7 @@
 package org.njctl.courseapp.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,7 +43,7 @@ public class Model implements AsyncStringResponse
 		Lab.setDao(dao6);
 		RuntimeExceptionDao<Presentation, Integer> dao7 = dbHelper.getRuntimeExceptionDao(Presentation.class);
 		Presentation.setDao(dao7);
-		RuntimeExceptionDao<Topic, Integer> dao8 = dbHelper.getRuntimeExceptionDao(Topic.class);
+		RuntimeExceptionDao<Topic, String> dao8 = dbHelper.getRuntimeExceptionDao(Topic.class);
 		Topic.setDao(dao8);
 	}
 	
@@ -80,7 +81,7 @@ public class Model implements AsyncStringResponse
 			Log.v(NJCTLLOG, "Looping through " + Integer.toString(results.length()) + " subjects...");
 			
 			RuntimeExceptionDao<Subject, Integer> dao = Subject.getDao();
-			//dao.g
+			List<Subject> oldSubjects = dao.queryForAll();
 			
 			for(int i = 0; i < results.length(); i++)
 			{
