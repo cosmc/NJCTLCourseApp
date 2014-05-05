@@ -37,6 +37,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper
 			Log.e(DatabaseHelper.class.getName(), "Can't create database", e);
 			throw new RuntimeException(e);
 		}
+		
+		//TODO close connectionSource.
+		
 		/*
 		// here we try inserting data in the on-create as a test
 		RuntimeExceptionDao<SimpleData, Integer> dao = getSimpleDataDao();

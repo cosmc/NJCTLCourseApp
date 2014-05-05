@@ -26,6 +26,9 @@ public class Model implements AsyncStringResponse
 	public Model(Context ctx)
 	{
 		dbHelper = OpenHelperManager.getHelper(ctx, DatabaseHelper.class);
+		
+		RuntimeExceptionDao<Subject, String> dao = dbHelper.getRuntimeExceptionDao(Subject.class);
+		Subject.setDao(dao);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -57,36 +60,16 @@ public class Model implements AsyncStringResponse
 		
 		try {
 			JSONObject json = new JSONObject(jsonString);
-			
-			
 			JSONArray results = json.getJSONObject("content").getJSONArray("pages");
 
 			Log.v(NJCTLLOG, "Looping through " + Integer.toString(results.length()) + " subjects...");
 			
-			//Dao<Subject, ?> dao = dbHelper.getDao(Subject.class);
-			RuntimeExceptionDao<Subject, String> dao = dbHelper.getRuntimeExceptionDao(Subject.class);
+			RuntimeExceptionDao<Subject, String> dao = Subject.getDao();
 			
 			for(int i = 0; i < results.length(); i++)
 			{
-				Subject subject = Subject.newInstance(results.getJSONObject(i));
-				
-				if(subject != null)
-				{
-					boolean idExists = dao.idExists(subject.getId());
-					
-					if(idExists)
-					{
-						Subject original = dao.queryForId(subject.getId());
-						
-						//TODO update orig based on values in subject.
-						subjects.add(original);
-					}
-					else
-					{
-						dao.create(subject);
-						subjects.add(subject);
-					}
-				}
+				Subject subject = Subject.get(results.getJSONObject(i));
+				subjects.add(subject);
 			}
 			
 			//TODO remove subjects that arent in the json anymore.
