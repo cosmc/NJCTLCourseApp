@@ -118,7 +118,7 @@ public class Handout extends Document
 
 	public Handout(Parcel in)
 	{
-		super(in);
+		//super(in);
 		// TODO Auto-generated constructor stub
 	}
 

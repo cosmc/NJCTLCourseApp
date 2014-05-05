@@ -114,7 +114,7 @@ public class Lab extends Document
 
 	public Lab(Parcel in)
 	{
-		super(in);
+		//super(in);
 		// TODO Auto-generated constructor stub
 	}
 

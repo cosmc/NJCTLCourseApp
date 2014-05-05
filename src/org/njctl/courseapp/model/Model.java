@@ -80,6 +80,7 @@ public class Model implements AsyncStringResponse
 			Log.v(NJCTLLOG, "Looping through " + Integer.toString(results.length()) + " subjects...");
 			
 			RuntimeExceptionDao<Subject, Integer> dao = Subject.getDao();
+			//dao.g
 			
 			for(int i = 0; i < results.length(); i++)
 			{
@@ -98,5 +99,14 @@ public class Model implements AsyncStringResponse
 		}
 		
 		retriever.useSubjects(subjects);
+	}
+	
+	protected void onDestroy()
+	{
+	    //super.onDestroy();
+	    if (dbHelper != null) {
+	        OpenHelperManager.releaseHelper();
+	        dbHelper = null;
+	    }
 	}
 }

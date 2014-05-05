@@ -41,22 +41,6 @@ public abstract class Document implements Parcelable
 	
 	private DocumentState state;
 	
-	public Document()
-	{
-		
-	}
-	
-	public Document(String name)
-	{
-		this.name = name;
-	}
-
-	public Document(String name, String relativePath)
-	{
-		this.name = name;
-		this.setPath(relativePath);
-	}
-
 	public boolean isDownloaded()
 	{
 		return this.relativePath != "";
@@ -142,7 +126,7 @@ public abstract class Document implements Parcelable
 	{
 		return 0;
 	}
-	
+	/*
 	public Document(Parcel in)
 	{
 		this.id = in.readString();
@@ -150,7 +134,7 @@ public abstract class Document implements Parcelable
 		this.relativePath = in.readString();
 		this.fileName = in.readString();
 		this.MIMEType = in.readString();
-	}
+	}*/
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags)

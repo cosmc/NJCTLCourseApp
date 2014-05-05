@@ -105,7 +105,7 @@ public class Topic extends Document
 	
 	public Topic(Parcel in)
 	{
-		super(in);
+		//super(in);
 		// TODO Auto-generated constructor stub
 	}
 	

@@ -118,7 +118,7 @@ public class Homework extends Document
 
 	public Homework(Parcel in)
 	{
-		super(in);
+		//super(in);
 		// TODO Auto-generated constructor stub
 	}
 

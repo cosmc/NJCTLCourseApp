@@ -1,19 +1,277 @@
 #
-# generated on 2014/05/02 05:51:40
+# generated on 2014/05/05 05:25:09
 #
 # --table-start--
-dataClass=org.njctl.courseapp.model.Subject
-tableName=subjects
+dataClass=org.njctl.courseapp.model.Unit
+tableName=unit
 # --table-fields-start--
 # --field-start--
+fieldName=id
+id=true
+# --field-end--
+# --field-start--
+fieldName=title
+# --field-end--
+# --field-start--
+fieldName=homeworks
+foreignCollection=true
+foreignCollectionEager=true
+# --field-end--
+# --field-start--
+fieldName=presentations
+foreignCollection=true
+foreignCollectionEager=true
+# --field-end--
+# --field-start--
+fieldName=labs
+foreignCollection=true
+foreignCollectionEager=true
+# --field-end--
+# --field-start--
+fieldName=handouts
+foreignCollection=true
+foreignCollectionEager=true
+# --field-end--
+# --field-start--
+fieldName=lastUpdate
+# --field-end--
+# --field-start--
+fieldName=theClass
+canBeNull=false
+foreign=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=org.njctl.courseapp.model.Presentation
+tableName=presentation
+# --table-fields-start--
+# --field-start--
+fieldName=unit
+canBeNull=false
+foreign=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=org.njctl.courseapp.model.Subject
+tableName=subject
+# --table-fields-start--
+# --field-start--
+fieldName=id
+id=true
+# --field-end--
+# --field-start--
 fieldName=name
-indexName=subjects_name_idx
 # --field-end--
 # --field-start--
 fieldName=title
 # --field-end--
 # --field-start--
 fieldName=lastUpdate
+# --field-end--
+# --field-start--
+fieldName=classes
+foreignCollection=true
+foreignCollectionEager=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=org.njctl.courseapp.model.Class
+tableName=class
+# --table-fields-start--
+# --field-start--
+fieldName=id
+id=true
+# --field-end--
+# --field-start--
+fieldName=title
+# --field-end--
+# --field-start--
+fieldName=units
+foreignCollection=true
+foreignCollectionEager=true
+# --field-end--
+# --field-start--
+fieldName=lastUpdate
+# --field-end--
+# --field-start--
+fieldName=subject
+canBeNull=false
+foreign=true
+# --field-end--
+# --field-start--
+fieldName=subscribed
+# --field-end--
+# --field-start--
+fieldName=downloaded
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=org.njctl.courseapp.model.material.Document
+tableName=document
+# --table-fields-start--
+# --field-start--
+fieldName=id
+# --field-end--
+# --field-start--
+fieldName=name
+# --field-end--
+# --field-start--
+fieldName=url
+# --field-end--
+# --field-start--
+fieldName=fileName
+# --field-end--
+# --field-start--
+fieldName=lastOpened
+# --field-end--
+# --field-start--
+fieldName=lastUpdated
+# --field-end--
+# --field-start--
+fieldName=numOpened
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=org.njctl.courseapp.model.material.Topic
+tableName=topic
+# --table-fields-start--
+# --field-start--
+fieldName=hash
+# --field-end--
+# --field-start--
+fieldName=presentation
+canBeNull=false
+foreign=true
+# --field-end--
+# --field-start--
+fieldName=id
+# --field-end--
+# --field-start--
+fieldName=name
+# --field-end--
+# --field-start--
+fieldName=url
+# --field-end--
+# --field-start--
+fieldName=fileName
+# --field-end--
+# --field-start--
+fieldName=lastOpened
+# --field-end--
+# --field-start--
+fieldName=lastUpdated
+# --field-end--
+# --field-start--
+fieldName=numOpened
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=org.njctl.courseapp.model.material.Homework
+tableName=homework
+# --table-fields-start--
+# --field-start--
+fieldName=unit
+canBeNull=false
+foreign=true
+# --field-end--
+# --field-start--
+fieldName=id
+# --field-end--
+# --field-start--
+fieldName=name
+# --field-end--
+# --field-start--
+fieldName=url
+# --field-end--
+# --field-start--
+fieldName=fileName
+# --field-end--
+# --field-start--
+fieldName=lastOpened
+# --field-end--
+# --field-start--
+fieldName=lastUpdated
+# --field-end--
+# --field-start--
+fieldName=numOpened
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=org.njctl.courseapp.model.material.Handout
+tableName=handout
+# --table-fields-start--
+# --field-start--
+fieldName=unit
+canBeNull=false
+foreign=true
+# --field-end--
+# --field-start--
+fieldName=id
+# --field-end--
+# --field-start--
+fieldName=name
+# --field-end--
+# --field-start--
+fieldName=url
+# --field-end--
+# --field-start--
+fieldName=fileName
+# --field-end--
+# --field-start--
+fieldName=lastOpened
+# --field-end--
+# --field-start--
+fieldName=lastUpdated
+# --field-end--
+# --field-start--
+fieldName=numOpened
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=org.njctl.courseapp.model.material.Lab
+tableName=lab
+# --table-fields-start--
+# --field-start--
+fieldName=unit
+canBeNull=false
+foreign=true
+# --field-end--
+# --field-start--
+fieldName=id
+# --field-end--
+# --field-start--
+fieldName=name
+# --field-end--
+# --field-start--
+fieldName=url
+# --field-end--
+# --field-start--
+fieldName=fileName
+# --field-end--
+# --field-start--
+fieldName=lastOpened
+# --field-end--
+# --field-start--
+fieldName=lastUpdated
+# --field-end--
+# --field-start--
+fieldName=numOpened
 # --field-end--
 # --table-fields-end--
 # --table-end--

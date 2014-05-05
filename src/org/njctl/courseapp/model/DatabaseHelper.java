@@ -1,6 +1,7 @@
 package org.njctl.courseapp.model;
 
 import org.njctl.courseapp.R;
+import org.njctl.courseapp.model.material.*;
 
 import java.sql.SQLException;
 
@@ -11,7 +12,6 @@ import android.util.Log;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import com.j256.ormlite.dao.Dao;
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper
 {
@@ -29,10 +29,18 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper
 	public void onCreate(SQLiteDatabase arg0, ConnectionSource arg1)
 	{
 		justCreated = true;
+		
 		try {
 			Log.i(DatabaseHelper.class.getName(), "onCreate");
 			// Do that for more
 			TableUtils.createTable(connectionSource, Subject.class);
+			TableUtils.createTable(connectionSource, Class.class);
+			TableUtils.createTable(connectionSource, Unit.class);
+			TableUtils.createTable(connectionSource, Handout.class);
+			TableUtils.createTable(connectionSource, Lab.class);
+			TableUtils.createTable(connectionSource, Homework.class);
+			TableUtils.createTable(connectionSource, Presentation.class);
+			TableUtils.createTable(connectionSource, Topic.class);
 		} catch (SQLException e) {
 			Log.e(DatabaseHelper.class.getName(), "Can't create database", e);
 			throw new RuntimeException(e);
@@ -71,9 +79,5 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper
 			Log.e(DatabaseHelper.class.getName(), "Can't drop databases", e);
 			throw new RuntimeException(e);
 		}
-	}
-	
-	public <T> Dao<T, Integer> getDao(T object) throws SQLException {
-		return getDao(object.getClass());
 	}
 }
