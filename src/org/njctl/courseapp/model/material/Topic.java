@@ -1,5 +1,9 @@
 package org.njctl.courseapp.model.material;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.njctl.courseapp.model.Class;
@@ -11,6 +15,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import android.os.Parcel;
+import android.support.v4.util.ArrayMap;
 import android.util.Log;
 
 @DatabaseTable
@@ -41,13 +46,21 @@ public class Topic extends Document
     public static Topic get(Presentation pres, JSONObject json)
 	{
 		try {
-			if (checkJSON(json)) {
-				if (dao.idExists(json.getInt("ID"))) {
-					Topic content = dao.queryForId(json.getInt("ID"));
+			if (checkJSON(json))
+			{
+				ArrayMap<String, Object> conditions = new ArrayMap<String, Object>();
+				conditions.put("presentation", pres);
+				List<Topic> results = dao.queryForFieldValues(conditions);
+				ArrayList<Topic> topics = new ArrayList<Topic>(results);
+				
+				if (topics.size() == 1) {
+					Topic content = topics.get(0);
 					content.setProperties(json);
 					dao.update(content);
 					return content;
-				} else {
+				}
+				else
+				{
 					Topic content = new Topic(pres, json);
 					dao.create(content);
 
