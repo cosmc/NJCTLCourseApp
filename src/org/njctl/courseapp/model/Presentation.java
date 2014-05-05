@@ -61,6 +61,11 @@ public class Presentation
 	
 	public boolean isDownloaded()
 	{
+		for(Topic topic : topics)
+		{
+			if(!topic.isDownloaded())
+				return false;
+		}
 		return true;
 	}
 	

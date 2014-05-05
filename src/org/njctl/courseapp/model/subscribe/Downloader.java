@@ -9,7 +9,7 @@ import org.njctl.courseapp.model.material.Handout;
 import org.njctl.courseapp.model.material.Homework;
 import org.njctl.courseapp.model.material.Lab;
 
-public class Downloader implements ClassDownloader, DownloadFinishListener<Unit>
+public class Downloader implements ClassDownloader, UnitDownloader, DownloadFinishListener<Unit>
 {
 	protected DownloadFinishListener<Class> listener;
 	protected Integer downloadingUnits = 0;
@@ -24,13 +24,13 @@ public class Downloader implements ClassDownloader, DownloadFinishListener<Unit>
 		{
 			Unit unit = units.get(i);
 			
-			downloadUnit(unit);
+			downloadUnit(unit, this);
 		}
 		
 		// TODO do stuff.
 	}
 	
-	protected void downloadUnit(Unit unit)
+	public void downloadUnit(Unit unit, DownloadFinishListener<Unit> listener)
 	{
 		downloadingUnits++;
 		
@@ -48,6 +48,4 @@ public class Downloader implements ClassDownloader, DownloadFinishListener<Unit>
 		// TODO Auto-generated method stub
 		
 	}
-
-
 }

@@ -33,6 +33,9 @@ public class Unit implements Parcelable
 	@DatabaseField
     private String title;
 	
+	@DatabaseField
+    protected boolean subscribed = false;
+	
 	@ForeignCollectionField(eager = true)
     private ForeignCollection<Homework> homeworks;
 	
@@ -246,6 +249,11 @@ public class Unit implements Parcelable
     {
     	theClass = theKlass;
     	setProperties(json);
+    }
+    
+    public Class getCTLClass()
+    {
+    	return theClass;
     }
     
     // Mandatory Parcelable constructor.
