@@ -14,6 +14,10 @@ import org.njctl.courseapp.model.material.Handout;
 import org.njctl.courseapp.model.material.Homework;
 import org.njctl.courseapp.model.material.Lab;
 
+import com.j256.ormlite.dao.RuntimeExceptionDao;
+import com.j256.ormlite.dao.ForeignCollection;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import android.os.Parcel;
@@ -21,73 +25,126 @@ import android.os.Parcelable;
 import android.util.Log;
 
 @DatabaseTable
-public class Unit implements Parcelable {
+public class Unit implements Parcelable
+{
+	@DatabaseField(id = true)
+    private String id;
 	
-    private String chapterId;
-    private String chapterTitle;
-    private ArrayList<Homework> homeworks = new ArrayList<Homework>();
-    private ArrayList<Presentation> presentations = new ArrayList<Presentation>();
-    private ArrayList<Lab> labs = new ArrayList<Lab>();
-    private ArrayList<Handout> handouts = new ArrayList<Handout>();
+	@DatabaseField
+    private String title;
+	
+	@ForeignCollectionField(eager = true)
+    private ForeignCollection<Homework> homeworks;
+	
+	@ForeignCollectionField(eager = true)
+    private ForeignCollection<Presentation> presentations;
+	
+	@ForeignCollectionField(eager = true)
+    private ForeignCollection<Lab> labs;
+	
+	@ForeignCollectionField(eager = true)
+    private ForeignCollection<Handout> handouts;
+    
+    @DatabaseField
     private Date lastUpdate;
+    
+    @DatabaseField(canBeNull = false, foreign = true)
+    protected Class theClass;
+    
     protected final static String HW = "homework", PRES = "presentations", HANDOUT = "handouts", LABS = "labs";
+    
+    private static RuntimeExceptionDao<Unit, Integer> dao;
 
-    public Unit(String id, String title) {
-    	this.chapterId = id;
-        this.chapterTitle = title;
+	public static void setDao(RuntimeExceptionDao<Unit, Integer> newDao)
+	{
+		if (dao == null)
+			dao = newDao;
+	}
+	
+	// For ORM.
+    Unit()
+    {
+    	
     }
     
     public boolean isDownloaded()
     {
-    	for(int i = 0; i < homeworks.size(); i++)
+    	for(Homework content : homeworks)
     	{
-    		if(!homeworks.get(i).isDownloaded())
+    		if(!content.isDownloaded())
     			return false;
     	}
-    	for(int i = 0; i < presentations.size(); i++)
+    	for(Presentation content : presentations)
     	{
-    		if(!presentations.get(i).isDownloaded())
+    		if(!content.isDownloaded())
     			return false;
     	}
-    	for(int i = 0; i < labs.size(); i++)
+    	for(Lab content : labs)
     	{
-    		if(!labs.get(i).isDownloaded())
+    		if(!content.isDownloaded())
     			return false;
     	}
-    	for(int i = 0; i < handouts.size(); i++)
+    	for(Handout content : handouts)
     	{
-    		if(!handouts.get(i).isDownloaded())
+    		if(!content.isDownloaded())
     			return false;
     	}
+
     	return true;
     }
     
     public ArrayList<Homework> getHomeworks()
     {
-    	return homeworks;
+    	return new ArrayList<Homework>(homeworks);
     }
     
     public ArrayList<Presentation> getPresentations()
     {
-    	return presentations;
+    	return new ArrayList<Presentation>(presentations);
     }
     
     public ArrayList<Lab> getLabs()
     {
-    	return labs;
+    	return new ArrayList<Lab>(labs);
     }
     
     public ArrayList<Handout> getHandouts()
     {
-    	return handouts;
+    	return new ArrayList<Handout>(handouts);
     }
     
-    public static Unit newInstance(JSONObject json)
-    {
-    	String name = "";
-    	try
-    	{
-    		name = json.getString("post_title");
+    public static Unit get(Class theClass, JSONObject json)
+	{
+		try {
+			if (checkJSON(json)) {
+				if (dao.idExists(json.getInt("ID"))) {
+					Unit content = dao.queryForId(json.getInt("ID"));
+					content.setProperties(json);
+					dao.update(content);
+					return content;
+				} else {
+					Unit content = new Unit(theClass, json);
+					dao.create(content);
+
+					return content;
+				}
+			} else {
+				return null;
+			}
+		} catch (Exception e) { // never executed..
+			return null;
+		}
+	}
+    
+    protected static boolean checkJSON(JSONObject json)
+	{
+		try {
+			json.getString("ID");
+			json.getString("post_name");
+			json.getString("post_modified");
+			json.getJSONObject("content").getJSONArray("pages");
+			
+			json.getString("post_title");
     		
     		JSONObject content = json.getJSONObject("content");
     		
@@ -96,21 +153,18 @@ public class Unit implements Parcelable {
     			//Throws exception
     			content.getJSONArray("presentations");
     		}
-    		
-    		return new Unit(json);
-    	}
-    	catch(JSONException e)
-    	{
-    		if(name != "") name = " for " + name;
-    		Log.w("NJCTLLOG", "            unit contents" + name + " not found...");
-    		return null;
-    	}
-    }
+
+			return true;
+		} catch (JSONException e) {
+			Log.w("NJCTLLOG", "    Unit contents not found...");
+			return false;
+		}
+	}
     
-    public Unit(JSONObject json)
-    {
+    protected void setProperties(JSONObject json)
+	{
     	try {
-			chapterTitle = json.getString("post_title");
+			title = json.getString("post_title");
 			
 			String modified = json.getString("post_modified");
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
@@ -125,7 +179,8 @@ public class Unit implements Parcelable {
 				
 				for(int i = 0; i < homeworkList.length(); i++)
 				{
-					homeworks.add(new Homework(homeworkList.getJSONObject(i)));
+					Homework hw = Homework.get(this, homeworkList.getJSONObject(i));
+					homeworks.add(hw);
 				}
 			}
 			
@@ -136,7 +191,7 @@ public class Unit implements Parcelable {
 				
 				for(int i = 0; i < presentationList.length(); i++)
 				{
-					Presentation presentation = Presentation.newInstance(presentationList.getJSONObject(i));
+					Presentation presentation = Presentation.get(this, presentationList.getJSONObject(i));
 					
 					if(presentation != null)
 					{
@@ -152,7 +207,7 @@ public class Unit implements Parcelable {
 				
 				for(int i = 0; i < labList.length(); i++)
 				{
-					Lab lab = Lab.newInstance(labList.getJSONObject(i));
+					Lab lab = Lab.get(this, labList.getJSONObject(i));
 					
 					if(lab != null)
 					{
@@ -163,12 +218,12 @@ public class Unit implements Parcelable {
 			
 			if(content.has(HANDOUT))
 			{
-				JSONArray labList = content.getJSONArray(HANDOUT);
-				Log.v("NJCTLLOG", "            Looping through " + Integer.toString(labList.length()) + " handouts...");
+				JSONArray handoutList = content.getJSONArray(HANDOUT);
+				Log.v("NJCTLLOG", "            Looping through " + Integer.toString(handoutList.length()) + " handouts...");
 				
-				for(int i = 0; i < labList.length(); i++)
+				for(int i = 0; i < handoutList.length(); i++)
 				{
-					Handout handout = Handout.newInstance(labList.getJSONObject(i));
+					Handout handout = Handout.get(this, handoutList.getJSONObject(i));
 					
 					if(handout != null)
 					{
@@ -185,6 +240,12 @@ public class Unit implements Parcelable {
 			e.printStackTrace();
 			Log.w("JSON ERR", e.toString());
 		}
+	}
+    
+    public Unit(Class theKlass, JSONObject json)
+    {
+    	theClass = theKlass;
+    	setProperties(json);
     }
     
     // Mandatory Parcelable constructor.
@@ -193,11 +254,11 @@ public class Unit implements Parcelable {
     }
     
 	public String getId() {
-    	return chapterId;
+    	return id;
     }
     
     public String getTitle() {
-    	return chapterTitle;
+    	return title;
     }
     
     // Mandatory Parcelable methods.
@@ -209,20 +270,20 @@ public class Unit implements Parcelable {
     
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-    	dest.writeString(chapterId);
-    	dest.writeString(chapterTitle);
+    	dest.writeString(id);
+    	dest.writeString(title);
     	dest.writeParcelableArray(homeworks.toArray(new Homework[homeworks.size()]), 0);
     	//dest.writeParcelableArray(presentations.toArray(new Presentation[presentations.size()]), 0);
     	//dest.writeParcelableArray(contents.toArray(new NJCTLDocList[contents.size()]), 0);
     }
 
     private void readFromParcel(Parcel in) {
-    	this.chapterId = in.readString();
-    	this.chapterTitle = in.readString();
-    	this.homeworks = new ArrayList<Homework>();
+    	this.id = in.readString();
+    	this.title = in.readString();
+    	/*this.homeworks = new ArrayList<Homework>();
     	in.readList(this.homeworks, Homework.class.getClassLoader());
     	this.presentations = new ArrayList<Presentation>();
-        in.readList(this.presentations, Presentation.class.getClassLoader());
+        in.readList(this.presentations, Presentation.class.getClassLoader());*/
     }
     
     public static final Parcelable.Creator<Unit> CREATOR = new Parcelable.Creator<Unit>() {

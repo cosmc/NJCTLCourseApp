@@ -3,6 +3,7 @@ package org.njctl.courseapp.model;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
 
@@ -24,6 +25,9 @@ import android.util.Log;
 public class Subject implements Parcelable
 {
 	@DatabaseField(id = true)
+	private Integer id;
+	
+	@DatabaseField
 	private String name;
 
 	@DatabaseField
@@ -39,38 +43,37 @@ public class Subject implements Parcelable
 	private int bigSideColorBarResource = 0;
 	private int smallSideColorBarResource = 0;
 	
-	private static RuntimeExceptionDao<Subject, String> dao;
+	private static RuntimeExceptionDao<Subject, Integer> dao;
 
-	public static void setDao(RuntimeExceptionDao<Subject, String> newDao)
+	public static void setDao(RuntimeExceptionDao<Subject, Integer> newDao)
 	{
 		if (dao == null)
 			dao = newDao;
 	}
 
-	public static RuntimeExceptionDao<Subject, String> getDao()
+	public static RuntimeExceptionDao<Subject, Integer> getDao()
 	{
 		return dao;
 	}
 
+	// For ORM.
 	Subject()
 	{
 
 	}
 
-	public String getId()
+	public Integer getId()
 	{
-		return name;
+		return id;
 	}
 
 	public static Subject get(JSONObject json)
 	{
 		try {
 			if (checkJSON(json)) {
-				if (dao.idExists(json.getString("ID"))) {
-					Subject subject = dao.queryForId(json.getString("ID"));
-
-					// TODO update subject based on values in JSON.
-
+				if (dao.idExists(json.getInt("ID"))) {
+					Subject subject = dao.queryForId(json.getInt("ID"));
+					subject.setProperties(json);
 					dao.update(subject);
 					return subject;
 				} else {
@@ -87,10 +90,11 @@ public class Subject implements Parcelable
 		}
 	}
 
-	private static boolean checkJSON(JSONObject json)
+	protected static boolean checkJSON(JSONObject json)
 	{
 		try {
 			json.getString("ID");
+			json.getString("post_name");
 			json.getString("post_modified");
 			json.getJSONObject("content").getJSONArray("pages");
 
@@ -101,18 +105,16 @@ public class Subject implements Parcelable
 		}
 	}
 
-	public static Subject newInstance(JSONObject json)
-	{
-		if (checkJSON(json)) {
-			return new Subject(json);
-		} else {
-			return null;
-		}
-	}
-
 	public Subject(JSONObject json)
 	{
+		setProperties(json);
+	}
+	
+	protected void setProperties(JSONObject json)
+	{
 		try {
+			id = json.getInt("ID");
+			name = json.getString("post_name");
 			title = json.getString("post_title");
 
 			String modified = json.getString("post_modified");
@@ -122,10 +124,12 @@ public class Subject implements Parcelable
 			JSONArray classList = json.getJSONObject("content").getJSONArray("pages");
 			Log.v("NJCTLLOG", "    Looping through " + Integer.toString(classList.length()) + " classes...");
 
+			//TODO account for existing classes that have been deleted out of the json.
 			for (int i = 0; i < classList.length(); i++) {
-				Class theClass = Class.newInstance(this, classList.getJSONObject(i));
+				Class theClass = Class.get(this, classList.getJSONObject(i));
 
-				if (theClass != null) {
+				if (theClass != null && !classes.contains(theClass))
+				{
 					classes.add(theClass);
 				}
 			}

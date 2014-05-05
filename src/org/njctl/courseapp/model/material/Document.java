@@ -4,6 +4,8 @@ import java.util.Date;
 
 import org.njctl.courseapp.model.DocumentState;
 
+import com.j256.ormlite.field.DatabaseField;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -11,15 +13,30 @@ import android.os.Parcelable;
 
 public abstract class Document implements Parcelable
 {
+	@DatabaseField
 	protected String id;
+	
+	@DatabaseField
 	protected String name;
+	
 	protected String relativePath; // The path to the document, relative to the
 									// app's assets folder.
+	
+	@DatabaseField
 	protected String url;
+	
+	@DatabaseField
 	protected String fileName;
-	protected String MIMEType;
+	
+	@DatabaseField
 	protected Date lastOpened;
+	
+	@DatabaseField
 	protected Date lastUpdated;
+	
+	protected String MIMEType = "application/pdf";
+	
+	@DatabaseField
 	protected Integer numOpened = 0;
 	
 	private DocumentState state;
@@ -61,13 +78,13 @@ public abstract class Document implements Parcelable
 
 		// Set the MIME type!
 		// TODO: Handle more types.
-		if (extension.equals("pdf")) {
+		/*if (extension.equals("pdf")) {
 			this.MIMEType = "application/pdf";
 		} else if (extension.equals("xlsx")) {
 			this.MIMEType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 		} else if (extension.equals(".docx")) {
 			this.MIMEType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-		}
+		}*/
 	}
 
 	public String getId()

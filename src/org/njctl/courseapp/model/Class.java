@@ -14,6 +14,10 @@ import org.njctl.courseapp.model.subscribe.ClassDownloader;
 import org.njctl.courseapp.model.subscribe.DownloadFinishListener;
 import org.njctl.courseapp.model.subscribe.Downloader;
 
+import com.j256.ormlite.dao.RuntimeExceptionDao;
+import com.j256.ormlite.dao.ForeignCollection;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import android.os.Parcel;
@@ -21,37 +25,57 @@ import android.os.Parcelable;
 import android.util.Log;
 
 @DatabaseTable
-public class Class implements Parcelable, DownloadFinishListener<Class> {
+public class Class implements Parcelable, DownloadFinishListener<Class>
+{
+	@DatabaseField(id = true)
+	protected int id;
 	
-	protected int classId;
-    protected String classTitle;
-    protected ArrayList<Unit> units = new ArrayList<Unit>();
+	@DatabaseField
+    protected String title;
+	
+	@ForeignCollectionField(eager = true)
+    protected ForeignCollection<Unit> units;
+    
+    @DatabaseField
     protected Date lastUpdate;
+    
+    @DatabaseField(canBeNull = false, foreign = true)
     protected Subject subject;
+    
+    @DatabaseField
     protected boolean subscribed = false;
+    
+    @DatabaseField
     protected boolean downloaded = false;
-    protected DownloadFinishListener<Class> downloadListener;
+    
+    private static RuntimeExceptionDao<Class, Integer> dao;
 
-    public Class(String name, ArrayList<Unit> unitList) {
-        this.classTitle = name;
-        this.units = unitList;
+	public static void setDao(RuntimeExceptionDao<Class, Integer> newDao)
+	{
+		if (dao == null)
+			dao = newDao;
+	}
+    
+    protected DownloadFinishListener<Class> downloadListener;
+    
+    // For ORM.
+    Class()
+    {
+    	
     }
     
     public boolean isDownloaded()
     {
-    	//return true;
-    	//return downloaded;
-    	
-    	for(int i = 0; i < units.size(); i++)
+    	for(Unit unit : units)
     	{
-    		if(!units.get(i).isDownloaded())
+    		if(!unit.isDownloaded())
     			return false;
     	}
     	return true;
     }
     
     public Class(String name) {
-        this.classTitle = name;
+        this.title = name;
     }
     
     public void subscribe(DownloadFinishListener<Class> listener)
@@ -64,7 +88,7 @@ public class Class implements Parcelable, DownloadFinishListener<Class> {
     
     public ArrayList<Unit> getUnits()
     {
-    	return units;
+    	return new ArrayList<Unit>(units);
     }
     
 	public void onClassDownloaded(Class theClass)
@@ -77,39 +101,55 @@ public class Class implements Parcelable, DownloadFinishListener<Class> {
 			downloadListener.onClassDownloaded(this);
 		}
 	}
+	
+	public static Class get(Subject subject, JSONObject json)
+	{
+		try {
+			if (checkJSON(json)) {
+				if (dao.idExists(json.getInt("ID"))) {
+					Class content = dao.queryForId(json.getInt("ID"));
+					content.setProperties(json);
+					dao.update(content);
+					return content;
+				} else {
+					Class content = new Class(subject, json);
+					dao.create(content);
+
+					return content;
+				}
+			} else {
+				return null;
+			}
+		} catch (Exception e) { // never executed..
+			return null;
+		}
+	}
     
-    public static Class newInstance(Subject subject, JSONObject json)
-    {
-    	String classTitle = "";
-    	
-    	try
-    	{
-    		classTitle = json.getString("post_title");
-    		
-    		json.getJSONObject("content").getJSONArray("pages");
-    		
-    		return new Class(subject, json);
-    	}
-    	catch(JSONException e)
-    	{
-    		if(classTitle != "")
-    		{
-    			classTitle = " for class " + classTitle;
-    		}
-    		
-    		Log.w("NJCTLLOG", "        class contents" + classTitle + " not found...");
-    		return null;
-    	}
-    }
+    protected static boolean checkJSON(JSONObject json)
+	{
+		try {
+			json.getString("ID");
+			json.getString("post_name");
+			json.getString("post_modified");
+			json.getJSONObject("content").getJSONArray("pages");
+
+			return true;
+		} catch (JSONException e) {
+			Log.w("NJCTLLOG", "    class contents not found...");
+			return false;
+		}
+	}
     
     public Class(Subject subject, JSONObject json)
     {
     	this.subject = subject;
     	
-    	//Log.v("NJCTLLOG", json.toString());
-    	
+    	setProperties(json);
+    }
+    protected void setProperties(JSONObject json)
+	{
     	try {
-    		classTitle = json.getString("post_title");
+    		title = json.getString("post_title");
     		
 			String modified = json.getString("post_modified");
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
@@ -120,7 +160,7 @@ public class Class implements Parcelable, DownloadFinishListener<Class> {
 			
 			for(int i = 0; i < unitList.length(); i++)
 			{
-				Unit unit = Unit.newInstance(unitList.getJSONObject(i));
+				Unit unit = Unit.get(this, unitList.getJSONObject(i));
 				
 				if(unit != null)
 				{
@@ -136,7 +176,7 @@ public class Class implements Parcelable, DownloadFinishListener<Class> {
 		{
 			Log.w("JSON ERR", e.toString());
 		}
-    }
+	}
     
     public Subject getSubject()
     {
@@ -154,15 +194,15 @@ public class Class implements Parcelable, DownloadFinishListener<Class> {
     }
     
     public String getTitle() {
-    	return classTitle;
+    	return title;
     }
     
     public int getId() {
-    	return classId;
+    	return id;
     }
     
     public ArrayList<Unit> getContents() {
-    	return units;
+    	return getUnits();
     }
     
     
@@ -175,16 +215,17 @@ public class Class implements Parcelable, DownloadFinishListener<Class> {
     
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-    	dest.writeInt(classId);
-    	dest.writeString(classTitle);
+    	dest.writeInt(id);
+    	dest.writeString(title);
     	dest.writeParcelableArray(units.toArray(new Unit[units.size()]), 0);
     }
     
     private void readFromParcel(Parcel in) {
-    	classId = in.readInt();
-    	classTitle = in.readString();
-    	units = new ArrayList<Unit>();
-        in.readList(units, Unit.class.getClassLoader());
+    	id = in.readInt();
+    	title = in.readString();
+    	//TODO deal with foreigncollection and parcel
+    	/*units = new ArrayList<Unit>();
+        in.readList(units, Unit.class.getClassLoader());*/
     }
     
     public static final Parcelable.Creator<Class> CREATOR = new Parcelable.Creator<Class>() {

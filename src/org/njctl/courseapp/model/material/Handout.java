@@ -7,7 +7,11 @@ import java.util.Locale;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.njctl.courseapp.model.Class;
+import org.njctl.courseapp.model.Unit;
 
+import com.j256.ormlite.dao.RuntimeExceptionDao;
+import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import android.os.Parcel;
@@ -16,12 +20,65 @@ import android.util.Log;
 @DatabaseTable
 public class Handout extends Document
 {
-	public static Handout newInstance(JSONObject json)
+	@DatabaseField(canBeNull = false, foreign = true)
+	protected Unit unit;
+	
+	private static RuntimeExceptionDao<Handout, Integer> dao;
+
+	public static void setDao(RuntimeExceptionDao<Handout, Integer> newDao)
 	{
-		return new Handout(json);
+		if (dao == null)
+			dao = newDao;
 	}
 	
-	public Handout(JSONObject json)
+	// For ORM.
+    Handout()
+    {
+    	
+    }
+	
+	public static Handout get(Unit unit, JSONObject json)
+	{
+		try {
+			if (checkJSON(json)) {
+				if (dao.idExists(json.getInt("ID"))) {
+					Handout content = dao.queryForId(json.getInt("ID"));
+					content.setProperties(json);
+					dao.update(content);
+					return content;
+				} else {
+					Handout content = new Handout(unit, json);
+					dao.create(content);
+
+					return content;
+				}
+			} else {
+				return null;
+			}
+		} catch (Exception e) { // never executed..
+			return null;
+		}
+	}
+	
+	protected static boolean checkJSON(JSONObject json)
+	{
+		try {
+			json.getString("ID");
+			json.getString("post_name");
+			json.getString("post_modified");
+			json.getString("pdf_uri");
+			
+			json.getString("post_title");
+    		
+
+			return true;
+		} catch (JSONException e) {
+			Log.w("NJCTLLOG", "    Handout contents not found...");
+			return false;
+		}
+	}
+	
+	protected void setProperties(JSONObject json)
 	{
 		try{
 			name = json.getString("post_title");
@@ -49,6 +106,13 @@ public class Handout extends Document
 		{
 			Log.w("PARSE ERR", e.toString());
 		}
+	}
+	
+	public Handout(Unit theUnit, JSONObject json)
+	{
+		unit = theUnit;
+		
+		setProperties(json);
 	}
 	
 

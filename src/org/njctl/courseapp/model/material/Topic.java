@@ -2,8 +2,12 @@ package org.njctl.courseapp.model.material;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.njctl.courseapp.model.Class;
 import org.njctl.courseapp.model.Presentation;
+import org.njctl.courseapp.model.Unit;
 
+import com.j256.ormlite.dao.RuntimeExceptionDao;
+import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import android.os.Parcel;
@@ -12,19 +16,73 @@ import android.util.Log;
 @DatabaseTable
 public class Topic extends Document
 {
-	private String hash;
-	//private Document doc;
-	private Integer size;
-	protected Presentation presentation;
+	private static RuntimeExceptionDao<Topic, Integer> dao;
 	
-	public Topic(Presentation presentation, String id, JSONObject json)
+	@DatabaseField
+	private String hash;
+	
+	private Integer size;
+	
+	@DatabaseField(canBeNull = false, foreign = true)
+	protected Presentation presentation;
+
+	public static void setDao(RuntimeExceptionDao<Topic, Integer> newDao)
 	{
-		try{
+		if (dao == null)
+			dao = newDao;
+	}
+	
+	// For ORM.
+    Topic()
+    {
+    	
+    }
+    
+    public static Topic get(Presentation pres, JSONObject json)
+	{
+		try {
+			if (checkJSON(json)) {
+				if (dao.idExists(json.getInt("ID"))) {
+					Topic content = dao.queryForId(json.getInt("ID"));
+					content.setProperties(json);
+					dao.update(content);
+					return content;
+				} else {
+					Topic content = new Topic(pres, json);
+					dao.create(content);
+
+					return content;
+				}
+			} else {
+				return null;
+			}
+		} catch (Exception e) { // never executed..
+			return null;
+		}
+	}
+    
+    protected static boolean checkJSON(JSONObject json)
+	{
+		try {
+			json.getString("label");
+			json.getString("pdf_uri");
+			json.getString("pdf_md5");
+    		
+
+			return true;
+		} catch (JSONException e) {
+			Log.w("NJCTLLOG", "                Topic contents not found...");
+			return false;
+		}
+	}
+    
+    protected void setProperties(JSONObject json)
+    {
+    	try{
 			name = json.getString("label");
 			url = json.getString("pdf_uri");
 			hash = json.getString("pdf_md5");
-			this.id = id;
-			this.presentation = presentation;
+			
 			//size = json.getString("size");
 			/*
 			String modified = json.getString("mtime");
@@ -38,6 +96,11 @@ public class Topic extends Document
 		{
 			Log.w("JSON ERR", "                " + e.toString());
 		}
+    }
+    
+	public Topic(Presentation pres, JSONObject json)
+	{
+		presentation = pres;
 	}
 	
 	public Topic(Parcel in)

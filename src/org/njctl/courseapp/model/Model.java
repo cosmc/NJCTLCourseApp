@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.njctl.courseapp.model.useful.Tripel;
+import org.njctl.courseapp.model.material.*;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
@@ -27,8 +28,22 @@ public class Model implements AsyncStringResponse
 	{
 		dbHelper = OpenHelperManager.getHelper(ctx, DatabaseHelper.class);
 		
-		RuntimeExceptionDao<Subject, String> dao = dbHelper.getRuntimeExceptionDao(Subject.class);
-		Subject.setDao(dao);
+		RuntimeExceptionDao<Subject, Integer> dao1 = dbHelper.getRuntimeExceptionDao(Subject.class);
+		Subject.setDao(dao1);
+		RuntimeExceptionDao<Class, Integer> dao2 = dbHelper.getRuntimeExceptionDao(Class.class);
+		Class.setDao(dao2);
+		RuntimeExceptionDao<Unit, Integer> dao3 = dbHelper.getRuntimeExceptionDao(Unit.class);
+		Unit.setDao(dao3);
+		RuntimeExceptionDao<Handout, Integer> dao4 = dbHelper.getRuntimeExceptionDao(Handout.class);
+		Handout.setDao(dao4);
+		RuntimeExceptionDao<Homework, Integer> dao5 = dbHelper.getRuntimeExceptionDao(Homework.class);
+		Homework.setDao(dao5);
+		RuntimeExceptionDao<Lab, Integer> dao6 = dbHelper.getRuntimeExceptionDao(Lab.class);
+		Lab.setDao(dao6);
+		RuntimeExceptionDao<Presentation, Integer> dao7 = dbHelper.getRuntimeExceptionDao(Presentation.class);
+		Presentation.setDao(dao7);
+		RuntimeExceptionDao<Topic, Integer> dao8 = dbHelper.getRuntimeExceptionDao(Topic.class);
+		Topic.setDao(dao8);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -64,7 +79,7 @@ public class Model implements AsyncStringResponse
 
 			Log.v(NJCTLLOG, "Looping through " + Integer.toString(results.length()) + " subjects...");
 			
-			RuntimeExceptionDao<Subject, String> dao = Subject.getDao();
+			RuntimeExceptionDao<Subject, Integer> dao = Subject.getDao();
 			
 			for(int i = 0; i < results.length(); i++)
 			{

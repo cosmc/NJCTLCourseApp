@@ -10,8 +10,11 @@ import java.util.Locale;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.njctl.courseapp.model.material.Handout;
 import org.njctl.courseapp.model.material.Topic;
 
+import com.j256.ormlite.dao.RuntimeExceptionDao;
+import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import android.os.Parcel;
@@ -25,45 +28,69 @@ public class Presentation
 	protected String id;
 	protected ArrayList<Topic> topics = new ArrayList<Topic>();
 	
-	public Presentation(Parcel in)
-	{
+	@DatabaseField(canBeNull = false, foreign = true)
+	protected Unit unit;
+	
+	private static RuntimeExceptionDao<Presentation, Integer> dao;
 
+	public static void setDao(RuntimeExceptionDao<Presentation, Integer> newDao)
+	{
+		if (dao == null)
+			dao = newDao;
 	}
+	
+	// For ORM.
+    Presentation()
+    {
+    	
+    }
 	
 	public boolean isDownloaded()
 	{
 		return true;
 	}
 	
-	public static Presentation newInstance(JSONObject json)
+	protected static boolean checkJSON(JSONObject json)
 	{
-		String presentationTitle = "";
-		String date = "";
-		String reason = "";
-		
-		try{
-			presentationTitle = json.getString("post_title");
-			date = json.getString("post_modified");
+		try {
 			json.getString("ID");
+			json.getString("post_name");
+			json.getString("post_modified");
+			json.getString("post_title");
+    		
 			json.getJSONArray("chunks");
-			
-			return new Presentation(json);
+
+			return true;
+		} catch (JSONException e) {
+			Log.w("NJCTLLOG", "                Presentation contents not found...");
+			return false;
 		}
-		catch(JSONException e)
-		{
-			if(presentationTitle != "")
-    		{
-				presentationTitle = " for " + presentationTitle;
-    		}
-			if(date != "" && presentationTitle != "")
-				reason = " because no chunks (topics) were found.";
-			
-			Log.w("NJCTLLOG", "                presentation contents not found" + presentationTitle + reason);
+	}
+	
+	public static Presentation get(Unit unit, JSONObject json)
+	{
+		try {
+			if (checkJSON(json)) {
+				if (dao.idExists(json.getInt("ID"))) {
+					Presentation content = dao.queryForId(json.getInt("ID"));
+					content.setProperties(json);
+					dao.update(content);
+					return content;
+				} else {
+					Presentation content = new Presentation(unit, json);
+					dao.create(content);
+
+					return content;
+				}
+			} else {
+				return null;
+			}
+		} catch (Exception e) { // never executed..
 			return null;
 		}
 	}
 	
-	public Presentation(JSONObject json)
+	protected void setProperties(JSONObject json)
 	{
 		try{
 			name = json.getString("post_title");
@@ -89,7 +116,8 @@ public class Presentation
 			
 			for(int i = 0; i < topicsList.length(); i++)
 			{
-				topics.add(new Topic(this, id, topicsList.getJSONObject(i)));
+				Topic topic = Topic.get(this, topicsList.getJSONObject(i));
+				topics.add(topic);
 			}
 			
 		}
@@ -101,6 +129,11 @@ public class Presentation
 		{
 			Log.w("PARSE ERR", "                " + e.toString());
 		}
+	}
+	
+	public Presentation(Unit theUnit, JSONObject json)
+	{
+		unit = theUnit;
 	}
 
 }
