@@ -110,6 +110,16 @@ public class Subject implements Parcelable
 		setProperties(json);
 	}
 	
+	public void delete()
+	{
+		for(Class theClass : classes)
+		{
+			theClass.unsubscribe();
+		}
+		
+		dao.delete(this);
+	}
+	
 	protected void setProperties(JSONObject json)
 	{
 		try {

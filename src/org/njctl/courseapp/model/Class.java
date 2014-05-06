@@ -74,16 +74,63 @@ public class Class implements Parcelable, DownloadFinishListener<Class>
     	return true;
     }
     
-    public Class(String name) {
-        this.title = name;
+    public boolean isPartiallyDownloaded()
+    {
+    	for(Unit unit : units)
+    	{
+    		if(unit.isDownloaded())
+    			return true;
+    	}
+    	return false;
     }
     
-    public void subscribe(DownloadFinishListener<Class> listener)
+    public void subscribe()
     {
     	subscribed = true;
     	
+    	for(Unit unit : units)
+    	{
+    		unit.subscribe();
+    	}
+    }
+    
+    public void download(DownloadFinishListener<Class> listener)
+    {
     	ClassDownloader dl = new Downloader();
     	dl.downloadClass(this, this);
+    }
+    
+    public boolean isSubscribed()
+    {
+    	return subscribed;
+    }
+    
+    public boolean isPartiallySubscribed()
+    {
+    	for(Unit unit : units)
+    	{
+    		if(unit.isSubscribed())
+    			return true;
+    	}
+    	return false;
+    }
+    
+    public void delete()
+    {
+    	for(Unit unit : units)
+    	{
+    		unit.delete();
+    	}
+    }
+    
+    public void unsubscribe()
+    {
+    	subscribed = false;
+    	
+    	for(Unit unit : units)
+    	{
+    		unit.unsubscribe();
+    	}
     }
     
     public ArrayList<Unit> getUnits()
@@ -91,14 +138,14 @@ public class Class implements Parcelable, DownloadFinishListener<Class>
     	return new ArrayList<Unit>(units);
     }
     
-	public void onClassDownloaded(Class theClass)
+	public void onDownloaded(Class theClass)
 	{
 		//TODO: Check md5 sums.
 		downloaded = true;
 		
 		if(downloadListener != null)
 		{
-			downloadListener.onClassDownloaded(this);
+			downloadListener.onDownloaded(this);
 		}
 	}
 	
@@ -165,6 +212,8 @@ public class Class implements Parcelable, DownloadFinishListener<Class>
 				if(unit != null)
 				{
 					units.add(unit);
+					if (subscribed)
+						unit.subscribe();
 				}
 			}
 			

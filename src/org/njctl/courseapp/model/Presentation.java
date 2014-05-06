@@ -22,6 +22,8 @@ import com.j256.ormlite.table.DatabaseTable;
 import android.os.Parcel;
 import android.util.Log;
 
+//TODO extends Document?!
+
 @DatabaseTable
 public class Presentation
 {
@@ -72,15 +74,18 @@ public class Presentation
 	protected static boolean checkJSON(JSONObject json)
 	{
 		try {
-			json.getString("ID");
+			json.getInt("ID");
+			json.getString("post_title");
 			json.getString("post_name");
 			json.getString("post_modified");
-			json.getString("post_title");
-    		
+			
+			//TODO account for presentations without chunks
 			json.getJSONArray("chunks");
 
 			return true;
-		} catch (JSONException e) {
+		}
+		catch (JSONException e)
+		{
 			Log.w("NJCTLLOG", "                Presentation contents not found...");
 			return false;
 		}
@@ -133,6 +138,7 @@ public class Presentation
 				name = json.getString("post_title");
 				id = json.getString("ID");
 				
+				//TODO account for presentations without chunks
 				JSONArray topicsList = json.getJSONArray("chunks");
 				Log.v("NJCTLLOG", "                Looping through " + topicsList.length() + " topics in " + name + " presentation..");
 				
@@ -159,6 +165,12 @@ public class Presentation
 			Log.w("PARSE ERR", "                " + e.toString());
 			return false;
 		}
+	}
+	
+	public boolean hasTopics()
+	{
+		//TODO
+		return true;
 	}
 	
 	public ArrayList<Topic> getTopics()

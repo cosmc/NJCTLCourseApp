@@ -22,6 +22,7 @@ public class Model implements AsyncStringResponse
 	protected Context context;
 	protected DatabaseHelper dbHelper;
 	protected boolean dbFilled = false;
+	protected ArrayList<Subject> subjects;
 	
 	protected SubjectRetriever retriever;
 	
@@ -65,14 +66,17 @@ public class Model implements AsyncStringResponse
 	
 	protected void buildClassTreeFromDb()
 	{
-		ArrayList<Subject> subjects = new ArrayList<Subject>();
+		RuntimeExceptionDao<Subject, Integer> dao = Subject.getDao();
+		List<Subject> oldSubjects = dao.queryForAll();
+		
+		ArrayList<Subject> subjects = new ArrayList<Subject>(oldSubjects);
 		
 		retriever.useSubjects(subjects);
 	}
 
 	public void processString(String jsonString)
 	{
-		ArrayList<Subject> subjects = new ArrayList<Subject>();
+		subjects = new ArrayList<Subject>();
 		
 		try {
 			JSONObject json = new JSONObject(jsonString);
@@ -87,6 +91,18 @@ public class Model implements AsyncStringResponse
 			{
 				Subject subject = Subject.get(results.getJSONObject(i));
 				subjects.add(subject);
+			}
+			
+			dbFilled = true;
+			
+			for(Subject oldSubject : oldSubjects)
+			{
+				if(!subjects.contains(oldSubject))
+				{
+					Log.v("NJCTLLOG", "subject has been deleted from json!");
+					
+					//TODO delete oldSubject.
+				}
 			}
 			
 			//TODO remove subjects that arent in the json anymore.

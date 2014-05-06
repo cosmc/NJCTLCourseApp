@@ -118,6 +118,16 @@ public abstract class Document implements Parcelable
 	{
 		return lastUpdated;
 	}
+	
+	public void download()
+	{
+		//TODO download file.
+	}
+	
+	public void deleteFile()
+	{
+		//TODO delete file.
+	}
 
 	// Methods for Parcelable implementation.
 

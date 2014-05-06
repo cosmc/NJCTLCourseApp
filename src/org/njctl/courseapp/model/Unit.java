@@ -70,6 +70,37 @@ public class Unit implements Parcelable
     	
     }
     
+    public void subscribe()
+    {
+    	subscribed = true;
+    }
+    
+    public void unsubscribe()
+    {
+    	subscribed = false;
+    }
+    
+    public boolean isSubscribed()
+    {
+    	return subscribed;
+    }
+    
+    public void download()
+    {
+    	for(Homework content : homeworks)
+    	{
+    		content.download();
+    	}
+    }
+    
+    public void delete()
+    {
+    	for(Homework content : homeworks)
+    	{
+    		content.deleteFile();
+    	}
+    }
+    
     public boolean isDownloaded()
     {
     	for(Homework content : homeworks)
@@ -143,12 +174,10 @@ public class Unit implements Parcelable
 	{
 		try {
 			json.getString("ID");
+			json.getString("post_title");
 			json.getString("post_name");
 			json.getString("post_modified");
-			json.getJSONObject("content").getJSONArray("pages");
 			
-			json.getString("post_title");
-    		
     		JSONObject content = json.getJSONObject("content");
     		
     		if(!content.has(HW) && !content.has(PRES) && !content.has(HANDOUT) && !content.has(LABS))

@@ -43,7 +43,7 @@ public class Downloader implements ClassDownloader, UnitDownloader, DownloadFini
 	}
 
 	@Override
-	public void onClassDownloaded(Unit content)
+	public void onDownloaded(Unit content)
 	{
 		// TODO Auto-generated method stub
 		
