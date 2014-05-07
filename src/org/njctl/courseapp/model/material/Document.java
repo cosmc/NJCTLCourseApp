@@ -25,7 +25,7 @@ import android.util.Log;
 
 public abstract class Document implements Parcelable, AsyncStringResponse
 {
-	@DatabaseField
+	@DatabaseField(id = true)
 	protected String id;
 	
 	@DatabaseField

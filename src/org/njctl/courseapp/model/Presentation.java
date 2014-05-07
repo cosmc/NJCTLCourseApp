@@ -165,7 +165,6 @@ public class Presentation extends Document
 					url = json.getString("pdf_uri");
 				}
 				
-				
 				return true;
 			}
 			else

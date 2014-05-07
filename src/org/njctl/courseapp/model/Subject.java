@@ -59,7 +59,7 @@ public class Subject implements Parcelable
 	// For ORM.
 	Subject()
 	{
-
+		
 	}
 
 	public Integer getId()
@@ -97,7 +97,7 @@ public class Subject implements Parcelable
 			json.getString("post_name");
 			json.getString("post_title");
 			json.getString("post_modified");
-			json.getJSONObject("content").getJSONArray("units");
+			json.getJSONObject("content").getJSONArray("classes");
 
 			return true;
 		} catch (JSONException e) {
@@ -132,8 +132,8 @@ public class Subject implements Parcelable
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 			lastUpdate = df.parse(modified);
 
-			JSONArray classList = json.getJSONObject("content").getJSONArray("units");
-			Log.v("NJCTLLOG", "    Looping through " + Integer.toString(classList.length()) + " classes...");
+			JSONArray classList = json.getJSONObject("content").getJSONArray("classes");
+			Log.v("NJCTLLOG", "    Looping through " + Integer.toString(classList.length()) + " classes in Subject " + title +"...");
 
 			//TODO account for existing classes that have been deleted out of the json.
 			for (int i = 0; i < classList.length(); i++) {
@@ -152,18 +152,14 @@ public class Subject implements Parcelable
 	public ArrayList<Class> getClassesDownloaded()
 	{
 		ArrayList<Class> classList = new ArrayList<Class>();
-
-		for (Class klass : this.classes) {
+		Log.v("NJCTLLOG", "Current number of classes:" + classes.size());
+		
+		for (Class klass : classes) {
 			if (klass.isDownloaded())
 				classList.add(klass);
 		}
 
 		return classList;
-	}
-
-	public void add(Class aClass)
-	{
-		this.classes.add(aClass);
 	}
 
 	// Parcelable constructor.

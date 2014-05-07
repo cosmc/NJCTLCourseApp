@@ -213,6 +213,8 @@ public class Unit implements Parcelable
 			
 			JSONObject content = json.getJSONObject("content");
 			
+            Log.v("NJCTLLOG", "            Created Unit " + title);
+			
 			if(content.has(HW))
 			{
 				JSONArray homeworkList = content.getJSONArray(HW);
@@ -240,6 +242,8 @@ public class Unit implements Parcelable
 					}
 				}
 			}
+			else
+				Log.v("NJCTLLOG", "            No presentations found.");
 			
 			if(content.has(LABS))
 			{

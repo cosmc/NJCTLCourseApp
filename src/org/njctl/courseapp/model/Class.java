@@ -59,8 +59,6 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
 			dao = newDao;
 	}
     
-    
-    
     // For ORM.
     Class()
     {
@@ -191,16 +189,17 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
     
     protected static boolean checkJSON(JSONObject json)
 	{
+    	String theTitle = "";
 		try {
 			json.getString("ID");
 			//json.getString("post_name");
-			json.getString("post_title");
+			theTitle = json.getString("post_title");
 			json.getString("post_modified");
 			json.getJSONObject("content").getJSONArray("units");
 
 			return true;
 		} catch (JSONException e) {
-			Log.w("NJCTLLOG", "    class contents not found...");
+			Log.w("NJCTLLOG", "    class contents not found for " + theTitle + "...");
 			return false;
 		}
 	}
@@ -222,7 +221,7 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
 			lastUpdate = df.parse(modified);
 			
 			JSONArray unitList = json.getJSONObject("content").getJSONArray("units");
-			Log.v("NJCTLLOG", "        Looping through " + Integer.toString(unitList.length()) + " units...");
+			Log.v("NJCTLLOG", "        Looping through " + Integer.toString(unitList.length()) + " units in Class " + title + "...");
 			
 			for(int i = 0; i < unitList.length(); i++)
 			{
