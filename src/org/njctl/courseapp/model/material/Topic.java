@@ -15,9 +15,6 @@ public class Topic extends Document
 {
 	private static RuntimeExceptionDao<Topic, String> dao;
 	
-	@DatabaseField
-	private String hash;
-	
 	@DatabaseField(canBeNull = false, foreign = true)
 	protected Presentation presentation;
 
