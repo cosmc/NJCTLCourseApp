@@ -10,8 +10,9 @@ import java.util.Locale;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.njctl.courseapp.model.material.Handout;
+import org.njctl.courseapp.model.material.Document;
 import org.njctl.courseapp.model.material.Topic;
+import org.njctl.courseapp.model.subscribe.DownloadFinishListener;
 
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
@@ -25,17 +26,8 @@ import android.util.Log;
 //TODO extends Document?!
 
 @DatabaseTable
-public class Presentation
+public class Presentation extends Document
 {
-	@DatabaseField(id = true)
-	protected String id;
-	
-	@DatabaseField
-	protected String name;
-	
-	@DatabaseField
-	protected Date lastUpdated;
-	
 	@ForeignCollectionField(eager = true)
 	protected ForeignCollection<Topic> topics;
 	
@@ -54,6 +46,23 @@ public class Presentation
     Presentation()
     {
     	
+    }
+    
+    // Overrides default download behavior in order to be downloaded in case no topics are present,
+    // and download the topics but not the whole presentation otherwise.
+    public void download()
+    {
+    	if(hasTopics())
+    	{
+    		for(Topic topic : topics)
+    		{
+    			topic.download();
+    		}
+    	}
+    	else
+    	{
+    		doDownload();
+    	}
     }
     
     public Unit getUnit()
@@ -169,8 +178,7 @@ public class Presentation
 	
 	public boolean hasTopics()
 	{
-		//TODO
-		return true;
+		return topics.size() > 0;
 	}
 	
 	public ArrayList<Topic> getTopics()

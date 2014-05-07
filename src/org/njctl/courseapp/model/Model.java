@@ -18,7 +18,7 @@ import android.util.Log;
 public class Model implements AsyncStringResponse
 {
 	final String NJCTLLOG = "NJCTLLOG";
-	private String jsonUrl = "http://sandbox-njctl.org/courses.json?for-app=1";
+	private String jsonUrl = "http://content.sandbox-njctl.org/courses.json";
 	protected Context context;
 	protected DatabaseHelper dbHelper;
 	protected boolean dbFilled = false;
@@ -46,6 +46,8 @@ public class Model implements AsyncStringResponse
 		Presentation.setDao(dao7);
 		RuntimeExceptionDao<Topic, String> dao8 = dbHelper.getRuntimeExceptionDao(Topic.class);
 		Topic.setDao(dao8);
+		
+		Document.setContext(ctx);
 	}
 	
 	@SuppressWarnings("unchecked")

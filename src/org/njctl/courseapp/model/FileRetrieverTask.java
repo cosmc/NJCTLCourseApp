@@ -19,7 +19,7 @@ import android.util.Log;
  * 
  * Tripel containing URL, request content type, and listener.
  */
-class FileRetrieverTask extends AsyncTask<Tripel<String,String,AsyncStringResponse>, Void, String>
+public class FileRetrieverTask extends AsyncTask<Tripel<String,String,AsyncStringResponse>, Void, String>
 {
 	final String NJCTLLOG = "NJCTL";
 	protected AsyncStringResponse delegate = null;

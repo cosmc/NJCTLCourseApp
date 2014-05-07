@@ -15,7 +15,7 @@ import android.widget.TextView;
 /**
  * Created by ying on 11/16/13.
  */
-class MyClassesAdapter extends ArrayAdapter {
+class MyClassesAdapter extends ArrayAdapter<Class> {
 
     private ArrayList<Class> classes;
 

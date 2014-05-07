@@ -25,7 +25,7 @@ import android.os.Parcelable;
 import android.util.Log;
 
 @DatabaseTable
-public class Class implements Parcelable, DownloadFinishListener<Class>
+public class Class implements Parcelable, DownloadFinishListener<Unit>
 {
 	@DatabaseField(id = true)
 	protected int id;
@@ -48,7 +48,10 @@ public class Class implements Parcelable, DownloadFinishListener<Class>
     @DatabaseField
     protected boolean downloaded = false;
     
+    protected Integer downloadingUnits = 0;
+    
     private static RuntimeExceptionDao<Class, Integer> dao;
+    protected DownloadFinishListener<Class> downloadListener;
 
 	public static void setDao(RuntimeExceptionDao<Class, Integer> newDao)
 	{
@@ -56,12 +59,71 @@ public class Class implements Parcelable, DownloadFinishListener<Class>
 			dao = newDao;
 	}
     
-    protected DownloadFinishListener<Class> downloadListener;
+    
     
     // For ORM.
     Class()
     {
     	
+    }
+    
+    public void subscribe()
+    {
+    	subscribed = true;
+    	
+    	for(Unit unit : units)
+    	{
+    		unit.subscribe();
+    	}
+    }
+    
+    public void unsubscribe()
+    {
+    	subscribed = false;
+    	
+    	for(Unit unit : units)
+    	{
+    		unit.unsubscribe();
+    	}
+    }
+    
+    public boolean isSubscribed()
+    {
+    	return subscribed;
+    }
+    
+    public boolean isPartiallySubscribed()
+    {
+    	for(Unit unit : units)
+    	{
+    		if(unit.isSubscribed())
+    			return true;
+    	}
+    	return false;
+    }
+    
+    public void download(DownloadFinishListener<Class> listener)
+    {
+    	downloadListener = listener;
+    	
+    	download();
+    }
+    
+    public void download()
+    {
+    	for(Unit unit : units)
+    	{
+    		unit.download(this);
+    		downloadingUnits++;
+    	}
+    }
+    
+    public void delete()
+    {
+    	for(Unit unit : units)
+    	{
+    		unit.delete();
+    	}
     }
     
     public boolean isDownloaded()
@@ -84,68 +146,23 @@ public class Class implements Parcelable, DownloadFinishListener<Class>
     	return false;
     }
     
-    public void subscribe()
-    {
-    	subscribed = true;
-    	
-    	for(Unit unit : units)
-    	{
-    		unit.subscribe();
-    	}
-    }
-    
-    public void download(DownloadFinishListener<Class> listener)
-    {
-    	ClassDownloader dl = new Downloader();
-    	dl.downloadClass(this, this);
-    }
-    
-    public boolean isSubscribed()
-    {
-    	return subscribed;
-    }
-    
-    public boolean isPartiallySubscribed()
-    {
-    	for(Unit unit : units)
-    	{
-    		if(unit.isSubscribed())
-    			return true;
-    	}
-    	return false;
-    }
-    
-    public void delete()
-    {
-    	for(Unit unit : units)
-    	{
-    		unit.delete();
-    	}
-    }
-    
-    public void unsubscribe()
-    {
-    	subscribed = false;
-    	
-    	for(Unit unit : units)
-    	{
-    		unit.unsubscribe();
-    	}
-    }
-    
     public ArrayList<Unit> getUnits()
     {
     	return new ArrayList<Unit>(units);
     }
-    
-	public void onDownloaded(Class theClass)
+
+	public void onDownloaded(Unit unit)
 	{
-		//TODO: Check md5 sums.
-		downloaded = true;
+		downloadingUnits--;
 		
-		if(downloadListener != null)
+		if(downloadingUnits == 0)
 		{
-			downloadListener.onDownloaded(this);
+			downloaded = true;
+			
+			if(downloadListener != null)
+			{
+				downloadListener.onDownloaded(this);
+			}
 		}
 	}
 	

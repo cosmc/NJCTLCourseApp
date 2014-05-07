@@ -1,17 +1,26 @@
 package org.njctl.courseapp.model.material;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.Date;
 
+import org.njctl.courseapp.model.AsyncStringResponse;
 import org.njctl.courseapp.model.DocumentState;
+import org.njctl.courseapp.model.FileRetrieverTask;
+import org.njctl.courseapp.model.Unit;
+import org.njctl.courseapp.model.subscribe.DownloadFinishListener;
+import org.njctl.courseapp.model.useful.Tripel;
 
 import com.j256.ormlite.field.DatabaseField;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 // Homework, Topic, Handout, Lab
 
-public abstract class Document implements Parcelable
+public abstract class Document implements Parcelable, AsyncStringResponse
 {
 	@DatabaseField
 	protected String id;
@@ -39,7 +48,16 @@ public abstract class Document implements Parcelable
 	@DatabaseField
 	protected Integer numOpened = 0;
 	
+	protected DownloadFinishListener<? extends Document> downloadListener;
+	
 	private DocumentState state;
+	
+	protected static Context ctx;
+	
+	public static void setContext(Context context)
+	{
+		ctx = context;
+	}
 	
 	public boolean isDownloaded()
 	{
@@ -119,9 +137,41 @@ public abstract class Document implements Parcelable
 		return lastUpdated;
 	}
 	
+	public void download(DownloadFinishListener<? extends Document> listener)
+    {
+		downloadListener = listener;
+		download();
+    }
+	
 	public void download()
 	{
-		//TODO download file.
+		doDownload();
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected void doDownload()
+	{
+		Tripel<String, String, AsyncStringResponse> request = new Tripel<String, String, AsyncStringResponse>(url, "application/pdf", this);
+		new FileRetrieverTask().execute(request);
+	}
+	
+	public void processString(String pdfContent)
+	{
+		//TODO check md5 sum.
+		//TODO save to file
+		/*
+		try {
+			FileOutputStream wurst = ctx.openFileOutput("config.txt", Context.MODE_PRIVATE);
+			OutputStreamWriter writer = new OutputStreamWriter(null);
+		
+			writer.close();
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		*/
 	}
 	
 	public void deleteFile()
