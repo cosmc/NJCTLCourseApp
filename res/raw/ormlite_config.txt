@@ -1,5 +1,5 @@
 #
-# generated on 2014/05/05 05:25:09
+# generated on 2014/05/07 05:45:18
 #
 # --table-start--
 dataClass=org.njctl.courseapp.model.Unit
@@ -11,6 +11,9 @@ id=true
 # --field-end--
 # --field-start--
 fieldName=title
+# --field-end--
+# --field-start--
+fieldName=subscribed
 # --field-end--
 # --field-start--
 fieldName=homeworks
@@ -48,9 +51,39 @@ dataClass=org.njctl.courseapp.model.Presentation
 tableName=presentation
 # --table-fields-start--
 # --field-start--
+fieldName=topics
+foreignCollection=true
+foreignCollectionEager=true
+# --field-end--
+# --field-start--
 fieldName=unit
 canBeNull=false
 foreign=true
+# --field-end--
+# --field-start--
+fieldName=id
+id=true
+# --field-end--
+# --field-start--
+fieldName=name
+# --field-end--
+# --field-start--
+fieldName=url
+# --field-end--
+# --field-start--
+fieldName=fileName
+# --field-end--
+# --field-start--
+fieldName=lastOpened
+# --field-end--
+# --field-start--
+fieldName=lastUpdated
+# --field-end--
+# --field-start--
+fieldName=numOpened
+# --field-end--
+# --field-start--
+fieldName=hash
 # --field-end--
 # --table-fields-end--
 # --table-end--
@@ -119,6 +152,7 @@ tableName=document
 # --table-fields-start--
 # --field-start--
 fieldName=id
+id=true
 # --field-end--
 # --field-start--
 fieldName=name
@@ -137,6 +171,9 @@ fieldName=lastUpdated
 # --field-end--
 # --field-start--
 fieldName=numOpened
+# --field-end--
+# --field-start--
+fieldName=hash
 # --field-end--
 # --table-fields-end--
 # --table-end--
@@ -146,15 +183,13 @@ dataClass=org.njctl.courseapp.model.material.Topic
 tableName=topic
 # --table-fields-start--
 # --field-start--
-fieldName=hash
-# --field-end--
-# --field-start--
 fieldName=presentation
 canBeNull=false
 foreign=true
 # --field-end--
 # --field-start--
 fieldName=id
+id=true
 # --field-end--
 # --field-start--
 fieldName=name
@@ -173,6 +208,9 @@ fieldName=lastUpdated
 # --field-end--
 # --field-start--
 fieldName=numOpened
+# --field-end--
+# --field-start--
+fieldName=hash
 # --field-end--
 # --table-fields-end--
 # --table-end--
@@ -188,6 +226,7 @@ foreign=true
 # --field-end--
 # --field-start--
 fieldName=id
+id=true
 # --field-end--
 # --field-start--
 fieldName=name
@@ -206,6 +245,9 @@ fieldName=lastUpdated
 # --field-end--
 # --field-start--
 fieldName=numOpened
+# --field-end--
+# --field-start--
+fieldName=hash
 # --field-end--
 # --table-fields-end--
 # --table-end--
@@ -221,6 +263,7 @@ foreign=true
 # --field-end--
 # --field-start--
 fieldName=id
+id=true
 # --field-end--
 # --field-start--
 fieldName=name
@@ -239,6 +282,9 @@ fieldName=lastUpdated
 # --field-end--
 # --field-start--
 fieldName=numOpened
+# --field-end--
+# --field-start--
+fieldName=hash
 # --field-end--
 # --table-fields-end--
 # --table-end--
@@ -254,6 +300,7 @@ foreign=true
 # --field-end--
 # --field-start--
 fieldName=id
+id=true
 # --field-end--
 # --field-start--
 fieldName=name
@@ -272,6 +319,9 @@ fieldName=lastUpdated
 # --field-end--
 # --field-start--
 fieldName=numOpened
+# --field-end--
+# --field-start--
+fieldName=hash
 # --field-end--
 # --table-fields-end--
 # --table-end--
