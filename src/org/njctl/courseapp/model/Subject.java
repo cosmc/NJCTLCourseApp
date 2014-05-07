@@ -95,8 +95,9 @@ public class Subject implements Parcelable
 		try {
 			json.getString("ID");
 			json.getString("post_name");
+			json.getString("post_title");
 			json.getString("post_modified");
-			json.getJSONObject("content").getJSONArray("pages");
+			json.getJSONObject("content").getJSONArray("units");
 
 			return true;
 		} catch (JSONException e) {
@@ -131,7 +132,7 @@ public class Subject implements Parcelable
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 			lastUpdate = df.parse(modified);
 
-			JSONArray classList = json.getJSONObject("content").getJSONArray("pages");
+			JSONArray classList = json.getJSONObject("content").getJSONArray("units");
 			Log.v("NJCTLLOG", "    Looping through " + Integer.toString(classList.length()) + " classes...");
 
 			//TODO account for existing classes that have been deleted out of the json.

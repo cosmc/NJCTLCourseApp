@@ -82,7 +82,7 @@ public class Model implements AsyncStringResponse
 		
 		try {
 			JSONObject json = new JSONObject(jsonString);
-			JSONArray results = json.getJSONObject("content").getJSONArray("pages");
+			JSONArray results = json.getJSONObject("content").getJSONArray("subjects");
 
 			Log.v(NJCTLLOG, "Looping through " + Integer.toString(results.length()) + " subjects...");
 			

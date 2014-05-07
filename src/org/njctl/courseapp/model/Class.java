@@ -193,9 +193,10 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
 	{
 		try {
 			json.getString("ID");
-			json.getString("post_name");
+			//json.getString("post_name");
+			json.getString("post_title");
 			json.getString("post_modified");
-			json.getJSONObject("content").getJSONArray("pages");
+			json.getJSONObject("content").getJSONArray("units");
 
 			return true;
 		} catch (JSONException e) {
@@ -214,12 +215,13 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
 	{
     	try {
     		title = json.getString("post_title");
+    		//name = json.getString("post_name");
     		
 			String modified = json.getString("post_modified");
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 			lastUpdate = df.parse(modified);
 			
-			JSONArray unitList = json.getJSONObject("content").getJSONArray("pages");
+			JSONArray unitList = json.getJSONObject("content").getJSONArray("units");
 			Log.v("NJCTLLOG", "        Looping through " + Integer.toString(unitList.length()) + " units...");
 			
 			for(int i = 0; i < unitList.length(); i++)

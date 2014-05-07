@@ -88,8 +88,10 @@ public class Presentation extends Document
 			json.getString("post_name");
 			json.getString("post_modified");
 			
-			//TODO account for presentations without chunks
-			json.getJSONArray("chunks");
+			if(json.has("chunks"))
+				json.getJSONArray("chunks");
+			else
+				json.getString("pdf_uri");
 
 			return true;
 		}
@@ -147,15 +149,22 @@ public class Presentation extends Document
 				name = json.getString("post_title");
 				id = json.getString("ID");
 				
-				//TODO account for presentations without chunks
-				JSONArray topicsList = json.getJSONArray("chunks");
-				Log.v("NJCTLLOG", "                Looping through " + topicsList.length() + " topics in " + name + " presentation..");
-				
-				for(int i = 0; i < topicsList.length(); i++)
+				if(json.has("chunks"))
 				{
-					Topic topic = Topic.get(this, topicsList.getJSONObject(i));
-					topics.add(topic);
+					JSONArray topicsList = json.getJSONArray("chunks");
+					Log.v("NJCTLLOG", "                Looping through " + topicsList.length() + " topics in " + name + " presentation..");
+					
+					for(int i = 0; i < topicsList.length(); i++)
+					{
+						Topic topic = Topic.get(this, topicsList.getJSONObject(i));
+						topics.add(topic);
+					}
 				}
+				else
+				{
+					url = json.getString("pdf_uri");
+				}
+				
 				
 				return true;
 			}
