@@ -205,16 +205,27 @@ public class Subject implements Parcelable
 	public void writeToParcel(Parcel dest, int flags)
 	{
 		// dest.writeInt(subjectId);
+		dest.writeInt(id);
 		dest.writeString(title);
+		dest.writeLong(lastUpdate.getTime());
 		dest.writeParcelableArray(classes.toArray(new Class[classes.size()]), 0);
 	}
 
 	private void readFromParcel(Parcel in)
 	{
-		// subjectId = in.readInt();
+		classes = dao.getEmptyForeignCollection("classes");
+		
+		id = in.readInt();
 		title = in.readString();
-		// classes = new ArrayList<Class>();
-		in.readList(getContents(), Class.class.getClassLoader());
+		lastUpdate = new Date(in.readLong());
+		ArrayList<Class> theClasses = new ArrayList<Class>();
+		in.readList(theClasses, Class.class.getClassLoader());
+		
+		//Fill classes
+		for(Class theClass : theClasses)
+		{
+			classes.add(theClass);
+		}
 	}
 
 	public static final Parcelable.Creator<Subject> CREATOR = new Parcelable.Creator<Subject>() {

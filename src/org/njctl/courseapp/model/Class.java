@@ -282,18 +282,28 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
     }
     
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(Parcel dest, int flags)
+    {
     	dest.writeInt(id);
     	dest.writeString(title);
     	dest.writeParcelableArray(units.toArray(new Unit[units.size()]), 0);
     }
     
-    private void readFromParcel(Parcel in) {
+    private void readFromParcel(Parcel in)
+    {
+    	units = dao.getEmptyForeignCollection("units");
+    	
     	id = in.readInt();
     	title = in.readString();
-    	//TODO deal with foreigncollection and parcel
-    	/*units = new ArrayList<Unit>();
-        in.readList(units, Unit.class.getClassLoader());*/
+    	
+    	ArrayList<Unit> theUnits = new ArrayList<Unit>();
+		in.readList(theUnits, Unit.class.getClassLoader());
+		
+		//Fill classes
+		for(Unit unit : units)
+		{
+			units.add(unit);
+		}
     }
     
     public static final Parcelable.Creator<Class> CREATOR = new Parcelable.Creator<Class>() {
