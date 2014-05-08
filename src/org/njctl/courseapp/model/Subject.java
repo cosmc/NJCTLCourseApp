@@ -108,6 +108,7 @@ public class Subject implements Parcelable
 
 	public Subject(JSONObject json)
 	{
+		classes = dao.getEmptyForeignCollection("classes");
 		setProperties(json);
 	}
 	

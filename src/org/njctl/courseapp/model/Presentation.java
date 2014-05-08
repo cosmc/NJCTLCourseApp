@@ -197,6 +197,8 @@ public class Presentation extends Document
 	public Presentation(Unit theUnit, JSONObject json)
 	{
 		unit = theUnit;
+		topics = dao.getEmptyForeignCollection("topics");
+		setProperties(json);
 	}
 
 }

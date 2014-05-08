@@ -214,7 +214,7 @@ public class Unit implements Parcelable
 			JSONObject content = json.getJSONObject("content");
 			
             Log.v("NJCTLLOG", "            Created Unit " + title);
-			
+            
 			if(content.has(HW))
 			{
 				JSONArray homeworkList = content.getJSONArray(HW);
@@ -226,7 +226,6 @@ public class Unit implements Parcelable
 					homeworks.add(hw);
 				}
 			}
-			
 			if(content.has(PRES))
 			{
 				JSONArray presentationList = content.getJSONArray(PRES);
@@ -290,6 +289,10 @@ public class Unit implements Parcelable
     public Unit(Class theKlass, JSONObject json)
     {
     	theClass = theKlass;
+    	homeworks = dao.getEmptyForeignCollection("homeworks");
+    	presentations = dao.getEmptyForeignCollection("presentations");
+    	labs = dao.getEmptyForeignCollection("labs");
+    	handouts = dao.getEmptyForeignCollection("handouts");
     	setProperties(json);
     }
     

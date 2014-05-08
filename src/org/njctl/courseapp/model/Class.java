@@ -207,6 +207,7 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
     public Class(Subject subject, JSONObject json)
     {
     	this.subject = subject;
+    	units = dao.getEmptyForeignCollection("units");
     	
     	setProperties(json);
     }
