@@ -7,7 +7,6 @@ import java.util.Locale;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.njctl.courseapp.model.Class;
 import org.njctl.courseapp.model.Unit;
 
 import com.j256.ormlite.dao.RuntimeExceptionDao;
@@ -82,6 +81,7 @@ public class Handout extends Document
 	{
 		try{
 			name = json.getString("post_title");
+			id = json.getString("ID");
 			
 			if(json.has("pdf_uri"))
 			{

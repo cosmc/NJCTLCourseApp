@@ -4,13 +4,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.Date;
 
 import org.njctl.courseapp.model.AsyncStringResponse;
 import org.njctl.courseapp.model.DocumentState;
 import org.njctl.courseapp.model.FileRetrieverTask;
-import org.njctl.courseapp.model.Unit;
 import org.njctl.courseapp.model.subscribe.DownloadFinishListener;
 import org.njctl.courseapp.model.useful.Tripel;
 

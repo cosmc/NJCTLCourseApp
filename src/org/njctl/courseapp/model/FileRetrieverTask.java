@@ -10,7 +10,6 @@ import java.security.NoSuchAlgorithmException;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.njctl.courseapp.model.useful.Tripel;
@@ -28,6 +27,7 @@ public class FileRetrieverTask extends AsyncTask<Tripel<String,String,AsyncStrin
 	protected AsyncStringResponse delegate = null;
 	protected String url, contentType = "text/plain";
 
+	@SuppressWarnings("unchecked")
 	protected String doInBackground(Tripel<String,String,AsyncStringResponse>... request)
 	{
 		try {

@@ -57,10 +57,12 @@ public class Model implements AsyncStringResponse
 		
 		if(dbFilled)
 		{
+			Log.v("NJCTLLOG", "Local SQLite database is filled. Building class tree from database.");
 			buildClassTreeFromDb();
 		}
 		else
 		{
+			Log.v("NJCTLLOG", "Building class tree from online JSON...");
 			Tripel<String, String, AsyncStringResponse> request = new Tripel<String, String, AsyncStringResponse>(jsonUrl, "application/json", this);
 			new FileRetrieverTask().execute(request);
 		}

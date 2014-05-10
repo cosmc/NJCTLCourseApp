@@ -3,7 +3,6 @@ package org.njctl.courseapp.model;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
 
@@ -66,20 +65,31 @@ public class Subject implements Parcelable
 	{
 		return id;
 	}
+	
+	public Integer getNumberClasses()
+	{
+		return classes.size();
+	}
 
 	public static Subject get(JSONObject json)
 	{
 		try {
-			if (checkJSON(json)) {
-				if (dao.idExists(json.getInt("ID"))) {
+			if (checkJSON(json))
+			{
+				if (dao.idExists(json.getInt("ID")))
+				{
 					Subject subject = dao.queryForId(json.getInt("ID"));
+					Log.v("NJCTLLOG", "Loaded Subject with " + subject.getNumberClasses() + " classes.");
 					subject.setProperties(json);
+					Log.v("NJCTLLOG", "Subject classes after property setting: " + subject.getNumberClasses() + " classes.");
 					dao.update(subject);
 					return subject;
-				} else {
+				}
+				else
+				{
 					Subject subject = new Subject(json);
 					dao.create(subject);
-
+					Log.v("NJCTLLOG", "Saved Subject with " + subject.getNumberClasses() + " classes.");
 					return subject;
 				}
 			} else {
@@ -92,7 +102,8 @@ public class Subject implements Parcelable
 
 	protected static boolean checkJSON(JSONObject json)
 	{
-		try {
+		try 
+		{
 			json.getString("ID");
 			json.getString("post_name");
 			json.getString("post_title");
@@ -100,7 +111,9 @@ public class Subject implements Parcelable
 			json.getJSONObject("content").getJSONArray("classes");
 
 			return true;
-		} catch (JSONException e) {
+		}
+		catch (JSONException e) 
+		{
 			Log.w("NJCTLLOG", "    subject contents not found...");
 			return false;
 		}
@@ -128,6 +141,8 @@ public class Subject implements Parcelable
 			id = json.getInt("ID");
 			name = json.getString("post_name");
 			title = json.getString("post_title");
+			if(classes == null)
+				classes = dao.getEmptyForeignCollection("classes");
 
 			String modified = json.getString("post_modified");
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
@@ -139,14 +154,24 @@ public class Subject implements Parcelable
 			//TODO account for existing classes that have been deleted out of the json.
 			for (int i = 0; i < classList.length(); i++) {
 				Class theClass = Class.get(this, classList.getJSONObject(i));
-
+				
+				if(theClass == null) Log.v("NJCTLLOG", "The class is null and will therefore not be added to the subject");
+				
 				if (theClass != null && !classes.contains(theClass))
 				{
-					classes.add(theClass);
+					Log.v("NJCTLLOG", "Adding a class to subject....######");
+					Log.v("NJCTLLOG", theClass.toString());
+					//classes.add(theClass);
+					classes.update(theClass);
+				}
+				else
+				{
+					Log.v("NJCTLLOG", "Not adding a class..");
 				}
 			}
 		} catch (Exception e) {
 			Log.w("PARSE ERR", e.toString());
+			Log.w("NJCTLLOG", Log.getStackTraceString(e));
 		}
 	}
 
@@ -161,12 +186,6 @@ public class Subject implements Parcelable
 		}
 
 		return classList;
-	}
-
-	// Parcelable constructor.
-	public Subject(Parcel in)
-	{
-		readFromParcel(in);
 	}
 
 	public String getTitle()
@@ -205,33 +224,23 @@ public class Subject implements Parcelable
 	public void writeToParcel(Parcel dest, int flags)
 	{
 		// dest.writeInt(subjectId);
+		
+		
+		
 		dest.writeInt(id);
-		dest.writeString(title);
+		/*dest.writeString(title);
 		dest.writeLong(lastUpdate.getTime());
-		dest.writeParcelableArray(classes.toArray(new Class[classes.size()]), 0);
+		dest.writeParcelableArray(classes.toArray(new Class[classes.size()]), 0);*/
 	}
 
-	private void readFromParcel(Parcel in)
+	public static final Parcelable.Creator<Subject> CREATOR = new Parcelable.Creator<Subject>()
 	{
-		classes = dao.getEmptyForeignCollection("classes");
-		
-		id = in.readInt();
-		title = in.readString();
-		lastUpdate = new Date(in.readLong());
-		ArrayList<Class> theClasses = new ArrayList<Class>();
-		in.readList(theClasses, Class.class.getClassLoader());
-		
-		//Fill classes
-		for(Class theClass : theClasses)
-		{
-			classes.add(theClass);
-		}
-	}
-
-	public static final Parcelable.Creator<Subject> CREATOR = new Parcelable.Creator<Subject>() {
 		public Subject createFromParcel(Parcel in)
 		{
-			return new Subject(in);
+			Integer id = in.readInt();
+			Subject subject = dao.queryForId(id);
+			Log.v("NJCTLLOG", "Trying to create subject from dao with id " + id + ", received subject with " + subject.getNumberClasses() + " classes.");
+			return subject;
 		}
 
 		public Subject[] newArray(int size)

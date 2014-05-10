@@ -12,15 +12,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.njctl.courseapp.model.material.Document;
 import org.njctl.courseapp.model.material.Topic;
-import org.njctl.courseapp.model.subscribe.DownloadFinishListener;
-
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import android.os.Parcel;
 import android.util.Log;
 
 //TODO extends Document?!

@@ -10,10 +10,7 @@ import java.util.Locale;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.njctl.courseapp.model.subscribe.ClassDownloader;
 import org.njctl.courseapp.model.subscribe.DownloadFinishListener;
-import org.njctl.courseapp.model.subscribe.Downloader;
-
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
@@ -170,19 +167,25 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
 			if (checkJSON(json)) {
 				if (dao.idExists(json.getInt("ID"))) {
 					Class content = dao.queryForId(json.getInt("ID"));
+					Log.v("NJCTLLOG", "Loaded a class " + content.getId() + " for a subject....");
 					content.setProperties(json);
 					dao.update(content);
 					return content;
 				} else {
 					Class content = new Class(subject, json);
+					Log.v("NJCTLLOG", "Created a class " + content.getId() + " for a subject....");
+					
 					dao.create(content);
 
 					return content;
 				}
 			} else {
+				Log.v("NJCTLLOG", "class json wrong..");
 				return null;
 			}
 		} catch (Exception e) { // never executed..
+			Log.v("NJCTLLOG", "class exception: " + e.getMessage());
+			Log.v("NJCTLLOG", Log.getStackTraceString(e));
 			return null;
 		}
 	}
@@ -215,6 +218,7 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
 	{
     	try {
     		title = json.getString("post_title");
+    		id = json.getInt("ID");
     		//name = json.getString("post_name");
     		
 			String modified = json.getString("post_modified");
@@ -256,11 +260,6 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
     	this.units.add(chapter);
     }
     
-    // Parcelable constructor.
-    public Class(Parcel in) {
-    	readFromParcel(in);
-    }
-    
     public String getTitle() {
     	return title;
     }
@@ -285,30 +284,17 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
     public void writeToParcel(Parcel dest, int flags)
     {
     	dest.writeInt(id);
-    	dest.writeString(title);
-    	dest.writeParcelableArray(units.toArray(new Unit[units.size()]), 0);
-    }
-    
-    private void readFromParcel(Parcel in)
-    {
-    	units = dao.getEmptyForeignCollection("units");
-    	
-    	id = in.readInt();
-    	title = in.readString();
-    	
-    	ArrayList<Unit> theUnits = new ArrayList<Unit>();
-		in.readList(theUnits, Unit.class.getClassLoader());
-		
-		//Fill classes
-		for(Unit unit : units)
-		{
-			units.add(unit);
-		}
+    	//dest.writeString(title);
+    	//dest.writeParcelableArray(units.toArray(new Unit[units.size()]), 0);
     }
     
     public static final Parcelable.Creator<Class> CREATOR = new Parcelable.Creator<Class>() {
-    	public Class createFromParcel(Parcel in) {
-    		return new Class(in);
+    	public Class createFromParcel(Parcel in)
+    	{
+    		//units = dao.getEmptyForeignCollection("units");
+    		Integer id = in.readInt();
+    		
+    		return dao.queryForId(id);
     	}
     	public Class[] newArray(int size) {
     		return new Class[size];

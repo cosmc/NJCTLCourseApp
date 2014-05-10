@@ -96,6 +96,7 @@ public class Unit implements Parcelable
     
     public void download(DownloadFinishListener<Unit> listener)
     {
+    	//TODO do for other contents too.
     	for(Homework content : homeworks)
     	{
     		content.download();
@@ -104,6 +105,7 @@ public class Unit implements Parcelable
     
     public void delete()
     {
+    	//TODO do for other contents too.
     	for(Homework content : homeworks)
     	{
     		content.deleteFile();
@@ -206,6 +208,7 @@ public class Unit implements Parcelable
 	{
     	try {
 			title = json.getString("post_title");
+			id = json.getString("ID");
 			
 			String modified = json.getString("post_modified");
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
@@ -301,11 +304,6 @@ public class Unit implements Parcelable
     	return theClass;
     }
     
-    // Mandatory Parcelable constructor.
-    public Unit(Parcel in) {
-    	readFromParcel(in);
-    }
-    
 	public String getId() {
     	return id;
     }
@@ -324,25 +322,18 @@ public class Unit implements Parcelable
     @Override
     public void writeToParcel(Parcel dest, int flags) {
     	dest.writeString(id);
-    	dest.writeString(title);
-    	dest.writeParcelableArray(homeworks.toArray(new Homework[homeworks.size()]), 0);
+    	//dest.writeString(title);
+    	//dest.writeParcelableArray(homeworks.toArray(new Homework[homeworks.size()]), 0);
     	//dest.writeParcelableArray(presentations.toArray(new Presentation[presentations.size()]), 0);
     	//dest.writeParcelableArray(contents.toArray(new NJCTLDocList[contents.size()]), 0);
-    }
-
-    private void readFromParcel(Parcel in) {
-    	this.id = in.readString();
-    	this.title = in.readString();
-    	/*this.homeworks = new ArrayList<Homework>();
-    	in.readList(this.homeworks, Homework.class.getClassLoader());
-    	this.presentations = new ArrayList<Presentation>();
-        in.readList(this.presentations, Presentation.class.getClassLoader());*/
     }
     
     public static final Parcelable.Creator<Unit> CREATOR = new Parcelable.Creator<Unit>() {
     	
     	public Unit createFromParcel(Parcel in) {
-    		return new Unit(in);
+    		Integer id = in.readInt();
+    		
+    		return dao.queryForId(id);
     	}
     	
     	public Unit[] newArray(int size) {
