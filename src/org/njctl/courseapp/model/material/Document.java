@@ -65,12 +65,13 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 	
 	public boolean isDownloaded()
 	{
-		return this.state == DocumentState.OK;
+		Log.v("NJCTLLOG", "Document state: " + state);
+		return state == DocumentState.OK;
 	}
 	
 	public boolean isDownloading()
 	{
-		return this.state == DocumentState.DOWNLOADING;
+		return state == DocumentState.DOWNLOADING;
 	}
 
 	public void setPath(String relativePath)

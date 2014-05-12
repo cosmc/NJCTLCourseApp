@@ -123,6 +123,7 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
     
     public boolean isDownloaded()
     {
+    	Log.v("NJCTLLOG", "this class has " + units.size() + " units.");
     	for(Unit unit : units)
     	{
     		if(!unit.isDownloaded())

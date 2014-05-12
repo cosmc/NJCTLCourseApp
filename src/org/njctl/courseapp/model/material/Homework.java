@@ -40,7 +40,7 @@ public class Homework extends Document
 	{
 		try {
 			if (checkJSON(json)) {
-				if (dao.idExists(json.getString("ID"))) {
+				/*if (dao.idExists(json.getString("ID"))) {
 					Homework content = dao.queryForId(json.getString("ID"));
 					content.setProperties(json);
 					dao.update(content);
@@ -50,7 +50,10 @@ public class Homework extends Document
 					dao.create(content);
 
 					return content;
-				}
+				}*/
+				Homework content = new Homework(theUnit, json);
+				dao.createOrUpdate(content);
+				return content;
 			} else {
 				return null;
 			}

@@ -16,6 +16,7 @@ import org.njctl.courseapp.model.material.Lab;
 import org.njctl.courseapp.model.material.Presentation;
 import org.njctl.courseapp.model.subscribe.DownloadFinishListener;
 
+import com.j256.ormlite.dao.Dao.CreateOrUpdateStatus;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
@@ -30,7 +31,7 @@ import android.util.Log;
 public class Unit implements Parcelable
 {
 	@DatabaseField(id = true)
-    private String id;
+    private Integer id;
 	
 	@DatabaseField
     private String title;
@@ -163,7 +164,10 @@ public class Unit implements Parcelable
 	{
 		try {
 			if (checkJSON(json)) {
-				if (dao.idExists(json.getInt("ID"))) {
+				Unit content = new Unit(theClass, json);
+				dao.createOrUpdate(content);
+				return content;
+				/*if (dao.idExists(json.getInt("ID"))) {
 					Unit content = dao.queryForId(json.getInt("ID"));
 					content.setProperties(json);
 					dao.update(content);
@@ -173,11 +177,14 @@ public class Unit implements Parcelable
 					dao.create(content);
 
 					return content;
-				}
+				}*/
 			} else {
+				Log.v("NJCTLLOG", "class json wrong..");
 				return null;
 			}
-		} catch (Exception e) { // never executed..
+		} catch (Exception e) {
+			Log.v("NJCTLLOG", "unit exception: " + e.getMessage());
+			Log.v("NJCTLLOG", Log.getStackTraceString(e));
 			return null;
 		}
 	}
@@ -185,7 +192,7 @@ public class Unit implements Parcelable
     protected static boolean checkJSON(JSONObject json)
 	{
 		try {
-			json.getString("ID");
+			Integer id = json.getInt("ID"); Log.v("NJCTLLOG", "unit id: " + id);
 			json.getString("post_title");
 			json.getString("post_name");
 			json.getString("post_modified");
@@ -209,7 +216,7 @@ public class Unit implements Parcelable
 	{
     	try {
 			title = json.getString("post_title");
-			id = json.getString("ID");
+			id = json.getInt("ID");
 			
 			String modified = json.getString("post_modified");
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
@@ -305,7 +312,7 @@ public class Unit implements Parcelable
     	return theClass;
     }
     
-	public String getId() {
+	public Integer getId() {
     	return id;
     }
     
@@ -322,7 +329,7 @@ public class Unit implements Parcelable
     
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-    	dest.writeString(id);
+    	dest.writeInt(id);
     	//dest.writeString(title);
     	//dest.writeParcelableArray(homeworks.toArray(new Homework[homeworks.size()]), 0);
     	//dest.writeParcelableArray(presentations.toArray(new Presentation[presentations.size()]), 0);
