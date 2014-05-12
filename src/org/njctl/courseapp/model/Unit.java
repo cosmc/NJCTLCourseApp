@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import org.njctl.courseapp.model.material.Handout;
 import org.njctl.courseapp.model.material.Homework;
 import org.njctl.courseapp.model.material.Lab;
+import org.njctl.courseapp.model.material.Presentation;
 import org.njctl.courseapp.model.subscribe.DownloadFinishListener;
 
 import com.j256.ormlite.dao.RuntimeExceptionDao;

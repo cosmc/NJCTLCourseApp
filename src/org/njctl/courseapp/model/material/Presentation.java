@@ -1,4 +1,4 @@
-package org.njctl.courseapp.model;
+package org.njctl.courseapp.model.material;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -10,9 +10,8 @@ import java.util.Locale;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.njctl.courseapp.model.material.Document;
-import org.njctl.courseapp.model.material.Lab;
-import org.njctl.courseapp.model.material.Topic;
+import org.njctl.courseapp.model.Unit;
+
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.field.DatabaseField;

@@ -2,7 +2,6 @@ package org.njctl.courseapp.model.material;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.njctl.courseapp.model.Presentation;
 import org.njctl.courseapp.model.Unit;
 
 import com.j256.ormlite.dao.RuntimeExceptionDao;

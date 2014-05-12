@@ -3,11 +3,11 @@ package org.njctl.courseapp.model.subscribe;
 import java.util.ArrayList;
 
 import org.njctl.courseapp.model.Class;
-import org.njctl.courseapp.model.Presentation;
 import org.njctl.courseapp.model.Unit;
 import org.njctl.courseapp.model.material.Handout;
 import org.njctl.courseapp.model.material.Homework;
 import org.njctl.courseapp.model.material.Lab;
+import org.njctl.courseapp.model.material.Presentation;
 
 public class Downloader implements ClassDownloader, UnitDownloader, DownloadFinishListener<Unit>
 {
