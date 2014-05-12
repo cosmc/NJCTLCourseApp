@@ -52,7 +52,14 @@ public class Homework extends Document
 					return content;
 				}*/
 				Homework content = new Homework(theUnit, json);
+				Log.v("NJCTLHW", "ID: " + content.id);
+				try{
 				dao.createOrUpdate(content);
+				} catch(Exception e)
+				{
+					Log.v("NJCTLLOG", "hw exception: " + e.getMessage());
+					Log.v("NJCTLLOG", Log.getStackTraceString(e));
+				}
 				return content;
 			} else {
 				return null;

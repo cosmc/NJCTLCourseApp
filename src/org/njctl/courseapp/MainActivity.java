@@ -65,6 +65,9 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 		args.putParcelable("subject", subject);
 		frag.setArguments(args);
 		
+		//ArrayList<Class> classes = subject.getContents();
+		//Log.v("NJCTLLOG", "This subject has " + classes.size() + " classes.######");
+		
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, frag);
         transaction.addToBackStack("Class List for " + subject.getTitle());

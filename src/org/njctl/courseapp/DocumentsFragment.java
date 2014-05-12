@@ -1,9 +1,9 @@
 package org.njctl.courseapp;
 
-import org.njctl.courseapp.model.Presentation;
 import org.njctl.courseapp.model.Unit;
 import org.njctl.courseapp.model.material.Handout;
 import org.njctl.courseapp.model.material.Homework;
+import org.njctl.courseapp.model.material.Presentation;
 
 import android.app.Activity;
 import android.os.Bundle;
