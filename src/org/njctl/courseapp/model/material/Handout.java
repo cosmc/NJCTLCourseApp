@@ -120,6 +120,12 @@ public class Handout extends Document
 		setProperties(json);
 	}
 	
+	protected void notifyListener()
+	{
+		if(downloadListener != null)
+	    	downloadListener.onDownloaded(this);
+	}
+	
 	public Handout(Parcel in)
 	{
 		Handout doc = dao.queryForId(in.readString());

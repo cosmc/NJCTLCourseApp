@@ -55,6 +55,7 @@ public class Model implements AsyncStringResponse
 	{
 		retriever = retrieverObject;
 		
+		//if(true)
 		if(dbFilled)
 		{
 			Log.v("NJCTLLOG", "Local SQLite database is filled. Building class tree from database.");
@@ -82,7 +83,8 @@ public class Model implements AsyncStringResponse
 	{
 		subjects = new ArrayList<Subject>();
 		
-		try {
+		try
+		{
 			JSONObject json = new JSONObject(jsonString);
 			JSONArray results = json.getJSONObject("content").getJSONArray("subjects");
 
@@ -97,10 +99,12 @@ public class Model implements AsyncStringResponse
 				subjects.add(subject);
 			}
 			
+			//TODO store this information on the device.
 			dbFilled = true;
 			
 			for(Subject oldSubject : oldSubjects)
 			{
+				//TODO this check is not working
 				if(!subjects.contains(oldSubject))
 				{
 					Log.v("NJCTLLOG", "subject has been deleted from json!");
@@ -108,10 +112,6 @@ public class Model implements AsyncStringResponse
 					//TODO delete oldSubject.
 				}
 			}
-			
-			//TODO remove subjects that arent in the json anymore.
-			
-			//TODO store the information that the json has been downloaded and parsed successfully.
 		}
 		catch (JSONException e)
 		{
@@ -124,7 +124,6 @@ public class Model implements AsyncStringResponse
 	
 	protected void onDestroy()
 	{
-	    //super.onDestroy();
 	    if (dbHelper != null) {
 	        OpenHelperManager.releaseHelper();
 	        dbHelper = null;

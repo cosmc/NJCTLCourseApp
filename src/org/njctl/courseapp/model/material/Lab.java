@@ -129,6 +129,12 @@ public class Lab extends Document
 		setProperties(json);
 	}
 	
+	protected void notifyListener()
+	{
+		if(downloadListener != null)
+	    	downloadListener.onDownloaded(this);
+	}
+	
 	public Lab(Parcel in)
 	{
 		Lab doc = dao.queryForId(in.readString());

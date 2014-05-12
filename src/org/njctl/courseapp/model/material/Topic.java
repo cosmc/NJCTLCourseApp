@@ -104,6 +104,12 @@ public class Topic extends Document
 		return presentation.getUnit();
 	}
 	
+	protected void notifyListener()
+	{
+		if(downloadListener != null)
+	    	downloadListener.onDownloaded(this);
+	}
+	
 	public Topic(Parcel in)
 	{
 		Topic doc = dao.queryForId(in.readString());

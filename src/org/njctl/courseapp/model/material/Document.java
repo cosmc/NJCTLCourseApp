@@ -52,7 +52,7 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 	@DatabaseField
 	protected String hash = "";
 	
-	protected DownloadFinishListener<? extends Document> downloadListener;
+	protected DownloadFinishListener<? super Document> downloadListener;
 	
 	private DocumentState state = DocumentState.NOTDOWNLOADED;
 	
@@ -65,7 +65,12 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 	
 	public boolean isDownloaded()
 	{
-		return this.relativePath != "";
+		return this.state == DocumentState.OK;
+	}
+	
+	public boolean isDownloading()
+	{
+		return this.state == DocumentState.DOWNLOADING;
 	}
 
 	public void setPath(String relativePath)
@@ -141,7 +146,7 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 		return lastUpdated;
 	}
 	
-	public void download(DownloadFinishListener<? extends Document> listener)
+	public void download(DownloadFinishListener<? super Document> listener)
     {
 		downloadListener = listener;
 		download();
@@ -159,6 +164,8 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 		Tripel<String, String, AsyncStringResponse> request = new Tripel<String, String, AsyncStringResponse>(url, "application/pdf", this);
 		new FileRetrieverTask().execute(request);
 	}
+	
+	protected abstract void notifyListener();
 	
 	public void processString(String pdfContent)
 	{
@@ -185,6 +192,7 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 			    
 			    state = DocumentState.OK;
 			    relativePath = fileName;
+			    notifyListener();
 			    
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -236,11 +244,14 @@ public abstract class Document implements Parcelable, AsyncStringResponse
     {
 		name = in.name;
 		id = in.id;
-		//unit = in.unit;
 		lastOpened = in.lastOpened;
 		lastUpdated = in.lastUpdated;
 		hash = in.hash;
 		MIMEType = in.MIMEType;
+		numOpened = in.numOpened;
+		fileName = in.fileName;
+		relativePath = in.relativePath;
+		url = in.url;
     }
     
     public void writeToParcel(Parcel dest, int flags)

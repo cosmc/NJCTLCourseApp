@@ -120,6 +120,12 @@ public class Homework extends Document
 		return unit;
 	}
 
+	protected void notifyListener()
+	{
+		if(downloadListener != null)
+	    	downloadListener.onDownloaded(this);
+	}
+	
 	public Homework(Parcel in)
 	{
 		Homework doc = dao.queryForId(in.readString());

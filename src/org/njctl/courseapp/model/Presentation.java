@@ -207,4 +207,9 @@ public class Presentation extends Document
 		setProperties(json);
 	}
 
+	protected void notifyListener()
+	{
+		if(downloadListener != null)
+	    	downloadListener.onDownloaded(this);
+	}
 }
