@@ -36,13 +36,13 @@ public class Model implements AsyncStringResponse
 		Class.setDao(dao2);
 		RuntimeExceptionDao<Unit, Integer> dao3 = dbHelper.getRuntimeExceptionDao(Unit.class);
 		Unit.setDao(dao3);
-		RuntimeExceptionDao<Handout, Integer> dao4 = dbHelper.getRuntimeExceptionDao(Handout.class);
+		RuntimeExceptionDao<Handout, String> dao4 = dbHelper.getRuntimeExceptionDao(Handout.class);
 		Handout.setDao(dao4);
-		RuntimeExceptionDao<Homework, Integer> dao5 = dbHelper.getRuntimeExceptionDao(Homework.class);
+		RuntimeExceptionDao<Homework, String> dao5 = dbHelper.getRuntimeExceptionDao(Homework.class);
 		Homework.setDao(dao5);
-		RuntimeExceptionDao<Lab, Integer> dao6 = dbHelper.getRuntimeExceptionDao(Lab.class);
+		RuntimeExceptionDao<Lab, String> dao6 = dbHelper.getRuntimeExceptionDao(Lab.class);
 		Lab.setDao(dao6);
-		RuntimeExceptionDao<Presentation, Integer> dao7 = dbHelper.getRuntimeExceptionDao(Presentation.class);
+		RuntimeExceptionDao<Presentation, String> dao7 = dbHelper.getRuntimeExceptionDao(Presentation.class);
 		Presentation.setDao(dao7);
 		RuntimeExceptionDao<Topic, String> dao8 = dbHelper.getRuntimeExceptionDao(Topic.class);
 		Topic.setDao(dao8);

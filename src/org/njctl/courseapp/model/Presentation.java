@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.njctl.courseapp.model.material.Document;
+import org.njctl.courseapp.model.material.Lab;
 import org.njctl.courseapp.model.material.Topic;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
@@ -18,6 +19,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import android.os.Parcel;
 import android.util.Log;
 
 //TODO extends Document?!
@@ -31,9 +33,9 @@ public class Presentation extends Document
 	@DatabaseField(canBeNull = false, foreign = true)
 	protected Unit unit;
 	
-	private static RuntimeExceptionDao<Presentation, Integer> dao;
+	private static RuntimeExceptionDao<Presentation, String> dao;
 
-	public static void setDao(RuntimeExceptionDao<Presentation, Integer> newDao)
+	public static void setDao(RuntimeExceptionDao<Presentation, String> newDao)
 	{
 		if (dao == null)
 			dao = newDao;
@@ -105,9 +107,9 @@ public class Presentation extends Document
 		{
 			if (checkJSON(json))
 			{
-				if (dao.idExists(json.getInt("ID")))
+				if (dao.idExists(json.getString("ID")))
 				{
-					Presentation content = dao.queryForId(json.getInt("ID"));
+					Presentation content = dao.queryForId(json.getString("ID"));
 					
 					if(content.setProperties(json))
 					{
@@ -189,6 +191,13 @@ public class Presentation extends Document
 	public ArrayList<Topic> getTopics()
 	{
 		return new ArrayList<Topic>(topics);
+	}
+	
+	public Presentation(Parcel in)
+	{
+		Presentation doc = dao.queryForId(in.readString());
+		setByDocument(doc);
+		unit = doc.unit;
 	}
 	
 	public Presentation(Unit theUnit, JSONObject json)

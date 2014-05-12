@@ -22,9 +22,9 @@ public class Handout extends Document
 	@DatabaseField(canBeNull = false, foreign = true)
 	protected Unit unit;
 	
-	private static RuntimeExceptionDao<Handout, Integer> dao;
+	private static RuntimeExceptionDao<Handout, String> dao;
 
-	public static void setDao(RuntimeExceptionDao<Handout, Integer> newDao)
+	public static void setDao(RuntimeExceptionDao<Handout, String> newDao)
 	{
 		if (dao == null)
 			dao = newDao;
@@ -40,8 +40,8 @@ public class Handout extends Document
 	{
 		try {
 			if (checkJSON(json)) {
-				if (dao.idExists(json.getInt("ID"))) {
-					Handout content = dao.queryForId(json.getInt("ID"));
+				if (dao.idExists(json.getString("ID"))) {
+					Handout content = dao.queryForId(json.getString("ID"));
 					content.setProperties(json);
 					dao.update(content);
 					return content;
@@ -108,6 +108,11 @@ public class Handout extends Document
 		}
 	}
 	
+	public Unit getUnit()
+	{
+		return unit;
+	}
+	
 	public Handout(Unit theUnit, JSONObject json)
 	{
 		unit = theUnit;
@@ -115,11 +120,10 @@ public class Handout extends Document
 		setProperties(json);
 	}
 	
-
 	public Handout(Parcel in)
 	{
-		//super(in);
-		// TODO Auto-generated constructor stub
+		Handout doc = dao.queryForId(in.readString());
+		setByDocument(doc);
+		unit = doc.unit;
 	}
-
 }

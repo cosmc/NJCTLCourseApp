@@ -223,14 +223,7 @@ public class Subject implements Parcelable
 	@Override
 	public void writeToParcel(Parcel dest, int flags)
 	{
-		// dest.writeInt(subjectId);
-		
-		
-		
 		dest.writeInt(id);
-		/*dest.writeString(title);
-		dest.writeLong(lastUpdate.getTime());
-		dest.writeParcelableArray(classes.toArray(new Class[classes.size()]), 0);*/
 	}
 
 	public static final Parcelable.Creator<Subject> CREATOR = new Parcelable.Creator<Subject>()

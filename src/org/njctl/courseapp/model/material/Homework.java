@@ -22,9 +22,9 @@ public class Homework extends Document
 	@DatabaseField(canBeNull = false, foreign = true)
 	protected Unit unit;
 	
-	private static RuntimeExceptionDao<Homework, Integer> dao;
+	private static RuntimeExceptionDao<Homework, String> dao;
 
-	public static void setDao(RuntimeExceptionDao<Homework, Integer> newDao)
+	public static void setDao(RuntimeExceptionDao<Homework, String> newDao)
 	{
 		if (dao == null)
 			dao = newDao;
@@ -40,8 +40,8 @@ public class Homework extends Document
 	{
 		try {
 			if (checkJSON(json)) {
-				if (dao.idExists(json.getInt("ID"))) {
-					Homework content = dao.queryForId(json.getInt("ID"));
+				if (dao.idExists(json.getString("ID"))) {
+					Homework content = dao.queryForId(json.getString("ID"));
 					content.setProperties(json);
 					dao.update(content);
 					return content;
@@ -115,11 +115,16 @@ public class Homework extends Document
 		setProperties(json);
 	}
 	
+	public Unit getUnit()
+	{
+		return unit;
+	}
 
 	public Homework(Parcel in)
 	{
-		//super(in);
-		// TODO Auto-generated constructor stub
+		Homework doc = dao.queryForId(in.readString());
+		setByDocument(doc);
+		unit = doc.unit;
 	}
-
+	
 }

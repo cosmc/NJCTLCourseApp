@@ -74,13 +74,13 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 		String[] segments = relativePath.split("/");
 		this.fileName = segments[segments.length - 1];
 		// this.name = fileName;
-		String[] endstuff = fileName.split("\\.");
+		/*String[] endstuff = fileName.split("\\.");
 		String extension;
 		if (endstuff.length > 1) {
 			extension = endstuff[endstuff.length - 1];
 		} else {
 			extension = "";
-		}
+		}*/
 
 		// Set the MIME type!
 		// TODO: Handle more types.
@@ -226,43 +226,25 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 	{
 		//TODO delete file.
 	}
-
-	// Methods for Parcelable implementation.
-
-	@Override
-	public int describeContents()
-	{
-		return 0;
-	}
-	/*
-	public Document(Parcel in)
-	{
-		this.id = in.readString();
-		this.name = in.readString();
-		this.relativePath = in.readString();
-		this.fileName = in.readString();
-		this.MIMEType = in.readString();
-	}*/
-
-	@Override
-	public void writeToParcel(Parcel dest, int flags)
-	{
-		dest.writeString(this.id);
-		dest.writeString(this.name);
-		dest.writeString(this.relativePath);
-		dest.writeString(this.fileName);
-		dest.writeString(this.MIMEType);
-	}
-/*
-	public static final Parcelable.Creator<Document> CREATOR = new Parcelable.Creator<Document>() {
-		public Document createFromParcel(Parcel in)
-		{
-			return new Document(in);
-		}
-
-		public Document[] newArray(int size)
-		{
-			return new Document[size];
-		}
-	};*/
+	
+    // Methods for Parcelable implementation.
+    public int describeContents() {
+    	return 0;
+    }
+    
+    protected void setByDocument(Document in)
+    {
+		name = in.name;
+		id = in.id;
+		//unit = in.unit;
+		lastOpened = in.lastOpened;
+		lastUpdated = in.lastUpdated;
+		hash = in.hash;
+		MIMEType = in.MIMEType;
+    }
+    
+    public void writeToParcel(Parcel dest, int flags)
+    {
+    	dest.writeString(id);
+    }
 }

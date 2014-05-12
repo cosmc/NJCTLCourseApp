@@ -3,6 +3,8 @@ package org.njctl.courseapp.model.material;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.njctl.courseapp.model.Presentation;
+import org.njctl.courseapp.model.Unit;
+
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -97,9 +99,15 @@ public class Topic extends Document
 		presentation = pres;
 	}
 	
+	public Unit getUnit()
+	{
+		return presentation.getUnit();
+	}
+	
 	public Topic(Parcel in)
 	{
-		//super(in);
-		// TODO Auto-generated constructor stub
+		Topic doc = dao.queryForId(in.readString());
+		setByDocument(doc);
+		presentation = doc.presentation;
 	}
 }

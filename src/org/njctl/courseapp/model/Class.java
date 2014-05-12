@@ -272,26 +272,19 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
     	return getUnits();
     }
     
-    
     // Methods for Parcelable implementation.
-    
-    @Override
     public int describeContents() {
     	return 0;
     }
     
-    @Override
     public void writeToParcel(Parcel dest, int flags)
     {
     	dest.writeInt(id);
-    	//dest.writeString(title);
-    	//dest.writeParcelableArray(units.toArray(new Unit[units.size()]), 0);
     }
     
     public static final Parcelable.Creator<Class> CREATOR = new Parcelable.Creator<Class>() {
     	public Class createFromParcel(Parcel in)
     	{
-    		//units = dao.getEmptyForeignCollection("units");
     		Integer id = in.readInt();
     		
     		return dao.queryForId(id);
@@ -300,5 +293,4 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
     		return new Class[size];
     	}
     };
-
 }

@@ -14,6 +14,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 @DatabaseTable
@@ -22,7 +23,7 @@ public class Lab extends Document
 	@DatabaseField(canBeNull = false, foreign = true)
 	protected Unit unit;
 	
-	private static RuntimeExceptionDao<Lab, Integer> dao;
+	private static RuntimeExceptionDao<Lab, String> dao;
 	
 	// For ORM.
 	Lab()
@@ -30,7 +31,7 @@ public class Lab extends Document
 		
 	}
 
-	public static void setDao(RuntimeExceptionDao<Lab, Integer> newDao)
+	public static void setDao(RuntimeExceptionDao<Lab, String> newDao)
 	{
 		if (dao == null)
 			dao = newDao;
@@ -40,8 +41,8 @@ public class Lab extends Document
 	{
 		try {
 			if (checkJSON(json)) {
-				if (dao.idExists(json.getInt("ID"))) {
-					Lab content = dao.queryForId(json.getInt("ID"));
+				if (dao.idExists(json.getString("ID"))) {
+					Lab content = dao.queryForId(json.getString("ID"));
 					content.setProperties(json);
 					dao.update(content);
 					return content;
@@ -72,6 +73,22 @@ public class Lab extends Document
 			Log.w("NJCTLLOG", "    Lab contents not found...");
 			return false;
 		}
+	}
+	
+	public Unit getUnit()
+	{
+		return unit;
+	}
+	
+	protected void setProperties(Lab in)
+	{
+		name = in.name;
+		id = in.id;
+		unit = in.unit;
+		lastOpened = in.lastOpened;
+		lastUpdated = in.lastUpdated;
+		hash = in.hash;
+		MIMEType = in.MIMEType;
 	}
 	
 	protected void setProperties(JSONObject json)
@@ -111,11 +128,23 @@ public class Lab extends Document
 		
 		setProperties(json);
 	}
-
+	
 	public Lab(Parcel in)
 	{
-		//super(in);
-		// TODO Auto-generated constructor stub
+		Lab doc = dao.queryForId(in.readString());
+		setByDocument(doc);
+		unit = doc.unit;
 	}
-
+	
+	public static final Parcelable.Creator<Lab> CREATOR = new Parcelable.Creator<Lab>() {
+    	public Lab createFromParcel(Parcel in)
+    	{
+    		String id = in.readString();
+    		
+    		return dao.queryForId(id);
+    	}
+    	public Lab[] newArray(int size) {
+    		return new Lab[size];
+    	}
+    };
 }
