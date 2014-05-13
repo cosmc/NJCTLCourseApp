@@ -23,6 +23,9 @@ public class Topic extends Document
 	
 	@DatabaseField
 	protected String hash = "";
+	
+	@DatabaseField
+	protected String newHash = "";
 
 	public static void setDao(RuntimeExceptionDao<Topic, String> newDao)
 	{
@@ -45,7 +48,7 @@ public class Topic extends Document
 				{
 					Topic content = dao.queryForId(json.getString("post_name"));
 					content.setProperties(json);
-					content.checkOutdated(json.getString("pdf_md5"));
+					content.checkOutdated();
 					
 					return content;
 				}
@@ -63,7 +66,7 @@ public class Topic extends Document
 		}
 	}
     
-    protected void checkOutdated(String newHash)
+    protected void checkOutdated()
     {
     	if(newHash != hash)
     	{
@@ -94,7 +97,7 @@ public class Topic extends Document
     	try{
 			name = json.getString("label");
 			url = json.getString("pdf_uri");
-			//hash = json.getString("pdf_md5");
+			newHash = json.getString("pdf_md5");
 			id = json.getString("post_name");
 			
 			Log.i("NJCTLLOG", "                Topic " + name + " successfully created.");
@@ -120,7 +123,7 @@ public class Topic extends Document
 		
 	}
 	
-	public void download(DownloadFinishListener<? super Document> listener)
+	public void download()
 	{
 		if(state != DocumentState.OK)
 		{

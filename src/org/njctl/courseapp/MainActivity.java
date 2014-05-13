@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import org.njctl.courseapp.model.Class;
 import org.njctl.courseapp.model.Model;
 import org.njctl.courseapp.model.Subject;
-import org.njctl.courseapp.model.SubjectRetriever;
+import org.njctl.courseapp.model.ModelRetriever;
 import org.njctl.courseapp.model.Unit;
 
 import android.content.ActivityNotFoundException;
@@ -27,7 +27,7 @@ import android.widget.Toast;
 
 //import org.njctl.courseapp.R;
 
-public class MainActivity extends ActionBarActivity implements NJCTLNavActivity, SubjectRetriever {
+public class MainActivity extends ActionBarActivity implements NJCTLNavActivity, ModelRetriever {
 
 	private Model model;
 	private ArrayList<Subject> subjects;
@@ -167,9 +167,9 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
     }
 
 	@Override
-	public void useSubjects(ArrayList<Subject> subjects)
+	public void onModelReady()
 	{
-		this.subjects = subjects;
+		this.subjects = model.getSubjects();
 		showSubjects(subjects);
 	}
 
