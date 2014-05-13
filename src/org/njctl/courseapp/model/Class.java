@@ -1,5 +1,6 @@
 package org.njctl.courseapp.model;
 
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,6 +45,8 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
     
     @DatabaseField
     protected boolean downloaded = false;
+    
+    protected boolean created = false;
     
     protected Integer downloadingUnits = 0;
     
@@ -162,21 +165,28 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
 		}
 	}
 	
+	boolean wasCreated()
+	{
+		return created;
+	}
+	
 	public static Class get(Subject subject, JSONObject json)
 	{
 		try {
 			if (checkJSON(json)) {
-				if (dao.idExists(json.getInt("ID"))) {
+				if (dao.idExists(json.getInt("ID")))
+				{
 					Class content = dao.queryForId(json.getInt("ID"));
+					content.created = false;
 					Log.v("NJCTLLOG", "Loaded a class " + content.getId() + " for a subject....");
 					content.setProperties(json);
-					dao.update(content);
 					return content;
 				} else {
 					Class content = new Class(subject, json);
+					content.created = true;
 					Log.v("NJCTLLOG", "Created a class " + content.getId() + " for a subject....");
 					
-					dao.create(content);
+					//dao.create(content);
 
 					return content;
 				}
@@ -233,14 +243,22 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
 			{
 				Unit unit = Unit.get(this, unitList.getJSONObject(i));
 				
-				if(unit != null)
+				if(unit != null && unit.wasCreated())
 				{
 					units.add(unit);
+					
 					if (subscribed)
 						unit.subscribe();
 				}
+				else
+				{
+					units.update(unit);
+				}
 			}
 			
+    	} catch (SQLException e) {
+    		//e.printStackTrace();
+			Log.w("Class SQL ERR", e.toString());
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

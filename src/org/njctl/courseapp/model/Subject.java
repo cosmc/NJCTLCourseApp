@@ -96,6 +96,7 @@ public class Subject implements Parcelable
 				return null;
 			}
 		} catch (Exception e) { // never executed..
+			Log.v("NJCTLLOGSUBJECT", Log.getStackTraceString(e));
 			return null;
 		}
 	}
@@ -157,16 +158,15 @@ public class Subject implements Parcelable
 				
 				if(theClass == null) Log.v("NJCTLLOG", "The class is null and will therefore not be added to the subject");
 				
-				if (theClass != null && !classes.contains(theClass))
+				if (theClass != null && theClass.wasCreated())
 				{
-					Log.v("NJCTLLOG", "Adding a class to subject....######");
-					Log.v("NJCTLLOG", theClass.toString());
-					//classes.add(theClass);
-					classes.update(theClass);
+					Log.v("NJCTLLOG", "Adding subject class with id " + theClass.getId());
+					classes.add(theClass);
 				}
 				else
 				{
-					Log.v("NJCTLLOG", "Not adding a class..");
+					Log.v("NJCTLLOG", "updating subject class with id " + theClass.getId());
+					classes.update(theClass);
 				}
 			}
 		} catch (Exception e) {

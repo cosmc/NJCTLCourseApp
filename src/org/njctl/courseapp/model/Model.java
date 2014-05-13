@@ -50,7 +50,6 @@ public class Model implements AsyncStringResponse
 		Document.setContext(ctx);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void fetchManifest(SubjectRetriever retrieverObject)
 	{
 		retriever = retrieverObject;
@@ -63,10 +62,16 @@ public class Model implements AsyncStringResponse
 		}
 		else
 		{
-			Log.v("NJCTLLOG", "Building class tree from online JSON...");
-			Tripel<String, String, AsyncStringResponse> request = new Tripel<String, String, AsyncStringResponse>(jsonUrl, "application/json", this);
-			new FileRetrieverTask().execute(request);
+			update();
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void update()
+	{
+		Log.v("NJCTLLOG", "Building class tree from online JSON...");
+		Tripel<String, String, AsyncStringResponse> request = new Tripel<String, String, AsyncStringResponse>(jsonUrl, "application/json", this);
+		new FileRetrieverTask().execute(request);
 	}
 	
 	protected void buildClassTreeFromDb()

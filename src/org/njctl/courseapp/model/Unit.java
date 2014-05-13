@@ -1,5 +1,6 @@
 package org.njctl.courseapp.model;
 
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -60,6 +61,8 @@ public class Unit implements Parcelable
     protected final static String HW = "homework", PRES = "presentations", HANDOUT = "handouts", LABS = "labs";
     
     private static RuntimeExceptionDao<Unit, Integer> dao;
+    
+    protected boolean created = false;
 
 	public static void setDao(RuntimeExceptionDao<Unit, Integer> newDao)
 	{
@@ -160,24 +163,25 @@ public class Unit implements Parcelable
     	return new ArrayList<Handout>(handouts);
     }
     
+    boolean wasCreated()
+	{
+		return created;
+	}
+    
     public static Unit get(Class theClass, JSONObject json)
 	{
 		try {
 			if (checkJSON(json)) {
-				Unit content = new Unit(theClass, json);
-				dao.createOrUpdate(content);
-				return content;
-				/*if (dao.idExists(json.getInt("ID"))) {
-					Unit content = dao.queryForId(json.getInt("ID"));
+				Unit content;
+				if (dao.idExists(json.getInt("ID"))) {
+					content = dao.queryForId(json.getInt("ID"));
+					content.created = false;
 					content.setProperties(json);
-					dao.update(content);
-					return content;
 				} else {
-					Unit content = new Unit(theClass, json);
-					dao.create(content);
-
-					return content;
-				}*/
+					content = new Unit(theClass, json);
+					content.created = true;
+				}
+				return content;
 			} else {
 				Log.v("NJCTLLOG", "class json wrong..");
 				return null;
@@ -234,7 +238,8 @@ public class Unit implements Parcelable
 				for(int i = 0; i < homeworkList.length(); i++)
 				{
 					Homework hw = Homework.get(this, homeworkList.getJSONObject(i));
-					homeworks.add(hw);
+					//homeworks.add(hw);
+					homeworks.update(hw);
 				}
 			}
 			if(content.has(PRES))
@@ -248,7 +253,7 @@ public class Unit implements Parcelable
 					
 					if(presentation != null)
 					{
-						presentations.add(presentation);
+						presentations.update(presentation);
 					}
 				}
 			}
@@ -266,7 +271,7 @@ public class Unit implements Parcelable
 					
 					if(lab != null)
 					{
-						labs.add(lab);
+						labs.update(lab);
 					}
 				}
 			}
@@ -282,15 +287,22 @@ public class Unit implements Parcelable
 					
 					if(handout != null)
 					{
-						handouts.add(handout);
+						handouts.update(handout);
 					}
 				}
 			}
 			
-		} catch (JSONException e) {
+		} catch (JSONException e)
+		{
 			e.printStackTrace();
 			Log.w("JSON ERR", e.toString());
-		} catch (ParseException e)
+		}
+    	catch (SQLException e)
+		{
+    		e.printStackTrace();
+			Log.w("SQL Unit ERR", e.toString());
+		}
+    	catch (ParseException e)
 		{
 			e.printStackTrace();
 			Log.w("JSON ERR", e.toString());
