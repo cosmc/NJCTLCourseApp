@@ -43,11 +43,10 @@ public class Handout extends Document
 				if (dao.idExists(json.getString("ID"))) {
 					Handout content = dao.queryForId(json.getString("ID"));
 					content.setProperties(json);
-					dao.update(content);
 					return content;
 				} else {
 					Handout content = new Handout(unit, json);
-					dao.create(content);
+					content.created = true;
 
 					return content;
 				}

@@ -56,6 +56,8 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 	
 	private DocumentState state = DocumentState.NOTDOWNLOADED;
 	
+	protected boolean created = false;
+	
 	protected static Context ctx;
 	
 	public static void setContext(Context context)
@@ -234,6 +236,11 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 	public void deleteFile()
 	{
 		//TODO delete file.
+	}
+	
+	public boolean wasCreated()
+	{
+		return created;
 	}
 	
     // Methods for Parcelable implementation.

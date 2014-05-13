@@ -40,31 +40,21 @@ public class Homework extends Document
 	{
 		try {
 			if (checkJSON(json)) {
-				/*if (dao.idExists(json.getString("ID"))) {
-					Homework content = dao.queryForId(json.getString("ID"));
+				Homework content;
+				if (dao.idExists(json.getString("ID"))) {
+					content = dao.queryForId(json.getString("ID"));
 					content.setProperties(json);
-					dao.update(content);
-					return content;
 				} else {
-					Homework content = new Homework(theUnit, json);
-					dao.create(content);
-
-					return content;
-				}*/
-				Homework content = new Homework(theUnit, json);
-				Log.v("NJCTLHW", "ID: " + content.id);
-				try{
-				dao.createOrUpdate(content);
-				} catch(Exception e)
-				{
-					Log.v("NJCTLLOG", "hw exception: " + e.getMessage());
-					Log.v("NJCTLLOG", Log.getStackTraceString(e));
+					content = new Homework(theUnit, json);
+					content.created = true;
 				}
 				return content;
 			} else {
 				return null;
 			}
 		} catch (Exception e) { // never executed..
+			Log.v("NJCTLLOG", "homework exception: " + e.getMessage());
+			Log.v("NJCTLLOG", Log.getStackTraceString(e));
 			return null;
 		}
 	}

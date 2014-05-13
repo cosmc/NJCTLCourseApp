@@ -44,11 +44,10 @@ public class Lab extends Document
 				if (dao.idExists(json.getString("ID"))) {
 					Lab content = dao.queryForId(json.getString("ID"));
 					content.setProperties(json);
-					dao.update(content);
 					return content;
 				} else {
 					Lab content = new Lab(theUnit, json);
-					dao.create(content);
+					content.created = true;
 
 					return content;
 				}

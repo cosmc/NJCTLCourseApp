@@ -17,7 +17,6 @@ import org.njctl.courseapp.model.material.Lab;
 import org.njctl.courseapp.model.material.Presentation;
 import org.njctl.courseapp.model.subscribe.DownloadFinishListener;
 
-import com.j256.ormlite.dao.Dao.CreateOrUpdateStatus;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
@@ -238,8 +237,17 @@ public class Unit implements Parcelable
 				for(int i = 0; i < homeworkList.length(); i++)
 				{
 					Homework hw = Homework.get(this, homeworkList.getJSONObject(i));
-					//homeworks.add(hw);
-					homeworks.update(hw);
+					if(hw != null)
+					{
+						if(hw.wasCreated())
+						{
+							homeworks.add(hw);
+						}
+						else
+						{
+							homeworks.update(hw);
+						}
+					}
 				}
 			}
 			if(content.has(PRES))
@@ -253,7 +261,14 @@ public class Unit implements Parcelable
 					
 					if(presentation != null)
 					{
-						presentations.update(presentation);
+						if(presentation.wasCreated())
+						{
+							presentations.add(presentation);
+						}
+						else
+						{
+							presentations.update(presentation);
+						}
 					}
 				}
 			}
@@ -271,7 +286,14 @@ public class Unit implements Parcelable
 					
 					if(lab != null)
 					{
-						labs.update(lab);
+						if(lab.wasCreated())
+						{
+							labs.add(lab);
+						}
+						else
+						{
+							labs.update(lab);
+						}
 					}
 				}
 			}
@@ -287,7 +309,14 @@ public class Unit implements Parcelable
 					
 					if(handout != null)
 					{
-						handouts.update(handout);
+						if(handout.wasCreated())
+						{
+							handouts.add(handout);
+						}
+						else
+						{
+							handouts.update(handout);
+						}
 					}
 				}
 			}

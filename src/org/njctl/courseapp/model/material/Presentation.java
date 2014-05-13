@@ -1,5 +1,6 @@
 package org.njctl.courseapp.model.material;
 
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -109,18 +110,14 @@ public class Presentation extends Document
 				if (dao.idExists(json.getString("ID")))
 				{
 					Presentation content = dao.queryForId(json.getString("ID"));
-					
-					if(content.setProperties(json))
-					{
-						dao.update(content);
-					}
+					content.setProperties(json);
 					
 					return content;
 				}
 				else
 				{
 					Presentation content = new Presentation(unit, json);
-					dao.create(content);
+					content.created = true;
 
 					return content;
 				}
@@ -155,7 +152,14 @@ public class Presentation extends Document
 					for(int i = 0; i < topicsList.length(); i++)
 					{
 						Topic topic = Topic.get(this, topicsList.getJSONObject(i));
-						topics.add(topic);
+						if(topic.wasCreated())
+						{
+							topics.add(topic);
+						}
+						else
+						{
+							topics.update(topic);
+						}
 					}
 				}
 				else
@@ -169,6 +173,11 @@ public class Presentation extends Document
 			{
 				return false;
 			}
+		}
+		catch(SQLException e)
+		{
+			Log.w("SQL Presentation ERR", "                " + e.toString());
+			return false;
 		}
 		catch(JSONException e)
 		{

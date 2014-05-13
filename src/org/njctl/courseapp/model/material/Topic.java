@@ -40,13 +40,13 @@ public class Topic extends Document
 				{
 					Topic content = dao.queryForId(json.getString("post_name"));
 					content.setProperties(json);
-					dao.update(content);
+					
 					return content;
 				}
 				else
 				{
 					Topic content = new Topic(pres, json);
-					dao.create(content);
+					content.created = true;
 
 					return content;
 				}
