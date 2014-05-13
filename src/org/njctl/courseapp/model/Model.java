@@ -66,6 +66,15 @@ public class Model implements AsyncStringResponse
 		}
 	}
 	
+	public ArrayList<Class> getClassesSubscribed()
+	{
+		ArrayList<Class> myClasses = new ArrayList<Class>();
+		for (int i=0; i < subjects.size(); ++i) {
+			myClasses.addAll(subjects.get(i).getClassesSubscribed());
+		}
+		return myClasses;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public void update()
 	{
@@ -74,14 +83,23 @@ public class Model implements AsyncStringResponse
 		new FileRetrieverTask().execute(request);
 	}
 	
-	protected void buildClassTreeFromDb()
+	protected boolean buildClassTreeFromDb()
 	{
 		RuntimeExceptionDao<Subject, Integer> dao = Subject.getDao();
 		List<Subject> oldSubjects = dao.queryForAll();
 		
 		ArrayList<Subject> subjects = new ArrayList<Subject>(oldSubjects);
 		
-		retriever.useSubjects(subjects);
+		if(subjects.size() > 0)
+		{
+			retriever.useSubjects(subjects);
+			return true;
+		}
+		else
+		{
+			retriever.useSubjects(subjects);
+			return false;
+		}
 	}
 
 	public void processString(String jsonString)
@@ -110,7 +128,7 @@ public class Model implements AsyncStringResponse
 			for(Subject oldSubject : oldSubjects)
 			{
 				//TODO this check is not working
-				if(!subjects.contains(oldSubject))
+				if(!dao.idExists(oldSubject.getId()))
 				{
 					Log.v("NJCTLLOG", "subject has been deleted from json!");
 					
