@@ -49,12 +49,12 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 	@DatabaseField
 	protected Integer numOpened = 0;
 	
-	@DatabaseField
-	protected String hash = "";
+	/*@DatabaseField
+	protected String hash = "";*/
 	
 	protected DownloadFinishListener<? super Document> downloadListener;
 	
-	private DocumentState state = DocumentState.NOTDOWNLOADED;
+	protected DocumentState state = DocumentState.NOTDOWNLOADED;
 	
 	protected boolean created = false;
 	
@@ -172,17 +172,16 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 	
 	public void processString(String pdfContent)
 	{
-		
 		//TODO save to file
 		
-		//TODO check md5 sum.
-		String downloadedHash = FileRetrieverTask.getMD5EncryptedString(pdfContent);
+		//check md5 sum in a future release.
+		/*String downloadedHash = FileRetrieverTask.getMD5EncryptedString(pdfContent);
 		
 		if(hash == "" || downloadedHash == hash)
-		{
+		{*/
 			//Internal storage; http://stackoverflow.com/questions/14376807/how-to-read-write-string-from-a-file-in-android
 			String path = ctx.getFilesDir().getAbsolutePath();
-			String fileName = id + "_" + downloadedHash;
+			//String fileName = id + "_" + downloadedHash;
 			String filePath = path + fileName;
 			File file = new File(filePath);
 			
@@ -212,12 +211,12 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 					e.printStackTrace();
 				}
 			}
-		}
+		/*}
 		else
 		{
 			state = DocumentState.NOTDOWNLOADED;
 			Log.v("NJCTLLOG", "Download hash incorrect.");
-		}
+		}*/
 		/*
 		try {
 			FileOutputStream wurst = ctx.openFileOutput("config.txt", Context.MODE_PRIVATE);
@@ -254,7 +253,7 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 		id = in.id;
 		lastOpened = in.lastOpened;
 		lastUpdated = in.lastUpdated;
-		hash = in.hash;
+		//hash = in.hash;
 		MIMEType = in.MIMEType;
 		numOpened = in.numOpened;
 		fileName = in.fileName;

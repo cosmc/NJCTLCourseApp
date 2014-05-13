@@ -2,7 +2,9 @@ package org.njctl.courseapp.model.material;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.njctl.courseapp.model.DocumentState;
 import org.njctl.courseapp.model.Unit;
+import org.njctl.courseapp.model.subscribe.DownloadFinishListener;
 
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.field.DatabaseField;
@@ -18,6 +20,9 @@ public class Topic extends Document
 	
 	@DatabaseField(canBeNull = false, foreign = true)
 	protected Presentation presentation;
+	
+	@DatabaseField
+	protected String hash = "";
 
 	public static void setDao(RuntimeExceptionDao<Topic, String> newDao)
 	{
@@ -40,23 +45,31 @@ public class Topic extends Document
 				{
 					Topic content = dao.queryForId(json.getString("post_name"));
 					content.setProperties(json);
+					content.checkOutdated(json.getString("pdf_md5"));
 					
 					return content;
 				}
 				else
 				{
 					Topic content = new Topic(pres, json);
-					content.created = true;
 
 					return content;
 				}
 			} else {
 				return null;
 			}
-		} catch (Exception e) { // never executed if checkJSON works correctly.
+		} catch (Exception e) {
 			return null;
 		}
 	}
+    
+    protected void checkOutdated(String newHash)
+    {
+    	if(newHash != hash)
+    	{
+    		state = DocumentState.OUTDATED;
+    	}
+    }
     
     protected static boolean checkJSON(JSONObject json)
 	{
@@ -81,7 +94,7 @@ public class Topic extends Document
     	try{
 			name = json.getString("label");
 			url = json.getString("pdf_uri");
-			hash = json.getString("pdf_md5");
+			//hash = json.getString("pdf_md5");
 			id = json.getString("post_name");
 			
 			Log.i("NJCTLLOG", "                Topic " + name + " successfully created.");
@@ -96,6 +109,23 @@ public class Topic extends Document
 	public Topic(Presentation pres, JSONObject json)
 	{
 		presentation = pres;
+		created = true;
+		setProperties(json);
+		
+		try {
+			hash = json.getString("pdf_md5");
+		} catch (JSONException e) {
+			Log.v("NJCTLLOGTOPIC", Log.getStackTraceString(e));
+		}
+		
+	}
+	
+	public void download(DownloadFinishListener<? super Document> listener)
+	{
+		if(state != DocumentState.OK)
+		{
+			doDownload();
+		}
 	}
 	
 	public Unit getUnit()
@@ -113,6 +143,7 @@ public class Topic extends Document
 	{
 		Topic doc = dao.queryForId(in.readString());
 		setByDocument(doc);
+		hash = doc.hash;
 		presentation = doc.presentation;
 	}
 }
