@@ -175,6 +175,21 @@ public class Subject implements Parcelable
 		}
 	}
 
+	public ArrayList<Class> getClassesSubscribed()
+	{
+		ArrayList<Class> classList = new ArrayList<Class>();
+		Log.v("NJCTLLOG", "Current number of classes in subject " + getTitle() + ":" + classes.size());
+		
+		for (Class klass : classes) {
+			if (klass.isSubscribed())
+				classList.add(klass);
+		}
+		
+		Log.v("NJCTLLOG", "Current number of subscribed classes in subject " + getTitle() + ":" + classList.size());
+
+		return classList;
+	}
+
 	public ArrayList<Class> getClassesDownloaded()
 	{
 		ArrayList<Class> classList = new ArrayList<Class>();
