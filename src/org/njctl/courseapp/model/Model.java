@@ -55,12 +55,7 @@ public class Model implements AsyncStringResponse
 		retriever = retrieverObject;
 		
 		//if(true)
-		if(dbFilled)
-		{
-			Log.v("NJCTLLOG", "Local SQLite database is filled. Building class tree from database.");
-			buildClassTreeFromDb();
-		}
-		else
+		if(!buildClassTreeFromDb())
 		{
 			update();
 		}
@@ -97,7 +92,6 @@ public class Model implements AsyncStringResponse
 		}
 		else
 		{
-			retriever.useSubjects(subjects);
 			return false;
 		}
 	}
