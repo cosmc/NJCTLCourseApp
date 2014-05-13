@@ -24,7 +24,7 @@ public class Model implements AsyncStringResponse
 	protected boolean dbFilled = false;
 	protected ArrayList<Subject> subjects;
 	
-	protected SubjectRetriever retriever;
+	protected ModelRetriever retriever;
 	
 	public Model(Context ctx)
 	{
@@ -50,7 +50,7 @@ public class Model implements AsyncStringResponse
 		Document.setContext(ctx);
 	}
 	
-	public void fetchManifest(SubjectRetriever retrieverObject)
+	public void fetchManifest(ModelRetriever retrieverObject)
 	{
 		retriever = retrieverObject;
 		
@@ -59,6 +59,11 @@ public class Model implements AsyncStringResponse
 		{
 			update();
 		}
+	}
+	
+	public ArrayList<Subject> getSubjects()
+	{
+		return subjects;
 	}
 	
 	public ArrayList<Class> getClassesSubscribed()
@@ -87,7 +92,7 @@ public class Model implements AsyncStringResponse
 		
 		if(subjects.size() > 0)
 		{
-			retriever.useSubjects(subjects);
+			retriever.onModelReady();
 			return true;
 		}
 		else
@@ -136,7 +141,7 @@ public class Model implements AsyncStringResponse
 			Log.w("JSON ERR", e.toString());
 		}
 		
-		retriever.useSubjects(subjects);
+		retriever.onModelReady();
 	}
 	
 	protected void onDestroy()

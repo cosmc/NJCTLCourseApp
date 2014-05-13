@@ -1,5 +1,5 @@
 #
-# generated on 2014/05/12 03:58:23
+# generated on 2014/05/13 05:32:57
 #
 # --table-start--
 dataClass=org.njctl.courseapp.model.Unit
@@ -130,9 +130,6 @@ fieldName=lastUpdated
 # --field-start--
 fieldName=numOpened
 # --field-end--
-# --field-start--
-fieldName=hash
-# --field-end--
 # --table-fields-end--
 # --table-end--
 #################################
@@ -172,9 +169,6 @@ fieldName=lastUpdated
 # --field-start--
 fieldName=numOpened
 # --field-end--
-# --field-start--
-fieldName=hash
-# --field-end--
 # --table-fields-end--
 # --table-end--
 #################################
@@ -186,6 +180,9 @@ tableName=topic
 fieldName=presentation
 canBeNull=false
 foreign=true
+# --field-end--
+# --field-start--
+fieldName=hash
 # --field-end--
 # --field-start--
 fieldName=id
@@ -208,9 +205,6 @@ fieldName=lastUpdated
 # --field-end--
 # --field-start--
 fieldName=numOpened
-# --field-end--
-# --field-start--
-fieldName=hash
 # --field-end--
 # --table-fields-end--
 # --table-end--
@@ -246,9 +240,6 @@ fieldName=lastUpdated
 # --field-start--
 fieldName=numOpened
 # --field-end--
-# --field-start--
-fieldName=hash
-# --field-end--
 # --table-fields-end--
 # --table-end--
 #################################
@@ -283,9 +274,6 @@ fieldName=lastUpdated
 # --field-start--
 fieldName=numOpened
 # --field-end--
-# --field-start--
-fieldName=hash
-# --field-end--
 # --table-fields-end--
 # --table-end--
 #################################
@@ -319,9 +307,6 @@ fieldName=lastUpdated
 # --field-end--
 # --field-start--
 fieldName=numOpened
-# --field-end--
-# --field-start--
-fieldName=hash
 # --field-end--
 # --table-fields-end--
 # --table-end--

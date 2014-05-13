@@ -79,17 +79,6 @@ public class Lab extends Document
 		return unit;
 	}
 	
-	protected void setProperties(Lab in)
-	{
-		name = in.name;
-		id = in.id;
-		unit = in.unit;
-		lastOpened = in.lastOpened;
-		lastUpdated = in.lastUpdated;
-		hash = in.hash;
-		MIMEType = in.MIMEType;
-	}
-	
 	protected void setProperties(JSONObject json)
 	{
 		try{
