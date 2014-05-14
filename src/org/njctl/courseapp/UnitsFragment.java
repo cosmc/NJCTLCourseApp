@@ -31,14 +31,14 @@ public class UnitsFragment extends Fragment {
         Bundle args = getArguments();
         final Class theClass = args.getParcelable("class");
 
-        ArrayAdapter<Unit> adapter = new ArrayAdapter<Unit>(getActivity(), 0, theClass.getContents());
+        ArrayAdapter<Unit> adapter = new ArrayAdapter<Unit>(getActivity(), 0, theClass.getUnits());
         listView.setAdapter(adapter);
         
         listView.setOnItemClickListener(new OnItemClickListener() {
         	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         		Log.w("Unit click", "" + position);
         		try {
-        			((NJCTLNavActivity) getActivity()).showDocuments(theClass.getContents().get(position));
+        			((NJCTLNavActivity) getActivity()).showDocuments(theClass.getUnits().get(position));
         		} catch (ClassCastException e) {
         			Log.w("ERROR", "Activity does not implement NJCTLNavActivity.");
         		}

@@ -1,10 +1,5 @@
 package org.njctl.courseapp.model.material;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.njctl.courseapp.model.Unit;
@@ -77,37 +72,6 @@ public class Homework extends Document
 		}
 	}
 	
-	protected void setProperties(JSONObject json)
-	{
-		try{
-			name = json.getString("post_title");
-			id = json.getString("ID");
-			
-			if(json.has("pdf_uri"))
-			{
-				url = json.getString("pdf_uri");
-			}
-			else
-			{
-				Log.w("NJCTLLOG", "                pdf_uri not found for homework " + name);
-			}
-			
-			
-			String modified = json.getString("post_modified");
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-			lastUpdated = df.parse(modified);
-			
-		}
-		catch(JSONException e)
-		{
-			Log.w("JSON ERR", e.toString());
-		}
-		catch (ParseException e)
-		{
-			Log.w("PARSE ERR", e.toString());
-		}
-	}
-	
 	public Homework(Unit theUnit, JSONObject json)
 	{
 		unit = theUnit;
@@ -119,8 +83,14 @@ public class Homework extends Document
 	{
 		return unit;
 	}
+	
+	protected void onDownloadFinish()
+	{
+		lastUpdated = lastUpdatedNew;
+		dao.update(this);
+	}
 
-	protected void notifyListener()
+	protected void notifyDownloadListener()
 	{
 		if(downloadListener != null)
 	    	downloadListener.onDownloaded(this);

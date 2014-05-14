@@ -1,10 +1,11 @@
 package org.njctl.courseapp.model.material;
 
+import java.util.Date;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.njctl.courseapp.model.DocumentState;
 import org.njctl.courseapp.model.Unit;
-import org.njctl.courseapp.model.subscribe.DownloadFinishListener;
 
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.field.DatabaseField;
@@ -68,7 +69,7 @@ public class Topic extends Document
     
     protected void checkOutdated()
     {
-    	if(newHash != hash)
+    	if(newHash != hash && state == DocumentState.OK)
     	{
     		state = DocumentState.OUTDATED;
     	}
@@ -92,15 +93,16 @@ public class Topic extends Document
 		}
 	}
     
+    
     protected void setProperties(JSONObject json)
     {
     	try{
-			name = json.getString("label");
+			title = json.getString("label");
 			url = json.getString("pdf_uri");
 			newHash = json.getString("pdf_md5");
 			id = json.getString("post_name");
 			
-			Log.i("NJCTLLOG", "                Topic " + name + " successfully created.");
+			Log.i("NJCTLLOG", "                Topic " + title + " successfully created.");
 			
 		}
 		catch(JSONException e)
@@ -114,21 +116,14 @@ public class Topic extends Document
 		presentation = pres;
 		created = true;
 		setProperties(json);
-		
-		try {
-			hash = json.getString("pdf_md5");
-		} catch (JSONException e) {
-			Log.v("NJCTLLOGTOPIC", Log.getStackTraceString(e));
-		}
-		
+		lastUpdatedNew = pres.lastUpdatedNew;
 	}
 	
-	public void download()
+	protected void onDownloadFinish()
 	{
-		if(state != DocumentState.OK)
-		{
-			doDownload();
-		}
+		lastUpdated = new Date();
+		hash = newHash;
+		dao.update(this);
 	}
 	
 	public Unit getUnit()
@@ -136,7 +131,7 @@ public class Topic extends Document
 		return presentation.getUnit();
 	}
 	
-	protected void notifyListener()
+	protected void notifyDownloadListener()
 	{
 		if(downloadListener != null)
 	    	downloadListener.onDownloaded(this);
@@ -147,6 +142,7 @@ public class Topic extends Document
 		Topic doc = dao.queryForId(in.readString());
 		setByDocument(doc);
 		hash = doc.hash;
+		newHash = doc.newHash;
 		presentation = doc.presentation;
 	}
 }

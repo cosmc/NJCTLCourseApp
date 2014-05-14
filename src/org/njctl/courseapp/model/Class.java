@@ -103,7 +103,6 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
     public void download(DownloadFinishListener<Class> listener)
     {
     	downloadListener = listener;
-    	
     	download();
     }
     
@@ -285,10 +284,6 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
     
     public int getId() {
     	return id;
-    }
-    
-    public ArrayList<Unit> getContents() {
-    	return getUnits();
     }
     
     // Methods for Parcelable implementation.

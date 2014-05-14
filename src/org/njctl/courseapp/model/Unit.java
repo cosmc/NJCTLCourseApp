@@ -11,6 +11,7 @@ import java.util.Locale;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.njctl.courseapp.model.material.Document;
 import org.njctl.courseapp.model.material.Handout;
 import org.njctl.courseapp.model.material.Homework;
 import org.njctl.courseapp.model.material.Lab;
@@ -28,7 +29,7 @@ import android.os.Parcelable;
 import android.util.Log;
 
 @DatabaseTable
-public class Unit implements Parcelable
+public class Unit implements Parcelable, DownloadFinishListener<Document>
 {
 	@DatabaseField(id = true)
     private Integer id;
@@ -56,6 +57,9 @@ public class Unit implements Parcelable
     
     @DatabaseField(canBeNull = false, foreign = true)
     protected Class theClass;
+    
+    DownloadFinishListener<Unit> downloadFinishListener;
+    Integer downloading = 0;
     
     protected final static String HW = "homework", PRES = "presentations", HANDOUT = "handouts", LABS = "labs";
     
@@ -94,17 +98,31 @@ public class Unit implements Parcelable
     {
     	for(Homework content : homeworks)
     	{
-    		content.download();
+    		content.download(this);
+    		downloading++;
+    	}
+    	for(Presentation content : presentations)
+    	{
+    		content.download(this);
+    		downloading++;
+    	}
+    	for(Lab content : labs)
+    	{
+    		content.download(this);
+    		downloading++;
+    	}
+    	for(Handout content : handouts)
+    	{
+    		content.download(this);
+    		downloading++;
     	}
     }
     
     public void download(DownloadFinishListener<Unit> listener)
     {
-    	//TODO do for other contents too.
-    	for(Homework content : homeworks)
-    	{
-    		content.download();
-    	}
+    	downloadFinishListener = listener;
+    	
+    	download();
     }
     
     public void delete()
@@ -390,5 +408,14 @@ public class Unit implements Parcelable
     	}
     	
     };
+
+	@Override
+	public void onDownloaded(Document content)
+	{
+		downloading--;
+		
+		if(downloading == 0 && downloadFinishListener != null)
+			downloadFinishListener.onDownloaded(this);
+	}
     
 }

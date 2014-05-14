@@ -49,7 +49,9 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 		// Build the list of already downloaded classes.
 		ArrayList<Class> myClasses = new ArrayList<Class>();
 		for (int i=0; i < subjects.size(); ++i) {
-			myClasses.addAll(subjects.get(i).getClassesDownloaded());
+			ArrayList<Class> downloaded = subjects.get(i).getClassesDownloaded();
+			if(downloaded != null)
+				myClasses.addAll(downloaded);
 		}
 		
 		Bundle args = new Bundle();
@@ -88,6 +90,7 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 		args.putParcelable("class", theClass);
 		frag.setArguments(args);
 		
+		Log.v("NJCTLUnits", "Trying to show units..");
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, frag);
         transaction.addToBackStack("Unit List for " + theClass.getTitle());
@@ -193,14 +196,16 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
         return super.onOptionsItemSelected(item);
     }
 
-	@Override
 	public void onModelReady()
 	{
 		this.subjects = model.getSubjects();
+
 		
 		//TODO take out later, fake class subscription for testing.
 		this.subjects.get(0).getContents().get(0).subscribe();
 		
+
+		Log.v("NJCTLModel", "Model Ready.");
 		showSubjects(subjects);
 	}
 
@@ -210,7 +215,7 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 		try {
 			
 			// Get an input stream for the locally stored file.
-    		BufferedInputStream docStream = new BufferedInputStream( getResources().getAssets().open( doc.getRelativePathForOpening() ) );
+    		BufferedInputStream docStream = new BufferedInputStream( getResources().getAssets().open( doc.getAbsolutePathForOpening() ) );
     		//create a buffer that has the same size as the InputStream  
             byte[] buffer = new byte[docStream.available()];
             //read the text file as a stream, into the buffer

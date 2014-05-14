@@ -156,17 +156,22 @@ public class Subject implements Parcelable
 			for (int i = 0; i < classList.length(); i++) {
 				Class theClass = Class.get(this, classList.getJSONObject(i));
 				
-				if(theClass == null) Log.v("NJCTLLOG", "The class is null and will therefore not be added to the subject");
-				
-				if (theClass != null && theClass.wasCreated())
+				if(theClass == null)
 				{
-					Log.v("NJCTLLOG", "Adding subject class with id " + theClass.getId());
-					classes.add(theClass);
+					Log.v("NJCTLLOG", "The class is null and will therefore not be added to the subject");
 				}
 				else
 				{
-					Log.v("NJCTLLOG", "updating subject class with id " + theClass.getId());
-					classes.update(theClass);
+					if (theClass.wasCreated())
+					{
+						Log.v("NJCTLLOG", "Adding subject class with id " + theClass.getId());
+						classes.add(theClass);
+					}
+					else
+					{
+						Log.v("NJCTLLOG", "updating subject class with id " + theClass.getId());
+						classes.update(theClass);
+					}
 				}
 			}
 		} catch (Exception e) {

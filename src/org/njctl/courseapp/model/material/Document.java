@@ -4,8 +4,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.njctl.courseapp.model.AsyncStringResponse;
 import org.njctl.courseapp.model.DocumentState;
 import org.njctl.courseapp.model.FileRetrieverTask;
@@ -23,29 +29,64 @@ import android.util.Log;
 
 public abstract class Document implements Parcelable, AsyncStringResponse
 {
+	/**
+	 * The Document's ID. Is not auto-generated, but fetched from
+	 * the NJCTL Post's ID so it can be traced back and compared easily.
+	 */
 	@DatabaseField(id = true)
 	protected String id;
 	
+	/**
+	 * The Document's displayable text.
+	 */
 	@DatabaseField
-	protected String name;
+	protected String title;
 	
-	protected String relativePath; // The path to the document, relative to the
-									// app's assets folder.
+	/**
+	 * The path to the PDF.
+	 */
+	@DatabaseField
+	protected String absolutePath;
 	
+	/**
+	 * The HTTP URI pointing to the location of the PDF on the NJCTL Server.
+	 */
 	@DatabaseField
 	protected String url;
 	
+	/**
+	 * The file name of the PDF.
+	 */
 	@DatabaseField
 	protected String fileName;
 	
+	/**
+	 * The last time the PDF has been opened, or getRelativePathForOpening has been called.
+	 */
 	@DatabaseField
 	protected Date lastOpened;
 	
+	/**
+	 * The downloaded PDF's last modified date if exists, otherwise the last time the PDF has been downloaded.
+	 */
 	@DatabaseField
 	protected Date lastUpdated;
 	
+	/**
+	 * The last modified date of the server's Document that the app knows of.
+	 * Will be the new lastUpdated date if the user chooses to download. 
+	 */
+	@DatabaseField
+	protected Date lastUpdatedNew;
+	
+	/**
+	 * The MIME type of the Document, usually application/pdf.
+	 */
 	protected String MIMEType = "application/pdf";
 	
+	/**
+	 * Number of times the PDF has been opened, or getRelativePathForOpening has been called.
+	 */
 	@DatabaseField
 	protected Integer numOpened = 0;
 	
@@ -54,51 +95,47 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 	
 	protected DownloadFinishListener<? super Document> downloadListener;
 	
+	/**
+	 * The state of the PDF. Can be NOTDOWNLOADED, DOWNLOADING, OK or OUTDATED.
+	 */
+	@DatabaseField
 	protected DocumentState state = DocumentState.NOTDOWNLOADED;
 	
+	/**
+	 * Stores whether the Document Object has just been created.
+	 */
 	protected boolean created = false;
 	
+	/**
+	 * The context of the app. Required for using the app's path for storing the PDFs.
+	 */
 	protected static Context ctx;
 	
+	/**
+	 * Sets the context of the Document Class so the path for storing and reading the PDFs can be accessed.
+	 * @param context
+	 */
 	public static void setContext(Context context)
 	{
 		ctx = context;
 	}
 	
+	/**
+	 * Check to see if a Document's PDF has been downloaded.
+	 * @return True if the file has been downloaded (may be outdated), false if not.
+	 */
 	public boolean isDownloaded()
 	{
-		Log.v("NJCTLLOG", "Document state: " + state);
-		return state == DocumentState.OK;
+		return state == DocumentState.OK || state == DocumentState.OUTDATED;
 	}
 	
+	/**
+	 * Check to see if a PDF is being downloaded.
+	 * @return True if the file is being downloaded, false if not.
+	 */
 	public boolean isDownloading()
 	{
 		return state == DocumentState.DOWNLOADING;
-	}
-
-	public void setPath(String relativePath)
-	{
-		this.relativePath = relativePath;
-		String[] segments = relativePath.split("/");
-		this.fileName = segments[segments.length - 1];
-		// this.name = fileName;
-		/*String[] endstuff = fileName.split("\\.");
-		String extension;
-		if (endstuff.length > 1) {
-			extension = endstuff[endstuff.length - 1];
-		} else {
-			extension = "";
-		}*/
-
-		// Set the MIME type!
-		// TODO: Handle more types.
-		/*if (extension.equals("pdf")) {
-			this.MIMEType = "application/pdf";
-		} else if (extension.equals("xlsx")) {
-			this.MIMEType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-		} else if (extension.equals(".docx")) {
-			this.MIMEType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-		}*/
 	}
 
 	public String getId()
@@ -106,24 +143,36 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 		return this.id;
 	}
 
+	/**
+	 * Get a displayable name of the Document as String.
+	 * @return The UTF-8 encoded name of the Document.
+	 */
 	public String getName()
 	{
-		return this.name;
+		return this.title;
 	}
-
+/*
 	public String getRelativePath()
 	{
 		return this.relativePath;
 	}
-
-	public String getRelativePathForOpening()
+*/
+	/**
+	 * Returns the path to the PDF and stores the information that the PDF has been accessed.
+	 * @return The path to the PDF.
+	 */
+	public String getAbsolutePathForOpening()
 	{
 		numOpened++;
 		lastOpened = new Date();
 		
-		return this.relativePath;
+		return this.absolutePath;
 	}
 
+	/**
+	 * Returns the PDF's name including the file's extension.
+	 * @return
+	 */
 	public String getFileName()
 	{
 		return fileName;
@@ -149,17 +198,37 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 		return lastUpdated;
 	}
 	
+	/**
+	 * Start downloading the PDF and save the DownloadFinishListener so it can be notified when the task is complete.
+	 * @param listener The DownloadFinishListener waiting to be notified upon finished download.
+	 */
 	public void download(DownloadFinishListener<? super Document> listener)
     {
 		downloadListener = listener;
 		download();
     }
 	
+	/**
+	 * The method that starts the download. Can be overwritten for eg hash comparing in the Topics.
+	 */
 	public void download()
 	{
-		doDownload();
+		if(state != DocumentState.OK)
+		{
+			doDownload();
+		}
+		else
+			notifyDownloadListener();
 	}
 	
+	/**
+	 * The method that is called in the Documents after the download is finished so lastUpdated times can be updated etc.
+	 */
+	protected abstract void onDownloadFinish();
+	
+	/**
+	 * The method responsible for telling the FileRetrieverTask what to do and where to download the file from.
+	 */
 	@SuppressWarnings("unchecked")
 	protected void doDownload()
 	{
@@ -168,68 +237,60 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 		new FileRetrieverTask().execute(request);
 	}
 	
-	protected abstract void notifyListener();
+	/**
+	 * The method that calls downloadListener.onDownloaded() with the Document of which the PDF has been downloaded.
+	 */
+	protected abstract void notifyDownloadListener();
 	
+	/**
+	 * The method dealing with the http response of the download request and saves it to the PDF file.
+	 */
 	public void processString(String pdfContent)
 	{
-		//TODO save to file
-		
 		//check md5 sum in a future release.
-		/*String downloadedHash = FileRetrieverTask.getMD5EncryptedString(pdfContent);
+		//String downloadedHash = FileRetrieverTask.getMD5EncryptedString(pdfContent);
 		
-		if(hash == "" || downloadedHash == hash)
-		{*/
-			//Internal storage; http://stackoverflow.com/questions/14376807/how-to-read-write-string-from-a-file-in-android
-			String path = ctx.getFilesDir().getAbsolutePath();
-			//String fileName = id + "_" + downloadedHash;
-			String filePath = path + fileName;
-			File file = new File(filePath);
-			
-			FileOutputStream stream = null;
-			
-			try {
-				stream = new FileOutputStream(file);
-			
-			    stream.write(pdfContent.getBytes());
-			    
-			    state = DocumentState.OK;
-			    relativePath = fileName;
-			    notifyListener();
-			    
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} finally {
-			    try {
-					if(stream != null)
-						stream.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		/*}
-		else
+		//Internal storage; http://stackoverflow.com/questions/14376807/how-to-read-write-string-from-a-file-in-android
+		String path = ctx.getFilesDir().getAbsolutePath();
+		fileName = id + ".pdf";
+		absolutePath = path + fileName;
+		File file = new File(absolutePath);
+		
+		FileOutputStream stream = null;
+		
+		try
 		{
-			state = DocumentState.NOTDOWNLOADED;
-			Log.v("NJCTLLOG", "Download hash incorrect.");
-		}*/
-		/*
-		try {
-			FileOutputStream wurst = ctx.openFileOutput("config.txt", Context.MODE_PRIVATE);
-			OutputStreamWriter writer = new OutputStreamWriter(null);
+			stream = new FileOutputStream(file);
 		
-			writer.close();
+		    stream.write(pdfContent.getBytes());
+		    state = DocumentState.OK;
+		    stream.close();
+		    
+		    onDownloadFinish();
+		    notifyDownloadListener();
+		    
+		}
+		catch (FileNotFoundException e)
+		{
+			Log.v("NJCTLLOG pdf save filenotfound", Log.getStackTraceString(e));
 		}
 		catch (IOException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.v("NJCTLLOG pdf save ioexception", Log.getStackTraceString(e));
 		}
-		*/
+		finally
+		{
+		    try
+		    {
+				if(stream != null)
+					stream.close();
+			}
+		    catch (IOException e)
+		    {
+				Log.v("NJCTLLOG pdf save", Log.getStackTraceString(e));
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public void deleteFile()
@@ -237,19 +298,89 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 		//TODO delete file.
 	}
 	
+	/**
+	 * Tells whether the Document was just created or if it has already existed.
+	 * @return True for new Documents, false for already created ones.
+	 */
 	public boolean wasCreated()
 	{
 		return created;
 	}
+	
+	/**
+	 * Parses a date in String format to a Date.
+	 * @param Modified String in format yyyy-MM-dd HH:mm:ss.
+	 * @return Parsed Date object.
+	 */
+	protected Date convertDate(String modified)
+	{
+		try
+		{
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+			return df.parse(modified);
+		}
+		catch (ParseException e)
+		{
+			Log.v("NJCTLLOG DOC DATE", Log.getStackTraceString(e));
+			return null;
+		}
+	}
+	
+	/**
+	 * Sets basic properties based on the JSON such as name, id, lastUpdatedNew, uri.
+	 * @param json The JSON Object of the Document, in the NJCTL format.
+	 */
+	protected void setProperties(JSONObject json)
+	{
+		try{
+			Date newLastUpdated = convertDate(json.getString("post_modified"));
+			
+			if(lastUpdatedNew == null || newLastUpdated.after(lastUpdatedNew))
+			{
+				title = json.getString("post_title");
+				id = json.getString("ID");
+				lastUpdatedNew = newLastUpdated;
+				checkOutdated();
+				
+				if(json.has("pdf_uri"))
+				{
+					url = json.getString("pdf_uri");
+				}
+				else
+				{
+					Log.w("NJCTLLOG", "                pdf_uri not found for doc " + title);
+				}
+			}
+		}
+		catch(JSONException e)
+		{
+			Log.w("JSON ERR", e.toString());
+		}
+	}
+	
+	/**
+	 * Checks if the downloaded PDF (if applicable) is up to date.
+	 */
+	protected void checkOutdated()
+    {
+    	if(state == DocumentState.OK && lastUpdated.before(lastUpdatedNew))
+    	{
+    		state = DocumentState.OUTDATED;
+    	}
+    }
 	
     // Methods for Parcelable implementation.
     public int describeContents() {
     	return 0;
     }
     
+    /**
+     * Copies the basic information from a Document over to the current instance.
+     * @param in
+     */
     protected void setByDocument(Document in)
     {
-		name = in.name;
+		title = in.title;
 		id = in.id;
 		lastOpened = in.lastOpened;
 		lastUpdated = in.lastUpdated;
@@ -257,10 +388,13 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 		MIMEType = in.MIMEType;
 		numOpened = in.numOpened;
 		fileName = in.fileName;
-		relativePath = in.relativePath;
+		absolutePath = in.absolutePath;
 		url = in.url;
     }
     
+    /**
+     * Saves the Document's ID in the Parcel.
+     */
     public void writeToParcel(Parcel dest, int flags)
     {
     	dest.writeString(id);

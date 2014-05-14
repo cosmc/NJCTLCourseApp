@@ -1,16 +1,13 @@
 package org.njctl.courseapp.model.material;
 
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.njctl.courseapp.model.DocumentState;
 import org.njctl.courseapp.model.Unit;
 
 import com.j256.ormlite.dao.ForeignCollection;
@@ -71,12 +68,19 @@ public class Presentation extends Document
 	
 	public boolean isDownloaded()
 	{
-		for(Topic topic : topics)
+		if(hasTopics())
+    	{
+			for(Topic topic : topics)
+			{
+				if(!topic.isDownloaded())
+					return false;
+			}
+			return true;
+    	}
+		else
 		{
-			if(!topic.isDownloaded())
-				return false;
+			return state == DocumentState.OK;
 		}
-		return true;
 	}
 	
 	protected static boolean checkJSON(JSONObject json)
@@ -129,25 +133,24 @@ public class Presentation extends Document
 		}
 	}
 	
-	protected boolean setProperties(JSONObject json)
+	protected void setProperties(JSONObject json)
 	{
 		try
 		{
-			String modified = json.getString("post_modified");
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-			Date newLastUpdated = df.parse(modified);
+			Date newLastUpdated = convertDate(json.getString("post_modified"));
 			
 			// Check if Presentation is already up to date.
-			if(lastUpdated == null || newLastUpdated.after(lastUpdated))
+			if(lastUpdatedNew == null || newLastUpdated.after(lastUpdatedNew))
 			{
-				lastUpdated = newLastUpdated;
-				name = json.getString("post_title");
+				lastUpdatedNew = newLastUpdated;
+				title = json.getString("post_title");
 				id = json.getString("ID");
+				checkOutdated();
 				
 				if(json.has("chunks"))
 				{
 					JSONArray topicsList = json.getJSONArray("chunks");
-					Log.v("NJCTLLOG", "                Looping through " + topicsList.length() + " topics in " + name + " presentation..");
+					Log.v("NJCTLLOG", "                Looping through " + topicsList.length() + " topics in " + title + " presentation..");
 					
 					for(int i = 0; i < topicsList.length(); i++)
 					{
@@ -166,28 +169,15 @@ public class Presentation extends Document
 				{
 					url = json.getString("pdf_uri");
 				}
-				
-				return true;
-			}
-			else
-			{
-				return false;
 			}
 		}
 		catch(SQLException e)
 		{
 			Log.w("SQL Presentation ERR", "                " + e.toString());
-			return false;
 		}
 		catch(JSONException e)
 		{
 			Log.w("JSON ERR", "                " + e.toString());
-			return false;
-		}
-		catch (ParseException e)
-		{
-			Log.w("PARSE ERR", "                " + e.toString());
-			return false;
 		}
 	}
 	
@@ -208,6 +198,12 @@ public class Presentation extends Document
 		unit = doc.unit;
 	}
 	
+	protected void onDownloadFinish()
+	{
+		lastUpdated = lastUpdatedNew;
+		dao.update(this);
+	}
+	
 	public Presentation(Unit theUnit, JSONObject json)
 	{
 		unit = theUnit;
@@ -215,7 +211,7 @@ public class Presentation extends Document
 		setProperties(json);
 	}
 
-	protected void notifyListener()
+	protected void notifyDownloadListener()
 	{
 		if(downloadListener != null)
 	    	downloadListener.onDownloaded(this);
