@@ -197,6 +197,10 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 	public void onModelReady()
 	{
 		this.subjects = model.getSubjects();
+		
+		//TODO take out later, fake class subscription for testing.
+		this.subjects.get(0).getContents().get(0).subscribe();
+		
 		showSubjects(subjects);
 	}
 
