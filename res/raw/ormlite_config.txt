@@ -1,5 +1,5 @@
 #
-# generated on 2014/05/13 05:32:57
+# generated on 2014/05/14 10:51:53
 #
 # --table-start--
 dataClass=org.njctl.courseapp.model.Unit
@@ -113,7 +113,10 @@ fieldName=id
 id=true
 # --field-end--
 # --field-start--
-fieldName=name
+fieldName=title
+# --field-end--
+# --field-start--
+fieldName=relativePath
 # --field-end--
 # --field-start--
 fieldName=url
@@ -128,7 +131,13 @@ fieldName=lastOpened
 fieldName=lastUpdated
 # --field-end--
 # --field-start--
+fieldName=lastUpdatedNew
+# --field-end--
+# --field-start--
 fieldName=numOpened
+# --field-end--
+# --field-start--
+fieldName=state
 # --field-end--
 # --table-fields-end--
 # --table-end--
@@ -152,7 +161,10 @@ fieldName=id
 id=true
 # --field-end--
 # --field-start--
-fieldName=name
+fieldName=title
+# --field-end--
+# --field-start--
+fieldName=relativePath
 # --field-end--
 # --field-start--
 fieldName=url
@@ -167,7 +179,13 @@ fieldName=lastOpened
 fieldName=lastUpdated
 # --field-end--
 # --field-start--
+fieldName=lastUpdatedNew
+# --field-end--
+# --field-start--
 fieldName=numOpened
+# --field-end--
+# --field-start--
+fieldName=state
 # --field-end--
 # --table-fields-end--
 # --table-end--
@@ -185,11 +203,17 @@ foreign=true
 fieldName=hash
 # --field-end--
 # --field-start--
+fieldName=newHash
+# --field-end--
+# --field-start--
 fieldName=id
 id=true
 # --field-end--
 # --field-start--
-fieldName=name
+fieldName=title
+# --field-end--
+# --field-start--
+fieldName=relativePath
 # --field-end--
 # --field-start--
 fieldName=url
@@ -204,7 +228,13 @@ fieldName=lastOpened
 fieldName=lastUpdated
 # --field-end--
 # --field-start--
+fieldName=lastUpdatedNew
+# --field-end--
+# --field-start--
 fieldName=numOpened
+# --field-end--
+# --field-start--
+fieldName=state
 # --field-end--
 # --table-fields-end--
 # --table-end--
@@ -223,7 +253,10 @@ fieldName=id
 id=true
 # --field-end--
 # --field-start--
-fieldName=name
+fieldName=title
+# --field-end--
+# --field-start--
+fieldName=relativePath
 # --field-end--
 # --field-start--
 fieldName=url
@@ -238,7 +271,13 @@ fieldName=lastOpened
 fieldName=lastUpdated
 # --field-end--
 # --field-start--
+fieldName=lastUpdatedNew
+# --field-end--
+# --field-start--
 fieldName=numOpened
+# --field-end--
+# --field-start--
+fieldName=state
 # --field-end--
 # --table-fields-end--
 # --table-end--
@@ -257,7 +296,10 @@ fieldName=id
 id=true
 # --field-end--
 # --field-start--
-fieldName=name
+fieldName=title
+# --field-end--
+# --field-start--
+fieldName=relativePath
 # --field-end--
 # --field-start--
 fieldName=url
@@ -272,7 +314,13 @@ fieldName=lastOpened
 fieldName=lastUpdated
 # --field-end--
 # --field-start--
+fieldName=lastUpdatedNew
+# --field-end--
+# --field-start--
 fieldName=numOpened
+# --field-end--
+# --field-start--
+fieldName=state
 # --field-end--
 # --table-fields-end--
 # --table-end--
@@ -291,7 +339,10 @@ fieldName=id
 id=true
 # --field-end--
 # --field-start--
-fieldName=name
+fieldName=title
+# --field-end--
+# --field-start--
+fieldName=relativePath
 # --field-end--
 # --field-start--
 fieldName=url
@@ -306,7 +357,13 @@ fieldName=lastOpened
 fieldName=lastUpdated
 # --field-end--
 # --field-start--
+fieldName=lastUpdatedNew
+# --field-end--
+# --field-start--
 fieldName=numOpened
+# --field-end--
+# --field-start--
+fieldName=state
 # --field-end--
 # --table-fields-end--
 # --table-end--

@@ -93,15 +93,16 @@ public class Topic extends Document
 		}
 	}
     
+    
     protected void setProperties(JSONObject json)
     {
     	try{
-			name = json.getString("label");
+			title = json.getString("label");
 			url = json.getString("pdf_uri");
 			newHash = json.getString("pdf_md5");
 			id = json.getString("post_name");
 			
-			Log.i("NJCTLLOG", "                Topic " + name + " successfully created.");
+			Log.i("NJCTLLOG", "                Topic " + title + " successfully created.");
 			
 		}
 		catch(JSONException e)
@@ -116,13 +117,6 @@ public class Topic extends Document
 		created = true;
 		setProperties(json);
 		lastUpdatedNew = pres.lastUpdatedNew;
-		
-		try {
-			hash = json.getString("pdf_md5");
-		} catch (JSONException e) {
-			Log.v("NJCTLLOGTOPIC", Log.getStackTraceString(e));
-		}
-		
 	}
 	
 	protected void onDownloadFinish()
@@ -148,6 +142,7 @@ public class Topic extends Document
 		Topic doc = dao.queryForId(in.readString());
 		setByDocument(doc);
 		hash = doc.hash;
+		newHash = doc.newHash;
 		presentation = doc.presentation;
 	}
 }

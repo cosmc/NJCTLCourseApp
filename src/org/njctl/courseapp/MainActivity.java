@@ -166,7 +166,6 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
         return super.onOptionsItemSelected(item);
     }
 
-	@Override
 	public void onModelReady()
 	{
 		this.subjects = model.getSubjects();
@@ -179,7 +178,7 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 		try {
 			
 			// Get an input stream for the locally stored file.
-    		BufferedInputStream docStream = new BufferedInputStream( getResources().getAssets().open( doc.getRelativePathForOpening() ) );
+    		BufferedInputStream docStream = new BufferedInputStream( getResources().getAssets().open( doc.getAbsolutePathForOpening() ) );
     		//create a buffer that has the same size as the InputStream  
             byte[] buffer = new byte[docStream.available()];
             //read the text file as a stream, into the buffer

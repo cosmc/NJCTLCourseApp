@@ -143,14 +143,14 @@ public class Presentation extends Document
 			if(lastUpdatedNew == null || newLastUpdated.after(lastUpdatedNew))
 			{
 				lastUpdatedNew = newLastUpdated;
-				name = json.getString("post_title");
+				title = json.getString("post_title");
 				id = json.getString("ID");
 				checkOutdated();
 				
 				if(json.has("chunks"))
 				{
 					JSONArray topicsList = json.getJSONArray("chunks");
-					Log.v("NJCTLLOG", "                Looping through " + topicsList.length() + " topics in " + name + " presentation..");
+					Log.v("NJCTLLOG", "                Looping through " + topicsList.length() + " topics in " + title + " presentation..");
 					
 					for(int i = 0; i < topicsList.length(); i++)
 					{
