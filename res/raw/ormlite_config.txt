@@ -1,5 +1,5 @@
 #
-# generated on 2014/05/14 10:51:53
+# generated on 2014/05/14 11:22:32
 #
 # --table-start--
 dataClass=org.njctl.courseapp.model.Unit
@@ -116,7 +116,7 @@ id=true
 fieldName=title
 # --field-end--
 # --field-start--
-fieldName=relativePath
+fieldName=absolutePath
 # --field-end--
 # --field-start--
 fieldName=url
@@ -164,7 +164,7 @@ id=true
 fieldName=title
 # --field-end--
 # --field-start--
-fieldName=relativePath
+fieldName=absolutePath
 # --field-end--
 # --field-start--
 fieldName=url
@@ -213,7 +213,7 @@ id=true
 fieldName=title
 # --field-end--
 # --field-start--
-fieldName=relativePath
+fieldName=absolutePath
 # --field-end--
 # --field-start--
 fieldName=url
@@ -256,7 +256,7 @@ id=true
 fieldName=title
 # --field-end--
 # --field-start--
-fieldName=relativePath
+fieldName=absolutePath
 # --field-end--
 # --field-start--
 fieldName=url
@@ -299,7 +299,7 @@ id=true
 fieldName=title
 # --field-end--
 # --field-start--
-fieldName=relativePath
+fieldName=absolutePath
 # --field-end--
 # --field-start--
 fieldName=url
@@ -342,7 +342,7 @@ id=true
 fieldName=title
 # --field-end--
 # --field-start--
-fieldName=relativePath
+fieldName=absolutePath
 # --field-end--
 # --field-start--
 fieldName=url
