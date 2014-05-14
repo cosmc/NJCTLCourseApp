@@ -19,10 +19,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 //import org.njctl.courseapp.R;
@@ -31,6 +34,9 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 
 	private Model model;
 	private ArrayList<Subject> subjects;
+	private String[] mMyClasses;
+	private DrawerLayout mDrawerLayout;
+	private ListView mDrawerList;
 	
 	/**** Start of NJCTLNavActivity Methods ****/
 	
@@ -129,15 +135,36 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
     	
     	model = new Model(this);
     	
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        if (savedInstanceState == null) {
+    	if (savedInstanceState == null) {
         	
         	//useClasses(model.getClassTree( getResources().getString(R.string.course_manifest_rel_path), getResources()));
             
             model.fetchManifest(this);
         }
+    	
+    	super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        //TODO remove later
+        model.getClass()
+        
+        ArrayList<Class> mMyClassesList = model.getClassesSubscribed();
+        Log.v("MYCLASSESLIST ARRAY LIST IS IS IS SI SIS IS", mMyClassesList.toString());
+        
+        String[] mMyClasses = new String[mMyClassesList.size()];
+		for (int i=0; i < mMyClassesList.size(); ++i) {
+			mMyClasses[i] = mMyClassesList.get(i).toString();
+		}
+		
+		
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        
+        //TODO set adapter
+        
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener(model, mDrawerLayout, mDrawerList));
+        
+        
     }
 
 
@@ -172,6 +199,12 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 	public void onModelReady()
 	{
 		this.subjects = model.getSubjects();
+
+		
+		//TODO take out later, fake class subscription for testing.
+		this.subjects.get(0).getContents().get(0).subscribe();
+		
+
 		Log.v("NJCTLModel", "Model Ready.");
 		showSubjects(subjects);
 	}

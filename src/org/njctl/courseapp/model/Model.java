@@ -98,7 +98,7 @@ public class Model implements AsyncStringResponse
 		}
 		else
 		{
-			return false;
+			return false; //when local copy is empty
 		}
 	}
 
