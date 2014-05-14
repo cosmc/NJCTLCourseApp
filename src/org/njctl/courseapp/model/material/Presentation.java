@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.njctl.courseapp.model.DocumentState;
 import org.njctl.courseapp.model.Unit;
+import org.njctl.courseapp.model.subscribe.DownloadFinishListener;
 
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
@@ -22,7 +23,7 @@ import android.util.Log;
 //TODO extends Document?!
 
 @DatabaseTable
-public class Presentation extends Document
+public class Presentation extends Document implements DownloadFinishListener<Document>
 {
 	@ForeignCollectionField(eager = true)
 	protected ForeignCollection<Topic> topics;
@@ -31,6 +32,8 @@ public class Presentation extends Document
 	protected Unit unit;
 	
 	private static RuntimeExceptionDao<Presentation, String> dao;
+	
+	protected Integer downloadingTopics = 0;
 
 	public static void setDao(RuntimeExceptionDao<Presentation, String> newDao)
 	{
@@ -52,6 +55,7 @@ public class Presentation extends Document
     	{
     		for(Topic topic : topics)
     		{
+    			downloadingTopics++;
     			topic.download();
     		}
     	}
@@ -105,7 +109,7 @@ public class Presentation extends Document
 		}
 	}
 	
-	public static Presentation get(Unit unit, JSONObject json)
+	public static Presentation get(Unit unit, JSONObject json, DownloadFinishListener<Document> listener)
 	{
 		try
 		{
@@ -114,6 +118,7 @@ public class Presentation extends Document
 				if (dao.idExists(json.getString("ID")))
 				{
 					Presentation content = dao.queryForId(json.getString("ID"));
+					content.downloadListener = listener;
 					content.setProperties(json);
 					
 					return content;
@@ -121,6 +126,7 @@ public class Presentation extends Document
 				else
 				{
 					Presentation content = new Presentation(unit, json);
+					content.downloadListener = listener;
 					content.created = true;
 
 					return content;
@@ -154,7 +160,7 @@ public class Presentation extends Document
 					
 					for(int i = 0; i < topicsList.length(); i++)
 					{
-						Topic topic = Topic.get(this, topicsList.getJSONObject(i));
+						Topic topic = Topic.get(this, topicsList.getJSONObject(i), this);
 						if(topic.wasCreated())
 						{
 							topics.add(topic);
@@ -215,5 +221,13 @@ public class Presentation extends Document
 	{
 		if(downloadListener != null)
 	    	downloadListener.onDownloaded(this);
+	}
+
+	public void onDownloaded(Document content)
+	{
+		downloadingTopics--;
+		
+		if(downloadingTopics == 0)
+			notifyDownloadListener();
 	}
 }

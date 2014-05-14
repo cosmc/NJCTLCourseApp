@@ -10,6 +10,7 @@ import java.util.Locale;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.njctl.courseapp.model.subscribe.DownloadFinishListener;
 
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
@@ -22,7 +23,7 @@ import android.os.Parcelable;
 import android.util.Log;
 
 @DatabaseTable
-public class Subject implements Parcelable
+public class Subject implements Parcelable, DownloadFinishListener<Class>
 {
 	@DatabaseField(id = true)
 	private Integer id;
@@ -44,6 +45,8 @@ public class Subject implements Parcelable
 	private int smallSideColorBarResource = 0;
 	
 	private static RuntimeExceptionDao<Subject, Integer> dao;
+	
+	protected DownloadFinishListener<Subject> downloadFinishListener;
 
 	public static void setDao(RuntimeExceptionDao<Subject, Integer> newDao)
 	{
@@ -72,28 +75,37 @@ public class Subject implements Parcelable
 		return classes.size();
 	}
 
-	public static Subject get(JSONObject json)
+	public static Subject get(JSONObject json, DownloadFinishListener<Subject> listener)
 	{
-		try {
+		try
+		{
 			if (checkJSON(json))
 			{
+				Subject subject;
+				
 				if (dao.idExists(json.getInt("ID")))
 				{
-					Subject subject = dao.queryForId(json.getInt("ID"));
+					subject = dao.queryForId(json.getInt("ID"));
+					subject.downloadFinishListener = listener;
+					
 					Log.v("NJCTLLOG", "Loaded Subject with " + subject.getNumberClasses() + " classes.");
 					subject.setProperties(json);
 					Log.v("NJCTLLOG", "Subject classes after property setting: " + subject.getNumberClasses() + " classes.");
 					dao.update(subject);
-					return subject;
 				}
 				else
 				{
-					Subject subject = new Subject(json);
+					subject = new Subject(json);
+					subject.downloadFinishListener = listener;
+					
 					dao.create(subject);
 					Log.v("NJCTLLOG", "Saved Subject with " + subject.getNumberClasses() + " classes.");
-					return subject;
 				}
-			} else {
+				
+				return subject;
+			}
+			else
+			{
 				return null;
 			}
 		} catch (Exception e) { // never executed..
@@ -155,7 +167,7 @@ public class Subject implements Parcelable
 
 			//TODO account for existing classes that have been deleted out of the json.
 			for (int i = 0; i < classList.length(); i++) {
-				Class theClass = Class.get(this, classList.getJSONObject(i));
+				Class theClass = Class.get(this, classList.getJSONObject(i), this);
 				
 				if(theClass == null)
 				{
@@ -268,6 +280,13 @@ public class Subject implements Parcelable
 	public Collection<Class> getClasses()
 	{
 		return classes;
+	}
+
+	@Override
+	public void onDownloaded(Class content)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 }

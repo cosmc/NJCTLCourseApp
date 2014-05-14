@@ -6,6 +6,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.njctl.courseapp.model.subscribe.DownloadFinishListener;
 import org.njctl.courseapp.model.useful.Tripel;
 import org.njctl.courseapp.model.material.*;
 
@@ -15,7 +16,7 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 import android.content.Context;
 import android.util.Log;
 
-public class Model implements AsyncStringResponse
+public class Model implements AsyncStringResponse, DownloadFinishListener<Subject>
 {
 	final String NJCTLLOG = "NJCTLLOG";
 	private String jsonUrl = "http://content.sandbox-njctl.org/courses.json";
@@ -25,6 +26,9 @@ public class Model implements AsyncStringResponse
 	protected ArrayList<Subject> subjects;
 	
 	protected ModelRetriever retriever;
+	protected DownloadFinishListener<Model> downloadFinishListener;
+	
+	protected Integer downloadingSubjects = 0;
 	
 	public Model(Context ctx)
 	{
@@ -92,6 +96,12 @@ public class Model implements AsyncStringResponse
 		new FileRetrieverTask().execute(request);
 	}
 	
+	public void update(DownloadFinishListener<Model> listener)
+	{
+		downloadFinishListener = listener;
+		update();
+	}
+	
 	protected boolean buildClassTreeFromDb()
 	{
 		RuntimeExceptionDao<Subject, Integer> dao = Subject.getDao();
@@ -127,7 +137,8 @@ public class Model implements AsyncStringResponse
 			
 			for(int i = 0; i < results.length(); i++)
 			{
-				Subject subject = Subject.get(results.getJSONObject(i));
+				Subject subject = Subject.get(results.getJSONObject(i), this);
+				downloadingSubjects++;
 				subjects.add(subject);
 			}
 			
@@ -160,5 +171,13 @@ public class Model implements AsyncStringResponse
 	        OpenHelperManager.releaseHelper();
 	        dbHelper = null;
 	    }
+	}
+
+	@Override
+	public void onDownloaded(Subject content)
+	{
+		downloadingSubjects--;
+		if(downloadingSubjects == 0 && downloadFinishListener != null)
+			downloadFinishListener.onDownloaded(this);
 	}
 }

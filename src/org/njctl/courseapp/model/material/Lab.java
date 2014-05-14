@@ -3,6 +3,7 @@ package org.njctl.courseapp.model.material;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.njctl.courseapp.model.Unit;
+import org.njctl.courseapp.model.subscribe.DownloadFinishListener;
 
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.field.DatabaseField;
@@ -32,16 +33,18 @@ public class Lab extends Document
 			dao = newDao;
 	}
 	
-	public static Lab get(Unit theUnit, JSONObject json)
+	public static Lab get(Unit theUnit, JSONObject json, DownloadFinishListener<Document> listener)
 	{
 		try {
 			if (checkJSON(json)) {
 				if (dao.idExists(json.getString("ID"))) {
 					Lab content = dao.queryForId(json.getString("ID"));
+					content.downloadListener = listener;
 					content.setProperties(json);
 					return content;
 				} else {
 					Lab content = new Lab(theUnit, json);
+					content.downloadListener = listener;
 					content.created = true;
 
 					return content;
@@ -49,7 +52,7 @@ public class Lab extends Document
 			} else {
 				return null;
 			}
-		} catch (Exception e) { // never executed..
+		} catch (Exception e) {
 			return null;
 		}
 	}
