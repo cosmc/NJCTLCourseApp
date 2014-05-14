@@ -43,7 +43,9 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 		// Build the list of already downloaded classes.
 		ArrayList<Class> myClasses = new ArrayList<Class>();
 		for (int i=0; i < subjects.size(); ++i) {
-			myClasses.addAll(subjects.get(i).getClassesDownloaded());
+			ArrayList<Class> downloaded = subjects.get(i).getClassesDownloaded();
+			if(downloaded != null)
+				myClasses.addAll(downloaded);
 		}
 		
 		Bundle args = new Bundle();
@@ -82,6 +84,7 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 		args.putParcelable("class", theClass);
 		frag.setArguments(args);
 		
+		Log.v("NJCTLUnits", "Trying to show units..");
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, frag);
         transaction.addToBackStack("Unit List for " + theClass.getTitle());
@@ -169,6 +172,7 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 	public void onModelReady()
 	{
 		this.subjects = model.getSubjects();
+		Log.v("NJCTLModel", "Model Ready.");
 		showSubjects(subjects);
 	}
 

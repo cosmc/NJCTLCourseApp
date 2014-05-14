@@ -92,6 +92,7 @@ public class Model implements AsyncStringResponse
 		
 		if(subjects.size() > 0)
 		{
+			this.subjects = subjects;
 			retriever.onModelReady();
 			return true;
 		}
