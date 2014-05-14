@@ -4,8 +4,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.njctl.courseapp.model.AsyncStringResponse;
 import org.njctl.courseapp.model.DocumentState;
 import org.njctl.courseapp.model.FileRetrieverTask;
@@ -152,20 +158,32 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 		return lastUpdated;
 	}
 	
+	/**
+	 * Start downloading the PDF and save the DownloadFinishListener so it can be notified when the task is complete.
+	 * @param listener The DownloadFinishListener waiting to be notified upon finished download.
+	 */
 	public void download(DownloadFinishListener<? super Document> listener)
     {
 		downloadListener = listener;
 		download();
     }
 	
+	/**
+	 * The method that starts the download. Can be overwritten for eg hash comparing in the Topics.
+	 */
 	public void download()
 	{
-		
 		doDownload();
 	}
 	
+	/**
+	 * The method that is called in the Documents after the download is finished so lastUpdated times can be updated etc.
+	 */
 	protected abstract void onDownloadFinish();
 	
+	/**
+	 * The method responsible for telling the FileRetrieverTask what to do and where to download the file from.
+	 */
 	@SuppressWarnings("unchecked")
 	protected void doDownload()
 	{
@@ -174,8 +192,14 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 		new FileRetrieverTask().execute(request);
 	}
 	
+	/**
+	 * The method that calls downloadListener.onDownloaded() with the Document of which the PDF has been downloaded.
+	 */
 	protected abstract void notifyDownloadListener();
 	
+	/**
+	 * The method dealing with the http response of the download request and saves it to the PDF file.
+	 */
 	public void processString(String pdfContent)
 	{
 		//check md5 sum in a future release.
@@ -230,9 +254,63 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 		//TODO delete file.
 	}
 	
+	/**
+	 * Tells whether the Document was just created or if it has already existed.
+	 * @return True for new Documents, false for already created ones.
+	 */
 	public boolean wasCreated()
 	{
 		return created;
+	}
+	
+	/**
+	 * Parses a date in String format to a Date.
+	 * @param Modified String in format yyyy-MM-dd HH:mm:ss.
+	 * @return Parsed Date object.
+	 */
+	protected Date convertDate(String modified)
+	{
+		try
+		{
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+			return df.parse(modified);
+		}
+		catch (ParseException e)
+		{
+			Log.v("NJCTLLOG DOC DATE", Log.getStackTraceString(e));
+			return null;
+		}
+	}
+	
+	/**
+	 * Sets basic properties based on the JSON such as name, id, lastUpdatedNew, uri.
+	 * @param json The JSON Object of the Document, in the NJCTL format.
+	 */
+	protected void setProperties(JSONObject json)
+	{
+		try{
+			Date newLastUpdated = convertDate(json.getString("post_modified"));
+			
+			if(lastUpdatedNew == null || newLastUpdated.after(lastUpdatedNew))
+			{
+				name = json.getString("post_title");
+				id = json.getString("ID");
+				lastUpdatedNew = newLastUpdated;
+				
+				if(json.has("pdf_uri"))
+				{
+					url = json.getString("pdf_uri");
+				}
+				else
+				{
+					Log.w("NJCTLLOG", "                pdf_uri not found for doc " + name);
+				}
+			}
+		}
+		catch(JSONException e)
+		{
+			Log.w("JSON ERR", e.toString());
+		}
 	}
 	
     // Methods for Parcelable implementation.
@@ -240,6 +318,10 @@ public abstract class Document implements Parcelable, AsyncStringResponse
     	return 0;
     }
     
+    /**
+     * Copies the basic information from a Document over to the current instance.
+     * @param in
+     */
     protected void setByDocument(Document in)
     {
 		name = in.name;

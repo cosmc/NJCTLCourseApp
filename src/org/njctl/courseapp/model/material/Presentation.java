@@ -11,6 +11,7 @@ import java.util.Locale;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.njctl.courseapp.model.DocumentState;
 import org.njctl.courseapp.model.Unit;
 
 import com.j256.ormlite.dao.ForeignCollection;
@@ -71,12 +72,19 @@ public class Presentation extends Document
 	
 	public boolean isDownloaded()
 	{
-		for(Topic topic : topics)
+		if(hasTopics())
+    	{
+			for(Topic topic : topics)
+			{
+				if(!topic.isDownloaded())
+					return false;
+			}
+			return true;
+    	}
+		else
 		{
-			if(!topic.isDownloaded())
-				return false;
+			return state == DocumentState.OK;
 		}
-		return true;
 	}
 	
 	protected static boolean checkJSON(JSONObject json)
@@ -129,16 +137,14 @@ public class Presentation extends Document
 		}
 	}
 	
-	protected boolean setProperties(JSONObject json)
+	protected void setProperties(JSONObject json)
 	{
 		try
 		{
-			String modified = json.getString("post_modified");
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-			Date newLastUpdated = df.parse(modified);
+			Date newLastUpdated = convertDate(json.getString("post_modified"));
 			
 			// Check if Presentation is already up to date.
-			if(lastUpdated == null || newLastUpdated.after(lastUpdatedNew))
+			if(lastUpdatedNew == null || newLastUpdated.after(lastUpdatedNew))
 			{
 				lastUpdatedNew = newLastUpdated;
 				name = json.getString("post_title");
@@ -166,28 +172,15 @@ public class Presentation extends Document
 				{
 					url = json.getString("pdf_uri");
 				}
-				
-				return true;
-			}
-			else
-			{
-				return false;
 			}
 		}
 		catch(SQLException e)
 		{
 			Log.w("SQL Presentation ERR", "                " + e.toString());
-			return false;
 		}
 		catch(JSONException e)
 		{
 			Log.w("JSON ERR", "                " + e.toString());
-			return false;
-		}
-		catch (ParseException e)
-		{
-			Log.w("PARSE ERR", "                " + e.toString());
-			return false;
 		}
 	}
 	

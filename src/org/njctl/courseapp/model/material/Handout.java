@@ -3,6 +3,7 @@ package org.njctl.courseapp.model.material;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 import org.json.JSONException;
@@ -73,37 +74,6 @@ public class Handout extends Document
 		} catch (JSONException e) {
 			Log.w("NJCTLLOG", "    Handout contents not found...");
 			return false;
-		}
-	}
-	
-	protected void setProperties(JSONObject json)
-	{
-		try{
-			name = json.getString("post_title");
-			id = json.getString("ID");
-			
-			if(json.has("pdf_uri"))
-			{
-				url = json.getString("pdf_uri");
-			}
-			else
-			{
-				Log.w("NJCTLLOG", "                pdf_uri not found for handout " + name);
-			}
-			
-			
-			String modified = json.getString("post_modified");
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-			lastUpdatedNew = df.parse(modified);
-			
-		}
-		catch(JSONException e)
-		{
-			Log.w("JSON ERR", e.toString());
-		}
-		catch (ParseException e)
-		{
-			Log.w("PARSE ERR", e.toString());
 		}
 	}
 	
