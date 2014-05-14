@@ -1,12 +1,8 @@
 package org.njctl.courseapp.model.material;
 
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -149,6 +145,7 @@ public class Presentation extends Document
 				lastUpdatedNew = newLastUpdated;
 				name = json.getString("post_title");
 				id = json.getString("ID");
+				checkOutdated();
 				
 				if(json.has("chunks"))
 				{
@@ -204,6 +201,7 @@ public class Presentation extends Document
 	protected void onDownloadFinish()
 	{
 		lastUpdated = lastUpdatedNew;
+		dao.update(this);
 	}
 	
 	public Presentation(Unit theUnit, JSONObject json)

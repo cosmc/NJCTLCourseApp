@@ -1,11 +1,5 @@
 package org.njctl.courseapp.model.material;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.njctl.courseapp.model.Unit;
@@ -92,6 +86,7 @@ public class Handout extends Document
 	protected void onDownloadFinish()
 	{
 		lastUpdated = lastUpdatedNew;
+		dao.update(this);
 	}
 	
 	protected void notifyDownloadListener()

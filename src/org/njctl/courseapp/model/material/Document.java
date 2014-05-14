@@ -35,8 +35,8 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 	@DatabaseField
 	protected String name;
 	
-	protected String relativePath; // The path to the document, relative to the
-									// app's assets folder.
+	@DatabaseField
+	protected String relativePath;
 	
 	@DatabaseField
 	protected String url;
@@ -76,38 +76,12 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 	
 	public boolean isDownloaded()
 	{
-		Log.v("NJCTLLOG", "Document state: " + state);
 		return state == DocumentState.OK;
 	}
 	
 	public boolean isDownloading()
 	{
 		return state == DocumentState.DOWNLOADING;
-	}
-
-	public void setPath(String relativePath)
-	{
-		this.relativePath = relativePath;
-		String[] segments = relativePath.split("/");
-		this.fileName = segments[segments.length - 1];
-		// this.name = fileName;
-		/*String[] endstuff = fileName.split("\\.");
-		String extension;
-		if (endstuff.length > 1) {
-			extension = endstuff[endstuff.length - 1];
-		} else {
-			extension = "";
-		}*/
-
-		// Set the MIME type!
-		// TODO: Handle more types.
-		/*if (extension.equals("pdf")) {
-			this.MIMEType = "application/pdf";
-		} else if (extension.equals("xlsx")) {
-			this.MIMEType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-		} else if (extension.equals(".docx")) {
-			this.MIMEType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-		}*/
 	}
 
 	public String getId()
@@ -173,7 +147,12 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 	 */
 	public void download()
 	{
-		doDownload();
+		if(state != DocumentState.OK)
+		{
+			doDownload();
+		}
+		else
+			notifyDownloadListener();
 	}
 	
 	/**
@@ -242,7 +221,6 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 			}
 		    catch (IOException e)
 		    {
-				// TODO Auto-generated catch block
 				Log.v("NJCTLLOG pdf save", Log.getStackTraceString(e));
 				e.printStackTrace();
 			}
@@ -296,6 +274,7 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 				name = json.getString("post_title");
 				id = json.getString("ID");
 				lastUpdatedNew = newLastUpdated;
+				checkOutdated();
 				
 				if(json.has("pdf_uri"))
 				{
@@ -312,6 +291,14 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 			Log.w("JSON ERR", e.toString());
 		}
 	}
+	
+	protected void checkOutdated()
+    {
+    	if(state == DocumentState.OK && lastUpdated.before(lastUpdatedNew))
+    	{
+    		state = DocumentState.OUTDATED;
+    	}
+    }
 	
     // Methods for Parcelable implementation.
     public int describeContents() {

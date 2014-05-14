@@ -6,7 +6,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.njctl.courseapp.model.DocumentState;
 import org.njctl.courseapp.model.Unit;
-import org.njctl.courseapp.model.subscribe.DownloadFinishListener;
 
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.field.DatabaseField;
@@ -70,7 +69,7 @@ public class Topic extends Document
     
     protected void checkOutdated()
     {
-    	if(newHash != hash)
+    	if(newHash != hash && state == DocumentState.OK)
     	{
     		state = DocumentState.OUTDATED;
     	}
@@ -126,18 +125,11 @@ public class Topic extends Document
 		
 	}
 	
-	public void download()
-	{
-		if(state != DocumentState.OK)
-		{
-			doDownload();
-		}
-	}
-	
 	protected void onDownloadFinish()
 	{
 		lastUpdated = new Date();
 		hash = newHash;
+		dao.update(this);
 	}
 	
 	public Unit getUnit()
