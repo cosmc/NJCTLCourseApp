@@ -94,7 +94,7 @@ public class Handout extends Document
 			
 			String modified = json.getString("post_modified");
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-			lastUpdated = df.parse(modified);
+			lastUpdatedNew = df.parse(modified);
 			
 		}
 		catch(JSONException e)
@@ -119,7 +119,12 @@ public class Handout extends Document
 		setProperties(json);
 	}
 	
-	protected void notifyListener()
+	protected void onDownloadFinish()
+	{
+		lastUpdated = lastUpdatedNew;
+	}
+	
+	protected void notifyDownloadListener()
 	{
 		if(downloadListener != null)
 	    	downloadListener.onDownloaded(this);

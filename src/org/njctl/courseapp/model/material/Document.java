@@ -44,6 +44,9 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 	@DatabaseField
 	protected Date lastUpdated;
 	
+	@DatabaseField
+	protected Date lastUpdatedNew;
+	
 	protected String MIMEType = "application/pdf";
 	
 	@DatabaseField
@@ -157,8 +160,11 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 	
 	public void download()
 	{
+		
 		doDownload();
 	}
+	
+	protected abstract void onDownloadFinish();
 	
 	@SuppressWarnings("unchecked")
 	protected void doDownload()
@@ -168,68 +174,55 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 		new FileRetrieverTask().execute(request);
 	}
 	
-	protected abstract void notifyListener();
+	protected abstract void notifyDownloadListener();
 	
 	public void processString(String pdfContent)
 	{
-		//TODO save to file
-		
 		//check md5 sum in a future release.
-		/*String downloadedHash = FileRetrieverTask.getMD5EncryptedString(pdfContent);
+		//String downloadedHash = FileRetrieverTask.getMD5EncryptedString(pdfContent);
 		
-		if(hash == "" || downloadedHash == hash)
-		{*/
-			//Internal storage; http://stackoverflow.com/questions/14376807/how-to-read-write-string-from-a-file-in-android
-			String path = ctx.getFilesDir().getAbsolutePath();
-			//String fileName = id + "_" + downloadedHash;
-			String filePath = path + fileName;
-			File file = new File(filePath);
-			
-			FileOutputStream stream = null;
-			
-			try {
-				stream = new FileOutputStream(file);
-			
-			    stream.write(pdfContent.getBytes());
-			    
-			    state = DocumentState.OK;
-			    relativePath = fileName;
-			    notifyListener();
-			    
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} finally {
-			    try {
-					if(stream != null)
-						stream.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		/*}
-		else
+		//Internal storage; http://stackoverflow.com/questions/14376807/how-to-read-write-string-from-a-file-in-android
+		String path = ctx.getFilesDir().getAbsolutePath();
+		fileName = id + ".pdf";
+		relativePath = path + fileName;
+		File file = new File(relativePath);
+		
+		FileOutputStream stream = null;
+		
+		try
 		{
-			state = DocumentState.NOTDOWNLOADED;
-			Log.v("NJCTLLOG", "Download hash incorrect.");
-		}*/
-		/*
-		try {
-			FileOutputStream wurst = ctx.openFileOutput("config.txt", Context.MODE_PRIVATE);
-			OutputStreamWriter writer = new OutputStreamWriter(null);
+			stream = new FileOutputStream(file);
 		
-			writer.close();
+		    stream.write(pdfContent.getBytes());
+		    state = DocumentState.OK;
+		    stream.close();
+		    
+		    onDownloadFinish();
+		    notifyDownloadListener();
+		    
+		}
+		catch (FileNotFoundException e)
+		{
+			Log.v("NJCTLLOG pdf save filenotfound", Log.getStackTraceString(e));
 		}
 		catch (IOException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.v("NJCTLLOG pdf save ioexception", Log.getStackTraceString(e));
 		}
-		*/
+		finally
+		{
+		    try
+		    {
+				if(stream != null)
+					stream.close();
+			}
+		    catch (IOException e)
+		    {
+				// TODO Auto-generated catch block
+				Log.v("NJCTLLOG pdf save", Log.getStackTraceString(e));
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public void deleteFile()

@@ -97,7 +97,7 @@ public class Lab extends Document
 			
 			String modified = json.getString("post_modified");
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-			lastUpdated = df.parse(modified);
+			lastUpdatedNew = df.parse(modified);
 			
 		}
 		catch(JSONException e)
@@ -117,7 +117,7 @@ public class Lab extends Document
 		setProperties(json);
 	}
 	
-	protected void notifyListener()
+	protected void notifyDownloadListener()
 	{
 		if(downloadListener != null)
 	    	downloadListener.onDownloaded(this);
@@ -128,6 +128,11 @@ public class Lab extends Document
 		Lab doc = dao.queryForId(in.readString());
 		setByDocument(doc);
 		unit = doc.unit;
+	}
+	
+	protected void onDownloadFinish()
+	{
+		lastUpdated = lastUpdatedNew;
 	}
 	
 	public static final Parcelable.Creator<Lab> CREATOR = new Parcelable.Creator<Lab>() {

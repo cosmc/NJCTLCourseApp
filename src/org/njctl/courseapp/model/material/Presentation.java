@@ -138,9 +138,9 @@ public class Presentation extends Document
 			Date newLastUpdated = df.parse(modified);
 			
 			// Check if Presentation is already up to date.
-			if(lastUpdated == null || newLastUpdated.after(lastUpdated))
+			if(lastUpdated == null || newLastUpdated.after(lastUpdatedNew))
 			{
-				lastUpdated = newLastUpdated;
+				lastUpdatedNew = newLastUpdated;
 				name = json.getString("post_title");
 				id = json.getString("ID");
 				
@@ -208,6 +208,11 @@ public class Presentation extends Document
 		unit = doc.unit;
 	}
 	
+	protected void onDownloadFinish()
+	{
+		lastUpdated = lastUpdatedNew;
+	}
+	
 	public Presentation(Unit theUnit, JSONObject json)
 	{
 		unit = theUnit;
@@ -215,7 +220,7 @@ public class Presentation extends Document
 		setProperties(json);
 	}
 
-	protected void notifyListener()
+	protected void notifyDownloadListener()
 	{
 		if(downloadListener != null)
 	    	downloadListener.onDownloaded(this);

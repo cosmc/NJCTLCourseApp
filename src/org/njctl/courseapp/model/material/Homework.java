@@ -95,7 +95,7 @@ public class Homework extends Document
 			
 			String modified = json.getString("post_modified");
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-			lastUpdated = df.parse(modified);
+			lastUpdatedNew = df.parse(modified);
 			
 		}
 		catch(JSONException e)
@@ -119,8 +119,13 @@ public class Homework extends Document
 	{
 		return unit;
 	}
+	
+	protected void onDownloadFinish()
+	{
+		lastUpdated = lastUpdatedNew;
+	}
 
-	protected void notifyListener()
+	protected void notifyDownloadListener()
 	{
 		if(downloadListener != null)
 	    	downloadListener.onDownloaded(this);

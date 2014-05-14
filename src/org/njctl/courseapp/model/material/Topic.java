@@ -1,5 +1,7 @@
 package org.njctl.courseapp.model.material;
 
+import java.util.Date;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.njctl.courseapp.model.DocumentState;
@@ -114,6 +116,7 @@ public class Topic extends Document
 		presentation = pres;
 		created = true;
 		setProperties(json);
+		lastUpdatedNew = pres.lastUpdatedNew;
 		
 		try {
 			hash = json.getString("pdf_md5");
@@ -131,12 +134,18 @@ public class Topic extends Document
 		}
 	}
 	
+	protected void onDownloadFinish()
+	{
+		lastUpdated = new Date();
+		hash = newHash;
+	}
+	
 	public Unit getUnit()
 	{
 		return presentation.getUnit();
 	}
 	
-	protected void notifyListener()
+	protected void notifyDownloadListener()
 	{
 		if(downloadListener != null)
 	    	downloadListener.onDownloaded(this);
