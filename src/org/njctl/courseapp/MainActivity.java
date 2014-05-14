@@ -143,28 +143,9 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
         }
     	
     	super.onCreate(savedInstanceState);
+    	
+    	//TODO set this to logo + spinner
         setContentView(R.layout.activity_main);
-
-        //TODO remove later
-        model.getClass()
-        
-        ArrayList<Class> mMyClassesList = model.getClassesSubscribed();
-        Log.v("MYCLASSESLIST ARRAY LIST IS IS IS SI SIS IS", mMyClassesList.toString());
-        
-        String[] mMyClasses = new String[mMyClassesList.size()];
-		for (int i=0; i < mMyClassesList.size(); ++i) {
-			mMyClasses[i] = mMyClassesList.get(i).toString();
-		}
-		
-		
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
-        
-        //TODO set adapter
-        
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener(model, mDrawerLayout, mDrawerList));
-        
-        
     }
 
 
@@ -196,6 +177,7 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
         return super.onOptionsItemSelected(item);
     }
 
+    //populate the drawer with my classes
 	public void onModelReady()
 	{
 		this.subjects = model.getSubjects();
@@ -204,9 +186,25 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 		//TODO take out later, fake class subscription for testing.
 		this.subjects.get(0).getContents().get(0).subscribe();
 		
-
 		Log.v("NJCTLModel", "Model Ready.");
-		showSubjects(subjects);
+		//showSubjects(subjects);
+
+        
+        ArrayList<Class> mMyClassesList = model.getClassesSubscribed();
+        Log.v("MYCLASSESLIST ARRAY LIST IS IS IS SI SIS IS", mMyClassesList.toString());
+        
+        String[] mMyClasses = new String[mMyClassesList.size()];
+		for (int i=0; i < mMyClassesList.size(); ++i) {
+			mMyClasses[i] = mMyClassesList.get(i).toString();
+		}
+		
+		
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        
+        //TODO set adapter
+        
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener(model, mDrawerLayout, mDrawerList));
 	}
 
 	@Override
