@@ -75,6 +75,15 @@ public class Model implements AsyncStringResponse
 		return myClasses;
 	}
 	
+	public ArrayList<Class> getClasses()
+	{
+		ArrayList<Class> myClasses = new ArrayList<Class>();
+		for (int i=0; i < subjects.size(); ++i) {
+			myClasses.addAll(subjects.get(i).getClasses());
+		}
+		return myClasses;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public void update()
 	{

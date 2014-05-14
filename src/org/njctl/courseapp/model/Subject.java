@@ -3,6 +3,7 @@ package org.njctl.courseapp.model;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
 
@@ -263,5 +264,10 @@ public class Subject implements Parcelable
 			return new Subject[size];
 		}
 	};
+
+	public Collection<Class> getClasses()
+	{
+		return classes;
+	}
 
 }
