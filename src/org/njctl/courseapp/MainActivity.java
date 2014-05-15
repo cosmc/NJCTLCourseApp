@@ -133,6 +133,11 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
     	
+    	super.onCreate(savedInstanceState);
+    	
+    	//TODO set this to logo + spinner
+        setContentView(R.layout.activity_main);
+        
     	model = new Model(this);
     	
     	if (savedInstanceState == null) {
@@ -141,11 +146,6 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
             
             model.fetchManifest(this);
         }
-    	
-    	super.onCreate(savedInstanceState);
-    	
-    	//TODO set this to logo + spinner
-        setContentView(R.layout.activity_main);
     }
 
 
