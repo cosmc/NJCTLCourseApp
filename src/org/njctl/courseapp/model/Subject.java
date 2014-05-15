@@ -36,9 +36,12 @@ public class Subject implements Parcelable, DownloadFinishListener<Class>
 	@DatabaseField
 	private Date lastUpdate;
 
+	@DatabaseField
+	protected Integer order;
+	
 	@ForeignCollectionField(eager = true)
 	protected ForeignCollection<Class> classes;
-
+	
 	private int bottomColorBarResource = 0;
 	private int bigSideColorBarResource = 0;
 	private int smallSideColorBarResource = 0;
@@ -74,7 +77,7 @@ public class Subject implements Parcelable, DownloadFinishListener<Class>
 		return classes.size();
 	}
 
-	public static Subject get(JSONObject json, DownloadFinishListener<Subject> listener)
+	public static Subject get(JSONObject json, DownloadFinishListener<Subject> listener, int newOrder)
 	{
 		try
 		{
@@ -88,6 +91,7 @@ public class Subject implements Parcelable, DownloadFinishListener<Class>
 					subject.downloadFinishListener = listener;
 					
 					Log.v("NJCTLLOG", "Loaded Subject with " + subject.getNumberClasses() + " classes.");
+					subject.order = newOrder;
 					subject.setProperties(json);
 					Log.v("NJCTLLOG", "Subject classes after property setting: " + subject.getNumberClasses() + " classes.");
 					dao.update(subject);
@@ -96,7 +100,7 @@ public class Subject implements Parcelable, DownloadFinishListener<Class>
 				{
 					subject = new Subject(json);
 					subject.downloadFinishListener = listener;
-					
+					subject.order = newOrder;
 					dao.create(subject);
 					Log.v("NJCTLLOG", "Saved Subject with " + subject.getNumberClasses() + " classes.");
 				}
@@ -165,8 +169,9 @@ public class Subject implements Parcelable, DownloadFinishListener<Class>
 			Log.v("NJCTLLOG", "    Looping through " + Integer.toString(classList.length()) + " classes in Subject " + title +"...");
 
 			//TODO account for existing classes that have been deleted out of the json.
-			for (int i = 0; i < classList.length(); i++) {
-				Class theClass = Class.get(this, classList.getJSONObject(i), this);
+			for (int i = 0; i < classList.length(); i++)
+			{
+				Class theClass = Class.get(this, classList.getJSONObject(i), this, i);
 				
 				if(theClass == null)
 				{

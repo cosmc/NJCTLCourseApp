@@ -54,6 +54,9 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
     @DatabaseField
     private Date lastUpdate;
     
+    @DatabaseField
+    protected Integer order;
+    
     @DatabaseField(canBeNull = false, foreign = true)
     protected Class theClass;
     
@@ -184,7 +187,7 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
 		return created;
 	}
     
-    public static Unit get(Class theClass, JSONObject json)
+    public static Unit get(Class theClass, JSONObject json, int newOrder)
 	{
 		try {
 			if (checkJSON(json)) {
@@ -192,9 +195,11 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
 				if (dao.idExists(json.getInt("ID"))) {
 					content = dao.queryForId(json.getInt("ID"));
 					content.created = false;
+					content.order = newOrder;
 					content.setProperties(json);
 				} else {
 					content = new Unit(theClass, json);
+					content.order = newOrder;
 					content.created = true;
 				}
 				return content;
@@ -253,7 +258,7 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
 				
 				for(int i = 0; i < homeworkList.length(); i++)
 				{
-					Homework hw = Homework.get(this, homeworkList.getJSONObject(i), this);
+					Homework hw = Homework.get(this, homeworkList.getJSONObject(i), this, i);
 					if(hw != null)
 					{
 						if(hw.wasCreated())
@@ -274,7 +279,7 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
 				
 				for(int i = 0; i < presentationList.length(); i++)
 				{
-					Presentation presentation = Presentation.get(this, presentationList.getJSONObject(i), this);
+					Presentation presentation = Presentation.get(this, presentationList.getJSONObject(i), this, i);
 					
 					if(presentation != null)
 					{
@@ -299,7 +304,7 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
 				
 				for(int i = 0; i < labList.length(); i++)
 				{
-					Lab lab = Lab.get(this, labList.getJSONObject(i), this);
+					Lab lab = Lab.get(this, labList.getJSONObject(i), this, i);
 					
 					if(lab != null)
 					{
@@ -322,7 +327,7 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
 				
 				for(int i = 0; i < handoutList.length(); i++)
 				{
-					Handout handout = Handout.get(this, handoutList.getJSONObject(i), this);
+					Handout handout = Handout.get(this, handoutList.getJSONObject(i), this, i);
 					
 					if(handout != null)
 					{
