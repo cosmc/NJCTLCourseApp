@@ -39,8 +39,8 @@ public class SubjectsFragment extends Fragment {
         	Log.v("NJCTLLOG2", subjects.get(i).getTitle());
         }
 
-        MyClassesAdapter myClassesAdapter = new MyClassesAdapter(getActivity(), 0, myClasses);
-        myClassesListView.setAdapter(myClassesAdapter);
+        //DrawerAdapter myClassesAdapter = new DrawerAdapter(getActivity(), 0, myClasses);
+        //myClassesListView.setAdapter(myClassesAdapter);
         SubjectsAdapter subjectAdapter = new SubjectsAdapter(getActivity(), 0, subjects);
         subjectsListView.setAdapter(subjectAdapter);
         

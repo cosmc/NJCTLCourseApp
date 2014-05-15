@@ -31,12 +31,15 @@ public abstract class DrawerActivity extends Activity
 		ArrayList<Class> mMyClassesList = (ArrayList<Class>) intent.getSerializableExtra("subscribedClasses");
 		
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        Log.v("mDrawerLayout", mDrawerLayout.toString());
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
   
         
-        MyClassesAdapter myClassesAdapter = new MyClassesAdapter(this, 0, mMyClassesList);
-        mDrawerList.setAdapter(myClassesAdapter);
+        //DrawerAdapter drawerAdapter = new DrawerAdapter(this, 0, mMyClassesList);
+        //mDrawerList.setAdapter(drawerAdapter);
+        
+        mDrawerList.setAdapter(new ArrayAdapter<Class>(this,
+        		android.R.layout.simple_list_item_1, mMyClassesList));
+
         
         
         //TODO DONT AUTO OPEN THE DRAWER?
