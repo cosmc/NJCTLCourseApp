@@ -1,5 +1,5 @@
 #
-# generated on 2014/05/14 11:22:32
+# generated on 2014/05/15 04:34:05
 #
 # --table-start--
 dataClass=org.njctl.courseapp.model.Unit
@@ -100,6 +100,9 @@ fieldName=subscribed
 # --field-end--
 # --field-start--
 fieldName=downloaded
+# --field-end--
+# --field-start--
+fieldName=lastOpened
 # --field-end--
 # --table-fields-end--
 # --table-end--

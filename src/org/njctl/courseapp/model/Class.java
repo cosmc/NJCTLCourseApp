@@ -45,6 +45,9 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
     @DatabaseField
     protected boolean downloaded = false;
     
+    @DatabaseField
+    protected Date lastOpened;
+    
     protected boolean created = false;
     
     protected Integer downloadingUnits = 0;
@@ -62,6 +65,11 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
     Class()
     {
     	
+    }
+    
+    public void setLastOpened()
+    {
+    	lastOpened = new Date();
     }
     
     public void subscribe()

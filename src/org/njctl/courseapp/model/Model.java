@@ -1,5 +1,6 @@
 package org.njctl.courseapp.model;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,8 @@ import org.njctl.courseapp.model.material.*;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 
 import android.content.Context;
 import android.util.Log;
@@ -27,6 +30,8 @@ public class Model implements AsyncStringResponse, DownloadFinishListener<Subjec
 	protected ModelRetriever retriever;
 	protected DownloadFinishListener<Model> downloadFinishListener;
 	
+	protected RuntimeExceptionDao<Class, Integer> classDao;
+	
 	protected Integer downloadingSubjects = 0;
 	
 	public Model(Context ctx)
@@ -35,8 +40,8 @@ public class Model implements AsyncStringResponse, DownloadFinishListener<Subjec
 		
 		RuntimeExceptionDao<Subject, Integer> dao1 = dbHelper.getRuntimeExceptionDao(Subject.class);
 		Subject.setDao(dao1);
-		RuntimeExceptionDao<Class, Integer> dao2 = dbHelper.getRuntimeExceptionDao(Class.class);
-		Class.setDao(dao2);
+		classDao = dbHelper.getRuntimeExceptionDao(Class.class);
+		Class.setDao(classDao);
 		RuntimeExceptionDao<Unit, Integer> dao3 = dbHelper.getRuntimeExceptionDao(Unit.class);
 		Unit.setDao(dao3);
 		RuntimeExceptionDao<Handout, String> dao4 = dbHelper.getRuntimeExceptionDao(Handout.class);
@@ -55,7 +60,23 @@ public class Model implements AsyncStringResponse, DownloadFinishListener<Subjec
 	
 	public Class getLastOpenedClass()
 	{
-		return subjects.get(0).getContents().get(0);
+		try
+		{
+			QueryBuilder<Class, Integer> builder = classDao.queryBuilder();
+			builder.orderBy("lastOpened", false).limit(1l);
+		
+			PreparedQuery<Class> preparedQuery = builder.prepare();
+			List<Class> classes = classDao.query(preparedQuery);
+			
+			return classes.get(0);
+		}
+		catch (SQLException e)
+		{
+			Log.v("NJCTLSQL", Log.getStackTraceString(e));
+			return null;
+		}
+
+		//return subjects.get(0).getContents().get(0);
 	}
 	
 	public void fetchManifest(ModelRetriever retrieverObject)

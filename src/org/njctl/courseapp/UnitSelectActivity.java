@@ -16,6 +16,7 @@ public class UnitSelectActivity extends DrawerActivity
 		
 		Intent intent = getIntent();
 		Class theClass = (Class) intent.getParcelableExtra("class");
+		theClass.setLastOpened();
 		
 		//setContentView(R.layout.activity_init);
 		
