@@ -32,18 +32,26 @@ public class Handout extends Document
     	
     }
 	
-	public static Handout get(Unit unit, JSONObject json, DownloadFinishListener<Document> listener)
+	public static Handout get(Unit unit, JSONObject json, DownloadFinishListener<Document> listener, int newOrder)
 	{
 		try {
-			if (checkJSON(json)) {
-				if (dao.idExists(json.getString("ID"))) {
+			if (checkJSON(json))
+			{
+				if (dao.idExists(json.getString("ID")))
+				{
 					Handout content = dao.queryForId(json.getString("ID"));
 					content.downloadListener = listener;
+					content.order = newOrder;
 					content.setProperties(json);
+					content.checkOutdated();
+					
 					return content;
-				} else {
+				}
+				else
+				{
 					Handout content = new Handout(unit, json);
 					content.downloadListener = listener;
+					content.order = newOrder;
 					content.created = true;
 
 					return content;

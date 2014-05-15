@@ -24,7 +24,7 @@ import android.util.Log;
 @DatabaseTable
 public class Presentation extends Document implements DownloadFinishListener<Document>
 {
-	@ForeignCollectionField(eager = true)
+	@ForeignCollectionField(eager = true, orderColumnName = "order")
 	protected ForeignCollection<Topic> topics;
 	
 	@DatabaseField(canBeNull = false, foreign = true)
@@ -108,7 +108,7 @@ public class Presentation extends Document implements DownloadFinishListener<Doc
 		}
 	}
 	
-	public static Presentation get(Unit unit, JSONObject json, DownloadFinishListener<Document> listener)
+	public static Presentation get(Unit unit, JSONObject json, DownloadFinishListener<Document> listener, int newOrder)
 	{
 		try
 		{
@@ -118,7 +118,9 @@ public class Presentation extends Document implements DownloadFinishListener<Doc
 				{
 					Presentation content = dao.queryForId(json.getString("ID"));
 					content.downloadListener = listener;
+					content.order = newOrder;
 					content.setProperties(json);
+					content.checkOutdated();
 					
 					return content;
 				}
@@ -126,6 +128,7 @@ public class Presentation extends Document implements DownloadFinishListener<Doc
 				{
 					Presentation content = new Presentation(unit, json);
 					content.downloadListener = listener;
+					content.order = newOrder;
 					content.created = true;
 
 					return content;
@@ -159,7 +162,7 @@ public class Presentation extends Document implements DownloadFinishListener<Doc
 					
 					for(int i = 0; i < topicsList.length(); i++)
 					{
-						Topic topic = Topic.get(this, topicsList.getJSONObject(i), this);
+						Topic topic = Topic.get(this, topicsList.getJSONObject(i), this, i);
 						if(topic.wasCreated())
 						{
 							topics.add(topic);

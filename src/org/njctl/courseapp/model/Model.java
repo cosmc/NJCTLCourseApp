@@ -162,7 +162,7 @@ public class Model implements AsyncStringResponse, DownloadFinishListener<Subjec
 			
 			for(int i = 0; i < results.length(); i++)
 			{
-				Subject subject = Subject.get(results.getJSONObject(i), this);
+				Subject subject = Subject.get(results.getJSONObject(i), this, i);
 				downloadingSubjects++;
 				subjects.add(subject);
 			}

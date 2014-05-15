@@ -40,7 +40,7 @@ public class Topic extends Document
     	
     }
     
-    public static Topic get(Presentation pres, JSONObject json, DownloadFinishListener<Document> listener)
+    public static Topic get(Presentation pres, JSONObject json, DownloadFinishListener<Document> listener, int newOrder)
 	{
 		try {
 			if (checkJSON(json))
@@ -50,6 +50,7 @@ public class Topic extends Document
 					Topic content = dao.queryForId(json.getString("post_name"));
 					content.downloadListener = listener;
 					content.setProperties(json);
+					content.order = newOrder;
 					content.checkOutdated();
 					
 					return content;
@@ -57,6 +58,7 @@ public class Topic extends Document
 				else
 				{
 					Topic content = new Topic(pres, json);
+					content.order = newOrder;
 
 					return content;
 				}

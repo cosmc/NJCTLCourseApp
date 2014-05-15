@@ -33,18 +33,27 @@ public class Lab extends Document
 			dao = newDao;
 	}
 	
-	public static Lab get(Unit theUnit, JSONObject json, DownloadFinishListener<Document> listener)
+	public static Lab get(Unit theUnit, JSONObject json, DownloadFinishListener<Document> listener, int newOrder)
 	{
-		try {
-			if (checkJSON(json)) {
-				if (dao.idExists(json.getString("ID"))) {
+		try
+		{
+			if (checkJSON(json))
+			{
+				if (dao.idExists(json.getString("ID")))
+				{
 					Lab content = dao.queryForId(json.getString("ID"));
 					content.downloadListener = listener;
+					content.order = newOrder;
 					content.setProperties(json);
+					content.checkOutdated();
+					
 					return content;
-				} else {
+				}
+				else
+				{
 					Lab content = new Lab(theUnit, json);
 					content.downloadListener = listener;
+					content.order = newOrder;
 					content.created = true;
 
 					return content;

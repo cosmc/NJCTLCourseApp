@@ -30,7 +30,7 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
 	@DatabaseField
     protected String title;
 	
-	@ForeignCollectionField(eager = true)
+	@ForeignCollectionField(eager = true, orderColumnName = "order")
     protected ForeignCollection<Unit> units;
     
     @DatabaseField
@@ -47,6 +47,9 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
     
     @DatabaseField
     protected Date lastOpened;
+    
+    @DatabaseField
+    protected Integer order;
     
     protected boolean created = false;
     
@@ -176,7 +179,7 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
 		return created;
 	}
 	
-	public static Class get(Subject subject, JSONObject json, DownloadFinishListener<Class> listener)
+	public static Class get(Subject subject, JSONObject json, DownloadFinishListener<Class> listener, int newOrder)
 	{
 		try
 		{
@@ -188,6 +191,7 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
 				{
 					content = dao.queryForId(json.getInt("ID"));
 					content.downloadListener = listener;
+					content.order = newOrder;
 					content.created = false;
 					Log.v("NJCTLLOG", "Loaded a class " + content.getId() + " for a subject....");
 					content.setProperties(json);
@@ -196,6 +200,7 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
 				{
 					content = new Class(subject, json);
 					content.downloadListener = listener;
+					content.order = newOrder;
 					content.created = true;
 					Log.v("NJCTLLOG", "Created a class " + content.getId() + " for a subject....");
 				}
@@ -256,7 +261,7 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
 			
 			for(int i = 0; i < unitList.length(); i++)
 			{
-				Unit unit = Unit.get(this, unitList.getJSONObject(i));
+				Unit unit = Unit.get(this, unitList.getJSONObject(i), i);
 				
 				if(unit != null && unit.wasCreated())
 				{

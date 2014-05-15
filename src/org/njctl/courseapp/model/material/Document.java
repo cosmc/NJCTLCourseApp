@@ -87,6 +87,9 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 	@DatabaseField
 	protected Integer numOpened = 0;
 	
+	@DatabaseField
+    protected Integer order;
+	
 	/*@DatabaseField
 	protected String hash = "";*/
 	

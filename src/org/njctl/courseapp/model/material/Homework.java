@@ -32,25 +32,37 @@ public class Homework extends Document
     	
     }
 
-    public static Homework get(Unit theUnit, JSONObject json, DownloadFinishListener<Document> listener)
+    public static Homework get(Unit theUnit, JSONObject json, DownloadFinishListener<Document> listener, int newOrder)
 	{
-		try {
-			if (checkJSON(json)) {
+		try
+		{
+			if (checkJSON(json))
+			{
 				Homework content;
-				if (dao.idExists(json.getString("ID"))) {
+				
+				if (dao.idExists(json.getString("ID")))
+				{
 					content = dao.queryForId(json.getString("ID"));
 					content.downloadListener = listener;
+					content.order = newOrder;
 					content.setProperties(json);
-				} else {
+					content.checkOutdated();
+				}
+				else
+				{
 					content = new Homework(theUnit, json);
 					content.downloadListener = listener;
+					content.order = newOrder;
 					content.created = true;
 				}
 				return content;
-			} else {
+			}
+			else
+			{
 				return null;
 			}
-		} catch (Exception e) { // never executed..
+		}
+		catch (Exception e) {
 			Log.v("NJCTLLOG", "homework exception: " + e.getMessage());
 			Log.v("NJCTLLOG", Log.getStackTraceString(e));
 			return null;
