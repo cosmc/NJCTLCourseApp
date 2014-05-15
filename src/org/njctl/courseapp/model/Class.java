@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import org.json.JSONArray;
@@ -62,6 +63,11 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
 	{
 		if (dao == null)
 			dao = newDao;
+	}
+	
+	public static RuntimeExceptionDao<Class, Integer> getDao()
+	{
+		return dao;
 	}
     
     // For ORM.
@@ -256,6 +262,10 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 			lastUpdate = df.parse(modified);
 			
+			RuntimeExceptionDao<Unit, Integer> dao = Unit.getDao();
+			List<Unit> oldContents = dao.queryForAll();
+			List<Integer> newIds = new ArrayList<Integer>();
+			
 			JSONArray unitList = json.getJSONObject("content").getJSONArray("units");
 			Log.v("NJCTLLOG", "        Looping through " + Integer.toString(unitList.length()) + " units in Class " + title + "...");
 			
@@ -263,16 +273,30 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
 			{
 				Unit unit = Unit.get(this, unitList.getJSONObject(i), i);
 				
-				if(unit != null && unit.wasCreated())
+				if(unit != null)
 				{
-					units.add(unit);
+					newIds.add(unit.getId());
 					
-					if (subscribed)
-						unit.subscribe();
+					if(unit.wasCreated())
+					{
+						units.add(unit);
+						
+						if (subscribed)
+							unit.subscribe();
+					}
+					else
+					{
+						units.update(unit);
+					}
 				}
-				else
+			}
+			
+			for(Unit oldContent : oldContents)
+			{
+				if(!newIds.contains(oldContent.getId()))
 				{
-					units.update(unit);
+					Log.v("NJCTLLOG", "unit has been deleted from json!");
+					dao.delete(oldContent);
 				}
 			}
 			
@@ -305,6 +329,11 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
     
     public int getId() {
     	return id;
+    }
+    
+    public String toString()
+    {
+    	return this.getTitle();
     }
     
     // Methods for Parcelable implementation.

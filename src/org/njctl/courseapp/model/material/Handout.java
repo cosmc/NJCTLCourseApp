@@ -112,4 +112,9 @@ public class Handout extends Document
 		setByDocument(doc);
 		unit = doc.unit;
 	}
+
+	public static RuntimeExceptionDao<Handout, String> getDao()
+	{
+		return dao;
+	}
 }

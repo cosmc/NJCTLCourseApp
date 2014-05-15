@@ -123,4 +123,9 @@ public class Lab extends Document
     		return new Lab[size];
     	}
     };
+
+	public static RuntimeExceptionDao<Lab, String> getDao()
+	{
+		return dao;
+	}
 }

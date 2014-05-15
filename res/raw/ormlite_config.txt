@@ -1,5 +1,5 @@
 #
-# generated on 2014/05/15 04:34:05
+# generated on 2014/05/15 06:12:12
 #
 # --table-start--
 dataClass=org.njctl.courseapp.model.Unit
@@ -19,24 +19,31 @@ fieldName=subscribed
 fieldName=homeworks
 foreignCollection=true
 foreignCollectionEager=true
+foreignCollectionOrderColumnName=order
 # --field-end--
 # --field-start--
 fieldName=presentations
 foreignCollection=true
 foreignCollectionEager=true
+foreignCollectionOrderColumnName=order
 # --field-end--
 # --field-start--
 fieldName=labs
 foreignCollection=true
 foreignCollectionEager=true
+foreignCollectionOrderColumnName=order
 # --field-end--
 # --field-start--
 fieldName=handouts
 foreignCollection=true
 foreignCollectionEager=true
+foreignCollectionOrderColumnName=order
 # --field-end--
 # --field-start--
 fieldName=lastUpdate
+# --field-end--
+# --field-start--
+fieldName=order
 # --field-end--
 # --field-start--
 fieldName=theClass
@@ -64,9 +71,13 @@ fieldName=title
 fieldName=lastUpdate
 # --field-end--
 # --field-start--
+fieldName=order
+# --field-end--
+# --field-start--
 fieldName=classes
 foreignCollection=true
 foreignCollectionEager=true
+foreignCollectionOrderColumnName=order
 # --field-end--
 # --table-fields-end--
 # --table-end--
@@ -86,6 +97,7 @@ fieldName=title
 fieldName=units
 foreignCollection=true
 foreignCollectionEager=true
+foreignCollectionOrderColumnName=order
 # --field-end--
 # --field-start--
 fieldName=lastUpdate
@@ -103,6 +115,9 @@ fieldName=downloaded
 # --field-end--
 # --field-start--
 fieldName=lastOpened
+# --field-end--
+# --field-start--
+fieldName=order
 # --field-end--
 # --table-fields-end--
 # --table-end--
@@ -140,6 +155,9 @@ fieldName=lastUpdatedNew
 fieldName=numOpened
 # --field-end--
 # --field-start--
+fieldName=order
+# --field-end--
+# --field-start--
 fieldName=state
 # --field-end--
 # --table-fields-end--
@@ -153,6 +171,7 @@ tableName=presentation
 fieldName=topics
 foreignCollection=true
 foreignCollectionEager=true
+foreignCollectionOrderColumnName=order
 # --field-end--
 # --field-start--
 fieldName=unit
@@ -186,6 +205,9 @@ fieldName=lastUpdatedNew
 # --field-end--
 # --field-start--
 fieldName=numOpened
+# --field-end--
+# --field-start--
+fieldName=order
 # --field-end--
 # --field-start--
 fieldName=state
@@ -237,6 +259,9 @@ fieldName=lastUpdatedNew
 fieldName=numOpened
 # --field-end--
 # --field-start--
+fieldName=order
+# --field-end--
+# --field-start--
 fieldName=state
 # --field-end--
 # --table-fields-end--
@@ -278,6 +303,9 @@ fieldName=lastUpdatedNew
 # --field-end--
 # --field-start--
 fieldName=numOpened
+# --field-end--
+# --field-start--
+fieldName=order
 # --field-end--
 # --field-start--
 fieldName=state
@@ -323,6 +351,9 @@ fieldName=lastUpdatedNew
 fieldName=numOpened
 # --field-end--
 # --field-start--
+fieldName=order
+# --field-end--
+# --field-start--
 fieldName=state
 # --field-end--
 # --table-fields-end--
@@ -364,6 +395,9 @@ fieldName=lastUpdatedNew
 # --field-end--
 # --field-start--
 fieldName=numOpened
+# --field-end--
+# --field-start--
+fieldName=order
 # --field-end--
 # --field-start--
 fieldName=state

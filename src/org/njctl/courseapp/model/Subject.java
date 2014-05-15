@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import org.json.JSONArray;
@@ -165,10 +166,13 @@ public class Subject implements Parcelable, DownloadFinishListener<Class>
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 			lastUpdate = df.parse(modified);
 
+			RuntimeExceptionDao<Class, Integer> dao = Class.getDao();
+			List<Class> oldContents = dao.queryForAll();
+			List<Integer> newIds = new ArrayList<Integer>();
+			
 			JSONArray classList = json.getJSONObject("content").getJSONArray("classes");
 			Log.v("NJCTLLOG", "    Looping through " + Integer.toString(classList.length()) + " classes in Subject " + title +"...");
 
-			//TODO account for existing classes that have been deleted out of the json.
 			for (int i = 0; i < classList.length(); i++)
 			{
 				Class theClass = Class.get(this, classList.getJSONObject(i), this, i);
@@ -179,6 +183,8 @@ public class Subject implements Parcelable, DownloadFinishListener<Class>
 				}
 				else
 				{
+					newIds.add(theClass.getId());
+					
 					if (theClass.wasCreated())
 					{
 						Log.v("NJCTLLOG", "Adding subject class with id " + theClass.getId());
@@ -191,6 +197,16 @@ public class Subject implements Parcelable, DownloadFinishListener<Class>
 					}
 				}
 			}
+			
+			for(Class oldContent : oldContents)
+			{
+				if(!newIds.contains(oldContent.getId()))
+				{
+					Log.v("NJCTLLOG", "class has been deleted from json!");
+					dao.delete(oldContent);
+				}
+			}
+			
 		} catch (Exception e) {
 			Log.w("PARSE ERR", e.toString());
 			Log.w("NJCTLLOG", Log.getStackTraceString(e));
