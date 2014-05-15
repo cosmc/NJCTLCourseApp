@@ -24,7 +24,7 @@ import android.util.Log;
 @DatabaseTable
 public class Presentation extends Document implements DownloadFinishListener<Document>
 {
-	@ForeignCollectionField(eager = true)
+	@ForeignCollectionField(eager = true, orderColumnName = "order")
 	protected ForeignCollection<Topic> topics;
 	
 	@DatabaseField(canBeNull = false, foreign = true)

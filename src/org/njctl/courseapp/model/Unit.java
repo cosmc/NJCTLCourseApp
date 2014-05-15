@@ -39,16 +39,16 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
 	@DatabaseField
     protected boolean subscribed = false;
 	
-	@ForeignCollectionField(eager = true)
+	@ForeignCollectionField(eager = true, orderColumnName = "order")
     private ForeignCollection<Homework> homeworks;
 	
-	@ForeignCollectionField(eager = true)
+	@ForeignCollectionField(eager = true, orderColumnName = "order")
     private ForeignCollection<Presentation> presentations;
 	
-	@ForeignCollectionField(eager = true)
+	@ForeignCollectionField(eager = true, orderColumnName = "order")
     private ForeignCollection<Lab> labs;
 	
-	@ForeignCollectionField(eager = true)
+	@ForeignCollectionField(eager = true, orderColumnName = "order")
     private ForeignCollection<Handout> handouts;
     
     @DatabaseField

@@ -30,7 +30,7 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
 	@DatabaseField
     protected String title;
 	
-	@ForeignCollectionField(eager = true)
+	@ForeignCollectionField(eager = true, orderColumnName = "order")
     protected ForeignCollection<Unit> units;
     
     @DatabaseField

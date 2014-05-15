@@ -39,7 +39,7 @@ public class Subject implements Parcelable, DownloadFinishListener<Class>
 	@DatabaseField
 	protected Integer order;
 	
-	@ForeignCollectionField(eager = true)
+	@ForeignCollectionField(eager = true, orderColumnName = "order")
 	protected ForeignCollection<Class> classes;
 	
 	private int bottomColorBarResource = 0;
