@@ -24,7 +24,6 @@ public class Model implements AsyncStringResponse, DownloadFinishListener<Subjec
 	private String jsonUrl = "http://content.sandbox-njctl.org/courses.json";
 	protected Context context;
 	protected DatabaseHelper dbHelper;
-	protected boolean dbFilled = false;
 	protected ArrayList<Subject> subjects;
 	
 	protected ModelRetriever retriever;
@@ -159,25 +158,22 @@ public class Model implements AsyncStringResponse, DownloadFinishListener<Subjec
 			
 			RuntimeExceptionDao<Subject, Integer> dao = Subject.getDao();
 			List<Subject> oldSubjects = dao.queryForAll();
+			List<Integer> newIds = new ArrayList<Integer>();
 			
 			for(int i = 0; i < results.length(); i++)
 			{
 				Subject subject = Subject.get(results.getJSONObject(i), this, i);
 				downloadingSubjects++;
 				subjects.add(subject);
+				newIds.add(subject.getId());
 			}
-			
-			//TODO store this information on the device.
-			dbFilled = true;
 			
 			for(Subject oldSubject : oldSubjects)
 			{
-				//TODO this check is not working
-				if(!dao.idExists(oldSubject.getId()))
+				if(!newIds.contains(oldSubject.getId()))
 				{
 					Log.v("NJCTLLOG", "subject has been deleted from json!");
-					
-					//TODO delete oldSubject.
+					dao.delete(oldSubject);
 				}
 			}
 		}

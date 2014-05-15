@@ -117,5 +117,10 @@ public class Homework extends Document
 		setByDocument(doc);
 		unit = doc.unit;
 	}
+
+	public static RuntimeExceptionDao<Homework, String> getDao()
+	{
+		return dao;
+	}
 	
 }

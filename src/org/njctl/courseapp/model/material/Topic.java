@@ -149,4 +149,9 @@ public class Topic extends Document
 		newHash = doc.newHash;
 		presentation = doc.presentation;
 	}
+
+	public static RuntimeExceptionDao<Topic, String> getDao()
+	{
+		return dao;
+	}
 }

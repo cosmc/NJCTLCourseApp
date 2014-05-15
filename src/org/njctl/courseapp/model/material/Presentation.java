@@ -3,6 +3,7 @@ package org.njctl.courseapp.model.material;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -158,18 +159,37 @@ public class Presentation extends Document implements DownloadFinishListener<Doc
 				if(json.has("chunks"))
 				{
 					JSONArray topicsList = json.getJSONArray("chunks");
+					RuntimeExceptionDao<Topic, String> dao = Topic.getDao();
+					List<Topic> oldContents = dao.queryForAll();
+					List<String> newIds = new ArrayList<String>();
+					
 					Log.v("NJCTLLOG", "                Looping through " + topicsList.length() + " topics in " + title + " presentation..");
 					
 					for(int i = 0; i < topicsList.length(); i++)
 					{
 						Topic topic = Topic.get(this, topicsList.getJSONObject(i), this, i);
-						if(topic.wasCreated())
+						
+						if(topic != null)
 						{
-							topics.add(topic);
+							newIds.add(topic.getId());
+							
+							if(topic.wasCreated())
+							{
+								topics.add(topic);
+							}
+							else
+							{
+								topics.update(topic);
+							}
 						}
-						else
+					}
+					
+					for(Topic oldContent : oldContents)
+					{
+						if(!newIds.contains(oldContent.getId()))
 						{
-							topics.update(topic);
+							Log.v("NJCTLLOG", "topic has been deleted from json!");
+							dao.delete(oldContent);
 						}
 					}
 				}
@@ -231,5 +251,10 @@ public class Presentation extends Document implements DownloadFinishListener<Doc
 		
 		if(downloadingTopics == 0)
 			notifyDownloadListener();
+	}
+
+	public static RuntimeExceptionDao<Presentation, String> getDao()
+	{
+		return dao;
 	}
 }

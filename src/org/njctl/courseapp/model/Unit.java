@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import org.json.JSONArray;
@@ -249,8 +250,20 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
 			
 			JSONObject content = json.getJSONObject("content");
 			
-            Log.v("NJCTLLOG", "            Created Unit " + title);
+            Log.v("NJCTLLOG", "            Created Unit " + title + ", now adding contents:");
             
+            RuntimeExceptionDao<Homework, String> dao1 = Homework.getDao();
+            RuntimeExceptionDao<Handout, String> dao2 = Handout.getDao();
+            RuntimeExceptionDao<Lab, String> dao3 = Lab.getDao();
+            RuntimeExceptionDao<Presentation, String> dao4 = Presentation.getDao();
+            
+			List<Homework> oldContents1 = dao1.queryForAll();
+			List<Handout> oldContents2 = dao2.queryForAll();
+			List<Lab> oldContents3 = dao3.queryForAll();
+			List<Presentation> oldContents4 = dao4.queryForAll();
+			
+			List<String> newIds = new ArrayList<String>();
+			
 			if(content.has(HW))
 			{
 				JSONArray homeworkList = content.getJSONArray(HW);
@@ -261,6 +274,8 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
 					Homework hw = Homework.get(this, homeworkList.getJSONObject(i), this, i);
 					if(hw != null)
 					{
+						newIds.add(hw.getId());
+						
 						if(hw.wasCreated())
 						{
 							homeworks.add(hw);
@@ -272,6 +287,17 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
 					}
 				}
 			}
+			
+			for(Homework oldContent : oldContents1)
+			{
+				if(!newIds.contains(oldContent.getId()))
+				{
+					Log.v("NJCTLLOG", "hw has been deleted from json!");
+					dao1.delete(oldContent);
+				}
+			}
+			newIds.clear();
+			
 			if(content.has(PRES))
 			{
 				JSONArray presentationList = content.getJSONArray(PRES);
@@ -283,6 +309,8 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
 					
 					if(presentation != null)
 					{
+						newIds.add(presentation.getId());
+						
 						if(presentation.wasCreated())
 						{
 							presentations.add(presentation);
@@ -297,6 +325,17 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
 			else
 				Log.v("NJCTLLOG", "            No presentations found.");
 			
+			for(Presentation oldContent : oldContents4)
+			{
+				if(!newIds.contains(oldContent.getId()))
+				{
+					Log.v("NJCTLLOG", "pres has been deleted from json!");
+					dao4.delete(oldContent);
+				}
+			}
+			newIds.clear();
+
+			
 			if(content.has(LABS))
 			{
 				JSONArray labList = content.getJSONArray(LABS);
@@ -308,6 +347,8 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
 					
 					if(lab != null)
 					{
+						newIds.add(lab.getId());
+						
 						if(lab.wasCreated())
 						{
 							labs.add(lab);
@@ -320,6 +361,16 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
 				}
 			}
 			
+			for(Lab oldContent : oldContents3)
+			{
+				if(!newIds.contains(oldContent.getId()))
+				{
+					Log.v("NJCTLLOG", "lab has been deleted from json!");
+					dao3.delete(oldContent);
+				}
+			}
+			newIds.clear();
+			
 			if(content.has(HANDOUT))
 			{
 				JSONArray handoutList = content.getJSONArray(HANDOUT);
@@ -331,6 +382,8 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
 					
 					if(handout != null)
 					{
+						newIds.add(handout.getId());
+						
 						if(handout.wasCreated())
 						{
 							handouts.add(handout);
@@ -340,6 +393,15 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
 							handouts.update(handout);
 						}
 					}
+				}
+			}
+			
+			for(Handout oldContent : oldContents2)
+			{
+				if(!newIds.contains(oldContent.getId()))
+				{
+					Log.v("NJCTLLOG", "handout has been deleted from json!");
+					dao2.delete(oldContent);
 				}
 			}
 			
@@ -420,6 +482,11 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
 		
 		if(downloading == 0 && downloadFinishListener != null)
 			downloadFinishListener.onDownloaded(this);
+	}
+
+	public static RuntimeExceptionDao<Unit, Integer> getDao()
+	{
+		return dao;
 	}
     
 }
