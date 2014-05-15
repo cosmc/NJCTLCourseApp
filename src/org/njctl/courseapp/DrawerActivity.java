@@ -29,6 +29,12 @@ public abstract class DrawerActivity extends Activity
         Intent intent = getIntent();
         @SuppressWarnings("unchecked")
 		ArrayList<Class> mMyClassesList = (ArrayList<Class>) intent.getSerializableExtra("subscribedClasses");
+        String[] mMyClassesStringArray = new String[mMyClassesList.size()];
+        
+        for (int i =0; i<mMyClassesList.size(); i++){
+        	mMyClassesStringArray[i] = mMyClassesList.get(i).getTitle();
+        }
+        
 		
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -37,8 +43,8 @@ public abstract class DrawerActivity extends Activity
         //DrawerAdapter drawerAdapter = new DrawerAdapter(this, 0, mMyClassesList);
         //mDrawerList.setAdapter(drawerAdapter);
         
-        mDrawerList.setAdapter(new ArrayAdapter<Class>(this,
-        		android.R.layout.simple_list_item_1, mMyClassesList));
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+        		android.R.layout.simple_list_item_1, mMyClassesStringArray));
 
         
         
