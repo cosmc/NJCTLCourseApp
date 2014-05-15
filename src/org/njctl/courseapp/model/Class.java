@@ -331,6 +331,11 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
     	return id;
     }
     
+    public String toString()
+    {
+    	return this.getTitle();
+    }
+    
     // Methods for Parcelable implementation.
     public int describeContents() {
     	return 0;
