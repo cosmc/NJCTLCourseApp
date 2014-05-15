@@ -19,13 +19,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 //import org.njctl.courseapp.R;
@@ -182,23 +179,25 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 		this.subjects.get(0).getContents().get(0).subscribe();
 		
 		ArrayList<Class> myClasses = model.getClassesSubscribed();
-		/*
+		
 		if(myClasses.size() > 0) // Start UnitSelectActivity
 		{
-			Intent unitSelectIntent = new Intent(this, UnitSelectActivity.class);
+			Class theClass = model.getLastOpenedClass();
 			
-			//TODO Pass model along
-	        startActivity(unitSelectIntent);
+			Intent intent = new Intent(this, UnitSelectActivity.class);
+			intent.putExtra("subscribedClasses", myClasses);
+			intent.putExtra("class", theClass);
+			
+	        startActivity(intent);
 		}
 		else // Start SubscribeActivity
-		*/{
-			Intent subscribeIntent = new Intent(this, SubscribeActivity.class);
-			subscribeIntent.putExtra("subscribedClasses", myClasses);
-			//TODO Pass model along
-	        startActivity(subscribeIntent);
+		{
+			Intent intent = new Intent(this, SubscribeActivity.class);
+			intent.putExtra("subscribedClasses", myClasses);
+			intent.putExtra("classes", model.getClasses());
+			
+	        startActivity(intent);
 		}
-		
-        
 	}
 
 	@Override

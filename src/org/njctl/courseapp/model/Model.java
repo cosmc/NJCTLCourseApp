@@ -53,6 +53,11 @@ public class Model implements AsyncStringResponse, DownloadFinishListener<Subjec
 		Document.setContext(ctx);
 	}
 	
+	public Class getLastOpenedClass()
+	{
+		return subjects.get(0).getContents().get(0);
+	}
+	
 	public void fetchManifest(ModelRetriever retrieverObject)
 	{
 		retriever = retrieverObject;

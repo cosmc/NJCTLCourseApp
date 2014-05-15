@@ -1,8 +1,26 @@
 package org.njctl.courseapp;
 
-import android.app.Activity;
+import java.util.ArrayList;
 
-public class UnitSelectActivity extends Activity
+import android.content.Intent;
+import android.os.Bundle;
+import org.njctl.courseapp.model.Class;
+import org.njctl.courseapp.model.Unit;
+
+public class UnitSelectActivity extends DrawerActivity
 {
-
+	@Override
+    protected void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+		
+		Intent intent = getIntent();
+		Class theClass = (Class) intent.getParcelableExtra("class");
+		
+		//setContentView(R.layout.activity_init);
+		
+		//TODO show theClass info and theClasses units.
+		String title = theClass.getTitle();
+		ArrayList<Unit> units = theClass.getUnits();
+	}
 }
