@@ -178,6 +178,7 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
     }
 
     //populate the drawer with my classes
+    //TODO pull out drawer specific stuff into its own method
 	public void onModelReady()
 	{
 		this.subjects = model.getSubjects();
@@ -200,11 +201,19 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 		
 		
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        Log.v("mDrawerLayout", mDrawerLayout.toString());
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         
-        //TODO set adapter
+      //TODO set adapter
+        MyClassesAdapter myClassesAdapter = new MyClassesAdapter(this, 0, mMyClassesList);
+        mDrawerList.setAdapter(myClassesAdapter);
         
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener(model, mDrawerLayout, mDrawerList));
+        //TODO DONT AUTO OPEN THE DRAWER?
+        mDrawerLayout.openDrawer(mDrawerList);
+        
+        
+        //TODO SET CLICK LISTENER
+        //mDrawerList.setOnItemClickListener(new DrawerItemClickListener(model, mDrawerLayout, mDrawerList));
 	}
 
 	@Override

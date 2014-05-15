@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -31,9 +32,10 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener{
 public void selectItem(int position) {
 	//If Class is selected, display its units
 	if (model.getClassesSubscribed().size() == 0){
+		Log.d("drawerListener", "subscribed classes list is empty");
 		return;
 	}
-	
+	Log.d("flagSelectItem", "about to make units frag");
 	UnitsFragment unitsFragment = new UnitsFragment();
 	
 
