@@ -24,6 +24,7 @@ class MyClassesAdapter extends ArrayAdapter<Class> {
         ImageView colorBarImageView;
     }
 
+    //myClassesAdapter(SubcribeActivity, int, ArrayList<Class>)
     public MyClassesAdapter(Context context, int resource, ArrayList<Class> classes) {
         super(context, resource, classes);
         this.classes = classes;

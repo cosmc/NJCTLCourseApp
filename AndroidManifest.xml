@@ -28,6 +28,8 @@
         	android:name=".SettingsActivity"
     	    android:theme="@style/AppTheme" >
         </activity>
+        <activity android:label="unitselect" android:name="UnitSelectActivity"></activity>
+        <activity android:name="SubscribeActivity"></activity>
 
     </application>
 

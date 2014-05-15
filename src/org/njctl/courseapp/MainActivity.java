@@ -34,9 +34,7 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 
 	private Model model;
 	private ArrayList<Subject> subjects;
-	private String[] mMyClasses;
-	private DrawerLayout mDrawerLayout;
-	private ListView mDrawerList;
+
 	
 	/**** Start of NJCTLNavActivity Methods ****/
 	
@@ -128,14 +126,12 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 	*/
 	/**** End of NJCTLNavActivity Methods ****/
 	
-	
-	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
     	
     	super.onCreate(savedInstanceState);
     	
-    	//TODO set this to logo + spinner
+    	//TODO Put in loading gif.
         setContentView(R.layout.activity_main);
         
     	model = new Model(this);
@@ -147,7 +143,6 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
             model.fetchManifest(this);
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -181,39 +176,29 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
     //TODO pull out drawer specific stuff into its own method
 	public void onModelReady()
 	{
-		this.subjects = model.getSubjects();
-
+		Log.v("NJCTLModel", "Model Ready.");
 		
 		//TODO take out later, fake class subscription for testing.
 		this.subjects.get(0).getContents().get(0).subscribe();
 		
-		Log.v("NJCTLModel", "Model Ready.");
-		//showSubjects(subjects);
-
-        
-        ArrayList<Class> mMyClassesList = model.getClassesSubscribed();
-        Log.v("MYCLASSESLIST ARRAY LIST IS IS IS SI SIS IS", mMyClassesList.toString());
-        
-        String[] mMyClasses = new String[mMyClassesList.size()];
-		for (int i=0; i < mMyClassesList.size(); ++i) {
-			mMyClasses[i] = mMyClassesList.get(i).toString();
+		ArrayList<Class> myClasses = model.getClassesSubscribed();
+		
+		if(myClasses.size() > 0) // Start UnitSelectActivity
+		{
+			Intent unitSelectIntent = new Intent(this, UnitSelectActivity.class);
+			
+			//TODO Pass model along
+	        startActivity(unitSelectIntent);
+		}
+		else // Start SubscribeActivity
+		{
+			Intent subscribeIntent = new Intent(this, SubscribeActivity.class);
+			subscribeIntent.putExtra("subscribedClasses", myClasses);
+			//TODO Pass model along
+	        startActivity(subscribeIntent);
 		}
 		
-		
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        Log.v("mDrawerLayout", mDrawerLayout.toString());
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
         
-      //TODO set adapter
-        MyClassesAdapter myClassesAdapter = new MyClassesAdapter(this, 0, mMyClassesList);
-        mDrawerList.setAdapter(myClassesAdapter);
-        
-        //TODO DONT AUTO OPEN THE DRAWER?
-        mDrawerLayout.openDrawer(mDrawerList);
-        
-        
-        //TODO SET CLICK LISTENER
-        //mDrawerList.setOnItemClickListener(new DrawerItemClickListener(model, mDrawerLayout, mDrawerList));
 	}
 
 	@Override
