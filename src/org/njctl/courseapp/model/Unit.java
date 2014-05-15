@@ -254,7 +254,7 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
 				
 				for(int i = 0; i < homeworkList.length(); i++)
 				{
-					Homework hw = Homework.get(this, homeworkList.getJSONObject(i));
+					Homework hw = Homework.get(this, homeworkList.getJSONObject(i), this);
 					if(hw != null)
 					{
 						if(hw.wasCreated())
@@ -275,7 +275,7 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
 				
 				for(int i = 0; i < presentationList.length(); i++)
 				{
-					Presentation presentation = Presentation.get(this, presentationList.getJSONObject(i));
+					Presentation presentation = Presentation.get(this, presentationList.getJSONObject(i), this);
 					
 					if(presentation != null)
 					{
@@ -300,7 +300,7 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
 				
 				for(int i = 0; i < labList.length(); i++)
 				{
-					Lab lab = Lab.get(this, labList.getJSONObject(i));
+					Lab lab = Lab.get(this, labList.getJSONObject(i), this);
 					
 					if(lab != null)
 					{
@@ -323,7 +323,7 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
 				
 				for(int i = 0; i < handoutList.length(); i++)
 				{
-					Handout handout = Handout.get(this, handoutList.getJSONObject(i));
+					Handout handout = Handout.get(this, handoutList.getJSONObject(i), this);
 					
 					if(handout != null)
 					{

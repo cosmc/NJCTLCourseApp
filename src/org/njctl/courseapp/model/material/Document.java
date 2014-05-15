@@ -209,7 +209,7 @@ public abstract class Document implements Parcelable, AsyncStringResponse
     }
 	
 	/**
-	 * The method that starts the download. Can be overwritten for eg hash comparing in the Topics.
+	 * The method that starts the download. Can be overwritten for e.g. hash comparing in the Topics.
 	 */
 	public void download()
 	{
@@ -366,6 +366,7 @@ public abstract class Document implements Parcelable, AsyncStringResponse
     	if(state == DocumentState.OK && lastUpdated.before(lastUpdatedNew))
     	{
     		state = DocumentState.OUTDATED;
+    		download();
     	}
     }
 	

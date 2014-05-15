@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.njctl.courseapp.model.DocumentState;
 import org.njctl.courseapp.model.Unit;
+import org.njctl.courseapp.model.subscribe.DownloadFinishListener;
 
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.field.DatabaseField;
@@ -40,7 +41,7 @@ public class Topic extends Document
     	
     }
     
-    public static Topic get(Presentation pres, JSONObject json)
+    public static Topic get(Presentation pres, JSONObject json, DownloadFinishListener<Document> listener)
 	{
 		try {
 			if (checkJSON(json))
@@ -48,6 +49,7 @@ public class Topic extends Document
 				if (dao.idExists(json.getString("post_name")))
 				{
 					Topic content = dao.queryForId(json.getString("post_name"));
+					content.downloadListener = listener;
 					content.setProperties(json);
 					content.checkOutdated();
 					
@@ -72,6 +74,7 @@ public class Topic extends Document
     	if(newHash != hash && state == DocumentState.OK)
     	{
     		state = DocumentState.OUTDATED;
+    		download();
     	}
     }
     

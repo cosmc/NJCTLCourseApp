@@ -3,6 +3,7 @@ package org.njctl.courseapp.model.material;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.njctl.courseapp.model.Unit;
+import org.njctl.courseapp.model.subscribe.DownloadFinishListener;
 
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.field.DatabaseField;
@@ -31,16 +32,18 @@ public class Homework extends Document
     	
     }
 
-    public static Homework get(Unit theUnit, JSONObject json)
+    public static Homework get(Unit theUnit, JSONObject json, DownloadFinishListener<Document> listener)
 	{
 		try {
 			if (checkJSON(json)) {
 				Homework content;
 				if (dao.idExists(json.getString("ID"))) {
 					content = dao.queryForId(json.getString("ID"));
+					content.downloadListener = listener;
 					content.setProperties(json);
 				} else {
 					content = new Homework(theUnit, json);
+					content.downloadListener = listener;
 					content.created = true;
 				}
 				return content;

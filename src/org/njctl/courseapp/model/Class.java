@@ -169,31 +169,40 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
 		return created;
 	}
 	
-	public static Class get(Subject subject, JSONObject json)
+	public static Class get(Subject subject, JSONObject json, DownloadFinishListener<Class> listener)
 	{
-		try {
-			if (checkJSON(json)) {
+		try
+		{
+			if (checkJSON(json))
+			{
+				Class content;
+				
 				if (dao.idExists(json.getInt("ID")))
 				{
-					Class content = dao.queryForId(json.getInt("ID"));
+					content = dao.queryForId(json.getInt("ID"));
+					content.downloadListener = listener;
 					content.created = false;
 					Log.v("NJCTLLOG", "Loaded a class " + content.getId() + " for a subject....");
 					content.setProperties(json);
-					return content;
-				} else {
-					Class content = new Class(subject, json);
+				}
+				else
+				{
+					content = new Class(subject, json);
+					content.downloadListener = listener;
 					content.created = true;
 					Log.v("NJCTLLOG", "Created a class " + content.getId() + " for a subject....");
-					
-					//dao.create(content);
-
-					return content;
 				}
-			} else {
+				
+				return content;
+			}
+			else
+			{
 				Log.v("NJCTLLOG", "class json wrong..");
 				return null;
 			}
-		} catch (Exception e) { // never executed..
+		}
+		catch (Exception e)
+		{
 			Log.v("NJCTLLOG", "class exception: " + e.getMessage());
 			Log.v("NJCTLLOG", Log.getStackTraceString(e));
 			return null;
