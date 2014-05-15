@@ -177,12 +177,12 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 	public void onModelReady()
 	{
 		Log.v("NJCTLModel", "Model Ready.");
-		
+		this.subjects = model.getSubjects();
 		//TODO take out later, fake class subscription for testing.
 		this.subjects.get(0).getContents().get(0).subscribe();
 		
 		ArrayList<Class> myClasses = model.getClassesSubscribed();
-		
+		/*
 		if(myClasses.size() > 0) // Start UnitSelectActivity
 		{
 			Intent unitSelectIntent = new Intent(this, UnitSelectActivity.class);
@@ -191,7 +191,7 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 	        startActivity(unitSelectIntent);
 		}
 		else // Start SubscribeActivity
-		{
+		*/{
 			Intent subscribeIntent = new Intent(this, SubscribeActivity.class);
 			subscribeIntent.putExtra("subscribedClasses", myClasses);
 			//TODO Pass model along
