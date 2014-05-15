@@ -22,6 +22,8 @@ public abstract class DrawerActivity extends ListActivity
 	{
 		super.onCreate(savedInstanceState);
     	
+		setContentView(R.layout.activity_main);
+		
         Intent intent = getIntent();
         @SuppressWarnings("unchecked")
 		ArrayList<Class> mMyClassesList = (ArrayList<Class>) intent.getSerializableExtra("subscribedClasses");
