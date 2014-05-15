@@ -4,9 +4,8 @@ import java.util.Date;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.njctl.courseapp.model.DocumentState;
+import org.njctl.courseapp.model.DownloadFinishListener;
 import org.njctl.courseapp.model.Unit;
-import org.njctl.courseapp.model.subscribe.DownloadFinishListener;
 
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.field.DatabaseField;

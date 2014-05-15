@@ -1,4 +1,4 @@
-package org.njctl.courseapp.model;
+package org.njctl.courseapp.model.useful;
 
 import com.j256.ormlite.android.apptools.OrmLiteConfigUtil;
 

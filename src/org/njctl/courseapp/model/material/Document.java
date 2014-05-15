@@ -13,9 +13,8 @@ import java.util.Locale;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.njctl.courseapp.model.AsyncStringResponse;
-import org.njctl.courseapp.model.DocumentState;
+import org.njctl.courseapp.model.DownloadFinishListener;
 import org.njctl.courseapp.model.FileRetrieverTask;
-import org.njctl.courseapp.model.subscribe.DownloadFinishListener;
 import org.njctl.courseapp.model.useful.Tripel;
 
 import com.j256.ormlite.field.DatabaseField;
@@ -24,8 +23,6 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
-
-// Homework, Topic, Handout, Lab
 
 public abstract class Document implements Parcelable, AsyncStringResponse
 {
@@ -85,7 +82,7 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 	protected String MIMEType = "application/pdf";
 	
 	/**
-	 * Number of times the PDF has been opened, or getRelativePathForOpening has been called.
+	 * Number of times the PDF has been opened, or getAbsolutePathForOpening has been called.
 	 */
 	@DatabaseField
 	protected Integer numOpened = 0;
@@ -138,6 +135,10 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 		return state == DocumentState.DOWNLOADING;
 	}
 
+	/**
+	 * Returns the ID of the document, matching the ID on the NJCTL server.
+	 * @return The NJCTL Document ID as String.
+	 */
 	public String getId()
 	{
 		return this.id;
@@ -178,21 +179,37 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 		return fileName;
 	}
 
+	/**
+	 * Get the Document's MIME type, usually application/pdf.
+	 * @return The MIME type as String.
+	 */
 	public String getMIMEType()
 	{
 		return MIMEType;
 	}
 	
+	/**
+	 * Number of times the Document's PDF has been opened, or getAbsolutePathForOpening has been called.
+	 * @return Number of openings as Integer.
+	 */
 	public Integer getNumOpened()
 	{
 		return numOpened;
 	}
 	
+	/**
+	 * The last time the Document's PDF has been opened, or getAbsolutePathForOpening has been called.
+	 * @return Date the last opening happened, in Date format.
+	 */
 	public Date getLastOpened()
 	{
 		return lastOpened;
 	}
 	
+	/**
+	 * The downloaded PDF's last modified date if exists, otherwise the last time the PDF has been downloaded.
+	 * @return The last updated time in Date format.
+	 */
 	public Date getLastUpdated()
 	{
 		return lastUpdated;

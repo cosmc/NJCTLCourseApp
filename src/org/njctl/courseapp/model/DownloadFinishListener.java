@@ -1,4 +1,4 @@
-package org.njctl.courseapp.model.subscribe;
+package org.njctl.courseapp.model;
 
 public interface DownloadFinishListener<T>
 {

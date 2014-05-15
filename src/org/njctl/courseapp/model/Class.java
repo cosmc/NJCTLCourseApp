@@ -11,7 +11,6 @@ import java.util.Locale;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.njctl.courseapp.model.subscribe.DownloadFinishListener;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
