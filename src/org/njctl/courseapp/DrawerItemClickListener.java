@@ -42,7 +42,7 @@ public void selectItem(int position) {
     // Insert the fragment by replacing any existing fragment
     FragmentManager fragmentManager = getSupportFragmentManager();
     fragmentManager.beginTransaction()
-                   .replace(R.id.container, unitsFragment)
+                   .replace(R.id.left_drawer, unitsFragment)
                    .commit();
     
 
