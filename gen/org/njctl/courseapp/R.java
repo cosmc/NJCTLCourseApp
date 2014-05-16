@@ -1101,7 +1101,7 @@ containing a value of this type.
         public static final int activity_chooser_view_content=0x7f070025;
         public static final int always=0x7f07000b;
         public static final int beginning=0x7f070011;
-        public static final int button=0x7f07005b;
+        public static final int button=0x7f07005a;
         public static final int chapter_list_child_item=0x7f070040;
         public static final int chapter_list_fragment_listview=0x7f070041;
         public static final int chapter_list_header=0x7f070042;
@@ -1175,7 +1175,7 @@ containing a value of this type.
         public static final int textView1=0x7f070050;
         public static final int title=0x7f07002b;
         public static final int top_action_bar=0x7f070020;
-        public static final int units_fragment_listview=0x7f07005a;
+        public static final int units_fragment_listview=0x7f07005b;
         public static final int up=0x7f070021;
         public static final int useLogo=0x7f070003;
         public static final int withText=0x7f07000c;
@@ -1244,12 +1244,14 @@ containing a value of this type.
         public static final int drawer_list_item=0x7f030023;
         public static final int easy_fragment=0x7f030024;
         public static final int fragment_main=0x7f030025;
-        public static final int my_classes_row_viewholder=0x7f030026;
-        public static final int subject_row_viewholder=0x7f030027;
-        public static final int subjects_fragment=0x7f030028;
-        public static final int support_simple_spinner_dropdown_item=0x7f030029;
-        public static final int units_fragment=0x7f03002a;
-        public static final int unitselect_fragment=0x7f03002b;
+        public static final int materials_fragment=0x7f030026;
+        public static final int my_classes_row_viewholder=0x7f030027;
+        public static final int subject_row_viewholder=0x7f030028;
+        public static final int subjects_fragment=0x7f030029;
+        public static final int subscribe_fragment=0x7f03002a;
+        public static final int support_simple_spinner_dropdown_item=0x7f03002b;
+        public static final int units_fragment=0x7f03002c;
+        public static final int unitselect_fragment=0x7f03002d;
     }
     public static final class menu {
         public static final int classes=0x7f0e0000;
@@ -1303,7 +1305,7 @@ containing a value of this type.
         public static final int action_home=0x7f0c0011;
         public static final int action_settings=0x7f0c000f;
         public static final int app_name=0x7f0c000d;
-        public static final int button=0x7f0c001b;
+        public static final int button_unit_download=0x7f0c001b;
         public static final int course_manifest_rel_path=0x7f0c001a;
         public static final int hello_world=0x7f0c000e;
         public static final int list_title_handouts=0x7f0c0014;
@@ -1312,6 +1314,7 @@ containing a value of this type.
         public static final int list_title_my_classes=0x7f0c0012;
         public static final int list_title_presentations=0x7f0c0013;
         public static final int settings_title=0x7f0c0019;
+        public static final int subscribe_class=0x7f0c001c;
         public static final int text=0x7f0c0010;
         public static final int title_activity_classes=0x7f0c0018;
     }
