@@ -17,5 +17,7 @@
     <string name="course_manifest_rel_path">courses/course_manifest.json</string>
     <string name="button_unit_download">Download Unit</string>
     <string name="subscribe_class">Subscribe</string>
+    <string name="button_manage_subscriptions">Manage Subscriptions</string>
+    
 
 </resources>
