@@ -18,6 +18,8 @@ public class UnitSelectActivity extends DrawerActivity
 		theClass = (Class) intent.getParcelableExtra("class");
 		theClass.setLastOpened();
 		
+		getActionBar().setTitle(theClass.getTitle());
+		
 		UnitSelectFragment select = new UnitSelectFragment();
 		getSupportFragmentManager().beginTransaction().replace(R.id.container, select).commit();
 	}
