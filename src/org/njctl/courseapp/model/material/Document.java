@@ -225,7 +225,6 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 	public void download(DownloadFinishListener<? super Document> listener)
     {
 		downloadListener = listener;
-		Log.v("NJCTLDOWNLOAD", "Called download method with listener for Document " + title);
 		download();
     }
 	
@@ -400,6 +399,11 @@ public abstract class Document implements Parcelable, AsyncStringResponse
     		download();
     	}
     }
+	
+	public String toString()
+	{
+		return getName();
+	}
 	
     // Methods for Parcelable implementation.
     public int describeContents() {
