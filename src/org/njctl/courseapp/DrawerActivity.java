@@ -27,12 +27,12 @@ public abstract class DrawerActivity extends Activity
 		setContentView(R.layout.activity_main);
 		
         Intent intent = getIntent();
-        @SuppressWarnings("unchecked")
-		ArrayList<Class> mMyClassesList = (ArrayList<Class>) intent.getSerializableExtra("subscribedClasses");
+        ArrayList<Class> mMyClassesList = intent.getParcelableArrayListExtra("subscribedClasses");
         String[] mMyClassesStringArray = new String[mMyClassesList.size()];
         
         for (int i =0; i<mMyClassesList.size(); i++){
         	mMyClassesStringArray[i] = mMyClassesList.get(i).getTitle();
+        	Log.v("NJCTLLOG", "Adding a class title to subscribed list: " + mMyClassesStringArray[i]);
         }
         
 		
