@@ -154,4 +154,9 @@ public class Topic extends Document
 	{
 		return dao;
 	}
+	
+	public String getName()
+	{
+		return title + " - " + presentation.getName();
+	}
 }
