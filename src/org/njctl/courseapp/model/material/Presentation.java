@@ -55,10 +55,12 @@ public class Presentation extends Document implements DownloadFinishListener<Doc
     {
     	if(hasTopics())
     	{
+    		downloadingTopics = topics.size();
+    		Log.v("NJCTLDOWNLOAD", "Gonna download " + downloadingTopics + " topics for presentation " + title);
+    		
     		for(Topic topic : topics)
     		{
-    			downloadingTopics++;
-    			topic.download();
+    			topic.download(this);
     		}
     	}
     	else
@@ -85,7 +87,7 @@ public class Presentation extends Document implements DownloadFinishListener<Doc
     	}
 		else
 		{
-			return state == DocumentState.OK;
+			return state == DocumentState.OK || state == DocumentState.OUTDATED;
 		}
 	}
 	
@@ -234,6 +236,7 @@ public class Presentation extends Document implements DownloadFinishListener<Doc
 	{
 		lastUpdated = lastUpdatedNew;
 		dao.update(this);
+		notifyDownloadListener();
 	}
 	
 	public Presentation(Unit theUnit, JSONObject json)
@@ -252,7 +255,7 @@ public class Presentation extends Document implements DownloadFinishListener<Doc
 	public void onDownloaded(Document content)
 	{
 		downloadingTopics--;
-		
+		Log.v("NJCTLDownload", "Downloading presentation " + title + " progressed, " + downloadingTopics + " topics remaining.");
 		if(downloadingTopics == 0)
 			notifyDownloadListener();
 	}
