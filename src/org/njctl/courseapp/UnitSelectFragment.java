@@ -35,29 +35,29 @@ public class UnitSelectFragment extends ListFragment
 		UnitSelectActivity selector = (UnitSelectActivity) getActivity();
 		Class theClass = selector.getNJCTLClass();
 
-		ListView lv = getListView();
-		lv.setOnItemClickListener(new OnItemClickListener() {
+		getListView().setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3)
 			{
 				Unit unit = (Unit) adapter.getItemAtPosition(position);
-				Log.v("NJCTLUnitSelect", "Downloading unit " + unit.getTitle());
-
-
 				
-
-				UnitSelectActivity selector = (UnitSelectActivity) getActivity();
-				
-				Intent intent = new Intent(selector, MaterialsActivity.class);
-				//intent.putParcelableArrayListExtra("subscribedClasses", myClasses);
-				intent.putExtra("unit", unit);
-				intent.putParcelableArrayListExtra("subscribedClasses", selector.getSubscribedClasses());
-				
-		        startActivity(intent);
-				//unit.download();
-				// assuming string and if you want to get the value on click of
-				// list item
-				// do what you intend to do on click of listview row
+				if(unit.isDownloaded())
+				{
+					// Open MaterialsActivity.
+					Log.v("NJCTLLOG", "Going to open MaterialsActivity for unit " + unit.getTitle());
+					UnitSelectActivity selector = (UnitSelectActivity) getActivity();
+					
+					Intent intent = new Intent(selector, MaterialsActivity.class);
+					intent.putExtra("unit", unit);
+					intent.putParcelableArrayListExtra("subscribedClasses", selector.getSubscribedClasses());
+					
+			        startActivity(intent);
+				}
+				else
+				{
+					//TODO: Display download button, and then call unit.download();
+					Log.v("NJCTLLOG", "Going to display download button for unit " + unit.getTitle());
+				}
 			}
 		});
 
