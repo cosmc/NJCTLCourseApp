@@ -42,43 +42,30 @@ public class MaterialsFragment extends Fragment
 		MaterialsActivity selector = (MaterialsActivity) getActivity();
 		Unit unit = selector.getUnit();
 		
-		ListView homeworkView = (ListView) getView().findViewById(id.materials_fragment_listview_homeworks);
+		ListView docView = (ListView) getView().findViewById(id.materials_fragment_listview_documents);
 		
-		homeworkView.setAdapter(new ArrayAdapter<Homework>(getActivity(), android.R.layout.simple_list_item_activated_1, unit.getHomeworks()));
+		ArrayList<Document> data = new ArrayList<Document>();
+		data.addAll(unit.getHomeworks());
+		data.addAll(unit.getLabs());
 		
-
-		ListView labView = (ListView) getView().findViewById(id.materials_fragment_listview_labs);
-		
-		labView.setAdapter(new ArrayAdapter<Lab>(getActivity(), android.R.layout.simple_list_item_activated_1, unit.getLabs()));
-		
-
-		ListView presentationView = (ListView) getView().findViewById(id.materials_fragment_listview_presentations);
-		
-		ArrayList<Document> presentationData = new ArrayList<Document>();
 		for(Presentation pres : unit.getPresentations())
 		{
 			if(pres.hasTopics())
 			{
 				for(Topic topic : pres.getTopics())
 				{
-					presentationData.add(topic);
+					data.add(topic);
 				}
 			}
 			else
 			{
-				presentationData.add(pres);
+				data.add(pres);
 			}
 		}
+		data.addAll(unit.getHandouts());
 		
-		presentationView.setAdapter(new ArrayAdapter<Document>(getActivity(), android.R.layout.simple_list_item_activated_1, presentationData));
+		docView.setAdapter(new ArrayAdapter<Document>(getActivity(), android.R.layout.simple_list_item_activated_1, data));
 		
-
-		ListView handoutView = (ListView) getView().findViewById(id.materials_fragment_listview_handouts);
-		
-		handoutView.setAdapter(new ArrayAdapter<Handout>(getActivity(), android.R.layout.simple_list_item_activated_1, unit.getHandouts()));
-		
-
-
 		/*ListView lv = getListView();
 		lv.setOnItemClickListener(new OnItemClickListener() {
 			@Override
