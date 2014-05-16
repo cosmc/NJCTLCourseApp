@@ -28,25 +28,16 @@ public abstract class DrawerActivity extends Activity
 		
         Intent intent = getIntent();
         ArrayList<Class> mMyClassesList = intent.getParcelableArrayListExtra("subscribedClasses");
-        String[] mMyClassesStringArray = new String[mMyClassesList.size()];
-        
-        for (int i =0; i<mMyClassesList.size(); i++){
-        	mMyClassesStringArray[i] = mMyClassesList.get(i).getTitle();
-        	Log.v("NJCTLLOG", "Adding a class title to subscribed list: " + mMyClassesStringArray[i]);
-        }
-        
 		
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
-  
         
         //DrawerAdapter drawerAdapter = new DrawerAdapter(this, 0, mMyClassesList);
         //mDrawerList.setAdapter(drawerAdapter);
         
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-        		android.R.layout.simple_list_item_1, mMyClassesStringArray));
+        mDrawerList.setAdapter(new ArrayAdapter<Class>(this,
+        		android.R.layout.simple_list_item_1, mMyClassesList));
 
-        
         
         //TODO DONT AUTO OPEN THE DRAWER?
         mDrawerLayout.openDrawer(mDrawerList);
