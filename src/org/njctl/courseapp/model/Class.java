@@ -266,7 +266,7 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
 			
 			RuntimeExceptionDao<Unit, Integer> dao = Unit.getDao();
 			Map<String, Object> condition = new ArrayMap<String, Object>(1);
-			condition.put("class_id", this.getId());
+			condition.put("theClass_id", this.getId());
 			List<Unit> oldContents = dao.queryForFieldValues(condition);
 			List<Integer> newIds = new ArrayList<Integer>();
 			
@@ -295,6 +295,11 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
 				}
 			}
 			
+			if(title == "Algebra Based Physics")
+			{
+				Log.v("NJCTLABB", "Created Algebra Based Physics with " + units.size() + " units before deletion");
+			}
+			
 			for(Unit oldContent : oldContents)
 			{
 				if(!newIds.contains(oldContent.getId()))
@@ -302,6 +307,11 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
 					Log.v("NJCTLLOG", "unit has been deleted from json!");
 					dao.delete(oldContent);
 				}
+			}
+			
+			if(title == "Algebra Based Physics")
+			{
+				Log.v("NJCTLABB", "Created Algebra Based Physics with " + units.size() + " units after deletion");
 			}
 			
     	} catch (SQLException e) {

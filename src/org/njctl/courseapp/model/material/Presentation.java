@@ -192,7 +192,7 @@ public class Presentation extends Document implements DownloadFinishListener<Doc
 					{
 						if(!newIds.contains(oldContent.getId()))
 						{
-							Log.v("NJCTLLOG", "topic has been deleted from json!");
+							Log.v("NJCTLLOG", "                topic has been deleted from json!");
 							dao.delete(oldContent);
 						}
 					}

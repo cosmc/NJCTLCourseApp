@@ -220,7 +220,7 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
     protected static boolean checkJSON(JSONObject json)
 	{
 		try {
-			Integer id = json.getInt("ID"); Log.v("NJCTLLOG", "unit id: " + id);
+			Integer id = json.getInt("ID"); //Log.v("NJCTLLOG", "unit id: " + id);
 			json.getString("post_title");
 			json.getString("post_name");
 			json.getString("post_modified");
@@ -297,7 +297,7 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
 			{
 				if(!newIds.contains(oldContent.getId()))
 				{
-					Log.v("NJCTLLOG", "hw has been deleted from json!");
+					Log.v("NJCTLLOG", "              hw has been deleted from json!");
 					dao1.delete(oldContent);
 				}
 			}
@@ -334,7 +334,7 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
 			{
 				if(!newIds.contains(oldContent.getId()))
 				{
-					Log.v("NJCTLLOG", "pres has been deleted from json!");
+					Log.v("NJCTLLOG", "              pres has been deleted from json!");
 					dao4.delete(oldContent);
 				}
 			}
@@ -370,7 +370,7 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
 			{
 				if(!newIds.contains(oldContent.getId()))
 				{
-					Log.v("NJCTLLOG", "lab has been deleted from json!");
+					Log.v("NJCTLLOG", "              lab has been deleted from json!");
 					dao3.delete(oldContent);
 				}
 			}
@@ -405,10 +405,12 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
 			{
 				if(!newIds.contains(oldContent.getId()))
 				{
-					Log.v("NJCTLLOG", "handout has been deleted from json!");
+					Log.v("NJCTLLOG", "              handout has been deleted from json!");
 					dao2.delete(oldContent);
 				}
 			}
+			
+			
 			
 		} catch (JSONException e)
 		{
