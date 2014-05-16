@@ -54,7 +54,23 @@ public class MaterialsFragment extends Fragment
 
 		ListView presentationView = (ListView) getView().findViewById(id.materials_fragment_listview_presentations);
 		
-		presentationView.setAdapter(new ArrayAdapter<Presentation>(getActivity(), android.R.layout.simple_list_item_activated_1, unit.getPresentations()));
+		ArrayList<Document> presentationData = new ArrayList<Document>();
+		for(Presentation pres : unit.getPresentations())
+		{
+			if(pres.hasTopics())
+			{
+				for(Topic topic : pres.getTopics())
+				{
+					presentationData.add(topic);
+				}
+			}
+			else
+			{
+				presentationData.add(pres);
+			}
+		}
+		
+		presentationView.setAdapter(new ArrayAdapter<Document>(getActivity(), android.R.layout.simple_list_item_activated_1, presentationData));
 		
 
 		ListView handoutView = (ListView) getView().findViewById(id.materials_fragment_listview_handouts);
