@@ -1,10 +1,17 @@
 package org.njctl.courseapp;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.njctl.courseapp.R.id;
 import org.njctl.courseapp.model.Class;
 import org.njctl.courseapp.model.Unit;
-import org.njctl.courseapp.model.material.Lab;
+import org.njctl.courseapp.model.material.*;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,10 +19,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.SimpleExpandableListAdapter;
 
-public class MaterialsFragment extends ListFragment
+public class MaterialsFragment extends Fragment
 {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -31,6 +41,27 @@ public class MaterialsFragment extends ListFragment
 
 		MaterialsActivity selector = (MaterialsActivity) getActivity();
 		Unit unit = selector.getUnit();
+		
+		ListView homeworkView = (ListView) getView().findViewById(id.materials_fragment_listview_homeworks);
+		
+		homeworkView.setAdapter(new ArrayAdapter<Homework>(getActivity(), android.R.layout.simple_list_item_activated_1, unit.getHomeworks()));
+		
+
+		ListView labView = (ListView) getView().findViewById(id.materials_fragment_listview_labs);
+		
+		labView.setAdapter(new ArrayAdapter<Lab>(getActivity(), android.R.layout.simple_list_item_activated_1, unit.getLabs()));
+		
+
+		ListView presentationView = (ListView) getView().findViewById(id.materials_fragment_listview_presentations);
+		
+		presentationView.setAdapter(new ArrayAdapter<Presentation>(getActivity(), android.R.layout.simple_list_item_activated_1, unit.getPresentations()));
+		
+
+		ListView handoutView = (ListView) getView().findViewById(id.materials_fragment_listview_handouts);
+		
+		handoutView.setAdapter(new ArrayAdapter<Handout>(getActivity(), android.R.layout.simple_list_item_activated_1, unit.getHandouts()));
+		
+
 
 		/*ListView lv = getListView();
 		lv.setOnItemClickListener(new OnItemClickListener() {
@@ -47,7 +78,7 @@ public class MaterialsFragment extends ListFragment
 			}
 		});*/
 
-		setListAdapter(new ArrayAdapter<Lab>(getActivity(), android.R.layout.simple_list_item_activated_1,
-				unit.getLabs()));
+		//setAdapter(new ArrayAdapter<Lab>(getActivity(), android.R.layout.simple_list_item_activated_1, id.materials_fragment_listview_labs,
+		//		unit.getLabs()));
 	}
 }
