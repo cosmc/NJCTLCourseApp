@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -40,6 +42,7 @@ public class UnitSelectFragment extends ListFragment
 				Unit unit = (Unit) adapter.getItemAtPosition(position);
 				Log.v("NJCTLUnitSelect", "Downloading unit " + unit.getTitle());
 
+				
 				//unit.download();
 				// assuming string and if you want to get the value on click of
 				// list item
