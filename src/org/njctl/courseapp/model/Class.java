@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,6 +21,7 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.v4.util.ArrayMap;
 import android.util.Log;
 
 @DatabaseTable
@@ -263,7 +265,9 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
 			lastUpdate = df.parse(modified);
 			
 			RuntimeExceptionDao<Unit, Integer> dao = Unit.getDao();
-			List<Unit> oldContents = dao.queryForAll();
+			Map<String, Object> condition = new ArrayMap<String, Object>(1);
+			condition.put("class_id", this.getId());
+			List<Unit> oldContents = dao.queryForFieldValues(condition);
 			List<Integer> newIds = new ArrayList<Integer>();
 			
 			JSONArray unitList = json.getJSONObject("content").getJSONArray("units");

@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,6 +19,7 @@ import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import android.os.Parcel;
+import android.support.v4.util.ArrayMap;
 import android.util.Log;
 
 //TODO extends Document?!
@@ -160,7 +162,9 @@ public class Presentation extends Document implements DownloadFinishListener<Doc
 				{
 					JSONArray topicsList = json.getJSONArray("chunks");
 					RuntimeExceptionDao<Topic, String> dao = Topic.getDao();
-					List<Topic> oldContents = dao.queryForAll();
+					Map<String, Object> condition = new ArrayMap<String, Object>(1);
+					condition.put("presentation_id", this.getId());
+					List<Topic> oldContents = dao.queryForFieldValues(condition);
 					List<String> newIds = new ArrayList<String>();
 					
 					Log.v("NJCTLLOG", "                Looping through " + topicsList.length() + " topics in " + title + " presentation..");
