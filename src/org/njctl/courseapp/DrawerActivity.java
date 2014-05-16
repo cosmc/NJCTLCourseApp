@@ -8,12 +8,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.widget.ListView;
 import android.widget.ArrayAdapter;
 
-public abstract class DrawerActivity extends Activity
+public abstract class DrawerActivity extends FragmentActivity
 {
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;

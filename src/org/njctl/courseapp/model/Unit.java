@@ -495,5 +495,10 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
 	{
 		return dao;
 	}
+	
+	public String toString()
+	{
+		return getTitle();
+	}
     
 }
