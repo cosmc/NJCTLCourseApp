@@ -1,6 +1,7 @@
 package org.njctl.courseapp;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -42,7 +43,17 @@ public class UnitSelectFragment extends ListFragment
 				Unit unit = (Unit) adapter.getItemAtPosition(position);
 				Log.v("NJCTLUnitSelect", "Downloading unit " + unit.getTitle());
 
+
 				
+
+				UnitSelectActivity selector = (UnitSelectActivity) getActivity();
+				
+				Intent intent = new Intent(selector, MaterialsActivity.class);
+				//intent.putParcelableArrayListExtra("subscribedClasses", myClasses);
+				intent.putExtra("unit", unit);
+				intent.putParcelableArrayListExtra("subscribedClasses", selector.getSubscribedClasses());
+				
+		        startActivity(intent);
 				//unit.download();
 				// assuming string and if you want to get the value on click of
 				// list item

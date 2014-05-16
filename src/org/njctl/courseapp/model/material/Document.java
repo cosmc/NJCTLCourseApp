@@ -400,6 +400,11 @@ public abstract class Document implements Parcelable, AsyncStringResponse
     	}
     }
 	
+	public String toString()
+	{
+		return getName();
+	}
+	
     // Methods for Parcelable implementation.
     public int describeContents() {
     	return 0;

@@ -19,6 +19,7 @@ public abstract class DrawerActivity extends FragmentActivity
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ListView mainContainerList;
+	protected ArrayList<Class> subscribedClasses;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState)
@@ -28,7 +29,7 @@ public abstract class DrawerActivity extends FragmentActivity
 		setContentView(R.layout.activity_main);
 		
         Intent intent = getIntent();
-        ArrayList<Class> mMyClassesList = intent.getParcelableArrayListExtra("subscribedClasses");
+        subscribedClasses = intent.getParcelableArrayListExtra("subscribedClasses");
 		
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -37,7 +38,7 @@ public abstract class DrawerActivity extends FragmentActivity
         //mDrawerList.setAdapter(drawerAdapter);
         
         mDrawerList.setAdapter(new ArrayAdapter<Class>(this,
-        		android.R.layout.simple_list_item_1, mMyClassesList));
+        		android.R.layout.simple_list_item_1, subscribedClasses));
 
         
         //TODO DONT AUTO OPEN THE DRAWER?
@@ -45,5 +46,10 @@ public abstract class DrawerActivity extends FragmentActivity
         
         //TODO SET CLICK LISTENER
         //mDrawerList.setOnItemClickListener(new DrawerItemClickListener(model, mDrawerLayout, mDrawerList));
+	}
+	
+	public ArrayList<Class> getSubscribedClasses()
+	{
+		return subscribedClasses;
 	}
 }
