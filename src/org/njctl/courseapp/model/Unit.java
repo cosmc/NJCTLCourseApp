@@ -101,25 +101,23 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
     
     public void download()
     {
+    	downloading = homeworks.size() + presentations.size() + labs.size() + handouts.size();
+    	
     	for(Homework content : homeworks)
     	{
     		content.download(this);
-    		downloading++;
     	}
     	for(Presentation content : presentations)
     	{
     		content.download(this);
-    		downloading++;
     	}
     	for(Lab content : labs)
     	{
     		content.download(this);
-    		downloading++;
     	}
     	for(Handout content : handouts)
     	{
     		content.download(this);
-    		downloading++;
     	}
     }
     
@@ -487,6 +485,9 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
 	{
 		downloading--;
 		
+		Log.v("NJCTLDownload", "Downloading Unit " + getTitle() + " progressed, " + downloading + " remaining.");
+		
+		if(downloading == 0) Log.v("NJCTLDownload", "Downloading Unit " + getTitle() + " complete.");
 		if(downloading == 0 && downloadFinishListener != null)
 			downloadFinishListener.onDownloaded(this);
 	}

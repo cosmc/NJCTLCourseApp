@@ -64,7 +64,7 @@ public class FileRetrieverTask extends AsyncTask<Tripel<String,String,AsyncStrin
 		InputStream inputStream = null;
 
 		try {
-			Log.v(NJCTLLOG, "executing http query..");
+			Log.v(NJCTLLOG, "executing http query to " + url);
 			HttpResponse response = httpclient.execute(httpget);
 			HttpEntity entity = response.getEntity();
 

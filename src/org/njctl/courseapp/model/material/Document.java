@@ -252,9 +252,17 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 	@SuppressWarnings("unchecked")
 	protected void doDownload()
 	{
-		state = DocumentState.DOWNLOADING;
-		Tripel<String, String, AsyncStringResponse> request = new Tripel<String, String, AsyncStringResponse>(url, "application/pdf", this);
-		new FileRetrieverTask().execute(request);
+		if(state != DocumentState.OK)
+		{
+			state = DocumentState.DOWNLOADING;
+			Tripel<String, String, AsyncStringResponse> request = new Tripel<String, String, AsyncStringResponse>(url, "application/pdf", this);
+			Log.v("NJCTLDOWNLOAD", "Starting pdf download for " + title);
+			new FileRetrieverTask().execute(request);
+		}
+		else
+		{
+			Log.w("NJCTLDOWNLOAD", "pdf download for " + title + " skipped as Document is already downloaded and up to date.");
+		}
 	}
 	
 	/**
@@ -275,6 +283,8 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 		fileName = id + ".pdf";
 		absolutePath = path + fileName;
 		File file = new File(absolutePath);
+		
+		Log.v("NJCTLDOWNLOAD", "Received " + pdfContent.length() + " bytes for " + title);
 		
 		FileOutputStream stream = null;
 		

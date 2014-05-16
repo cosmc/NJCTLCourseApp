@@ -18,34 +18,36 @@ import org.njctl.courseapp.model.Unit;
 public class UnitSelectFragment extends ListFragment
 {
 	@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.unitselect_fragment, container, false);
-    }
-	
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+	{
+		// Inflate the layout for this fragment
+		return inflater.inflate(R.layout.unitselect_fragment, container, false);
+	}
+
 	@Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+	public void onActivityCreated(Bundle savedInstanceState)
+	{
+		super.onActivityCreated(savedInstanceState);
 
-        UnitSelectActivity selector = (UnitSelectActivity) getActivity();
-        Class theClass = selector.getNJCTLClass();
+		UnitSelectActivity selector = (UnitSelectActivity) getActivity();
+		Class theClass = selector.getNJCTLClass();
 
-        ListView lv = getListView();
-        lv.setOnItemClickListener(new OnItemClickListener()
-        {
-           @Override
-           public void onItemClick(AdapterView<?> adapter, View v, int position,
-                 long arg3) 
-           {
-                 Class theClass = (Class) adapter.getItemAtPosition(position); 
-                 Log.v("NJCTLUnitSelect", theClass.getTitle());
-                 // assuming string and if you want to get the value on click of list item
-                 // do what you intend to do on click of listview row
-           }
-        });
-        
-        setListAdapter(new ArrayAdapter<Unit>(getActivity(),
-                android.R.layout.simple_list_item_activated_1, theClass.getUnits()));
-    }
+		ListView lv = getListView();
+		lv.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3)
+			{
+				Unit unit = (Unit) adapter.getItemAtPosition(position);
+				Log.v("NJCTLUnitSelect", "Downloading unit " + unit.getTitle());
+
+				//unit.download();
+				// assuming string and if you want to get the value on click of
+				// list item
+				// do what you intend to do on click of listview row
+			}
+		});
+
+		setListAdapter(new ArrayAdapter<Unit>(getActivity(), android.R.layout.simple_list_item_activated_1,
+				theClass.getUnits()));
+	}
 }
