@@ -3,12 +3,9 @@ package org.njctl.courseapp;
 import java.util.List;
 
 import org.njctl.courseapp.model.Class;
-import org.njctl.courseapp.model.Unit;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,26 +34,8 @@ public class SubscribeFragment extends ListFragment
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3)
 			{
-				Class theClass = (Class) adapter.getItemAtPosition(position);
-				/*
-				if(unit.isDownloaded())
-				{
-					// Open MaterialsActivity.
-					Log.v("NJCTLLOG", "Going to open MaterialsActivity for unit " + unit.getTitle());
-					UnitSelectActivity selector = (UnitSelectActivity) getActivity();
-					
-					Intent intent = new Intent(selector, MaterialsActivity.class);
-					intent.putExtra("unit", unit);
-					intent.putParcelableArrayListExtra("subscribedClasses", selector.getSubscribedClasses());
-					
-			        startActivity(intent);
-				}
-				else
-				{
-					//TODO: Display download button, and then call unit.download();
-					unit.download();
-					Log.v("NJCTLLOG", "Going to display download button for unit " + unit.getTitle());
-				}*/
+				//TODO Show subscription button, do subscription stuff.
+				//Class theClass = (Class) adapter.getItemAtPosition(position);
 			}
 		});
 

@@ -1,11 +1,5 @@
 package org.njctl.courseapp.model.material;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -19,7 +13,6 @@ import org.njctl.courseapp.model.AsyncResponse;
 import org.njctl.courseapp.model.FileWriterTask;
 import org.njctl.courseapp.model.InputStreamRetrieverTask;
 import org.njctl.courseapp.model.DownloadFinishListener;
-import org.njctl.courseapp.model.StringRetrieverTask;
 import org.njctl.courseapp.model.WriteFinishListener;
 import org.njctl.courseapp.model.useful.Tripel;
 
