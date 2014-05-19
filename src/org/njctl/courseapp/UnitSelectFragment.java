@@ -36,6 +36,8 @@ public class UnitSelectFragment extends ListFragment implements TwoStatesDecider
 
 		UnitSelectActivity selector = (UnitSelectActivity) getActivity();
 		Class theClass = selector.getNJCTLClass();
+		Button btnTranslate = (Button) getActivity().findViewById(R.id.button);
+		btnTranslate.setAlpha(0f);
 
 		getListView().setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -60,6 +62,8 @@ public class UnitSelectFragment extends ListFragment implements TwoStatesDecider
 					final Animation animTranslate = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_translate);
 					Button btnTranslate = (Button) getActivity().findViewById(R.id.button);
 					
+					//
+					btnTranslate.setAlpha(0.7f);
 					btnTranslate.startAnimation(animTranslate);
 					//SlidingDrawer dLButtonDrawer = (SlidingDrawer) getActivity().findViewById(R.id.slidingDrawer);
 					//dLButtonDrawer.animateOpen();
