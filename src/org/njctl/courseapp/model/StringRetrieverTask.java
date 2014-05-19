@@ -41,6 +41,13 @@ public class StringRetrieverTask extends FileRetrieverTask<String>
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return "";
+		} finally {
+			try {
+				inputStream.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 }
