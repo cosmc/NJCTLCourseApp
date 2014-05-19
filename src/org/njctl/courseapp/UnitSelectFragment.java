@@ -23,6 +23,7 @@ import org.njctl.courseapp.model.Unit;
 public class UnitSelectFragment extends ListFragment implements TwoStatesDecider<Unit>
 {
 	protected Unit currentSelectedUnit;
+	TwoStatesAdapter<Unit> listAdapter;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -107,12 +108,18 @@ public class UnitSelectFragment extends ListFragment implements TwoStatesDecider
 
 		//setListAdapter(new ArrayAdapter<Unit>(getActivity(), android.R.layout.simple_list_item_activated_1,
 				//theClass.getUnits()));
-		TwoStatesAdapter<Unit> listAdapter = new TwoStatesAdapter<Unit>(getActivity(), theClass.getUnits(), this);
+		listAdapter = new TwoStatesAdapter<Unit>(getActivity(), theClass.getUnits(), this);
         setListAdapter(listAdapter);
 	}
 
 	@Override
 	public boolean isActive(Unit content) {
 		return content.isDownloaded();
+	}
+
+	public void update(Unit content)
+	{
+		// TODO Auto-generated method stub
+		//listAdapter.
 	}
 }

@@ -10,6 +10,7 @@ import org.njctl.courseapp.model.Unit;
 public class UnitSelectActivity extends DrawerActivity implements DownloadFinishListener<Unit>
 {
 	protected Class theClass;
+	protected UnitSelectFragment fragment;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState)
@@ -22,8 +23,8 @@ public class UnitSelectActivity extends DrawerActivity implements DownloadFinish
 		
 		getActionBar().setTitle(theClass.getTitle());
 		
-		UnitSelectFragment select = new UnitSelectFragment();
-		getSupportFragmentManager().beginTransaction().replace(R.id.container, select).commit();
+		fragment = new UnitSelectFragment();
+		getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
 	}
 	
 	public Class getNJCTLClass()
@@ -35,6 +36,8 @@ public class UnitSelectActivity extends DrawerActivity implements DownloadFinish
 	{
 		// TODO Auto-generated method stub
 		//getFragmentManager().beginTransaction().replace(R.layout.unitselect_fragment, new UnitSelectFragment());
+		
+		fragment.update(content);
 		
 		//UnitSelectFragment select = new UnitSelectFragment();
 		//getSupportFragmentManager().beginTransaction().replace(R.id.container, select).commit();
