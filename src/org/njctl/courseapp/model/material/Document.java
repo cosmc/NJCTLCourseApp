@@ -1,9 +1,5 @@
 package org.njctl.courseapp.model.material;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -14,9 +10,10 @@ import java.util.Locale;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.njctl.courseapp.model.AsyncResponse;
+import org.njctl.courseapp.model.FileWriterTask;
 import org.njctl.courseapp.model.InputStreamRetrieverTask;
 import org.njctl.courseapp.model.DownloadFinishListener;
-import org.njctl.courseapp.model.StringRetrieverTask;
+import org.njctl.courseapp.model.WriteFinishListener;
 import org.njctl.courseapp.model.useful.Tripel;
 
 import com.j256.ormlite.field.DatabaseField;
@@ -26,7 +23,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-public abstract class Document implements Parcelable, AsyncResponse<InputStream>
+public abstract class Document implements Parcelable, AsyncResponse<InputStream>, WriteFinishListener
 {
 	/**
 	 * The Document's ID. Is not auto-generated, but fetched from
@@ -275,37 +272,25 @@ public abstract class Document implements Parcelable, AsyncResponse<InputStream>
 	/**
 	 * The method dealing with the http response of the download request and saves it to the PDF file.
 	 */
+	@SuppressWarnings("unchecked")
 	public void processResult(InputStream pdfStream)
 	{
 		//check md5 sum in a future release.
 		//String downloadedHash = FileRetrieverTask.getMD5EncryptedString(pdfContent);
+
+		String path = ctx.getFilesDir().getAbsolutePath();
+		fileName = id + ".pdf";
+		absolutePath = path + fileName;
 		
-		try
-		{
-			String path = ctx.getFilesDir().getAbsolutePath();
-			fileName = id + ".pdf";
-			absolutePath = path + fileName;
-			
-			FileOutputStream fos;
-		
-			fos = new FileOutputStream(new File(absolutePath));
-		
-			int inByte;
-			while((inByte = pdfStream.read()) != -1) fos.write(inByte);
-			pdfStream.close();
-			fos.close();
-			
-			onDownloadFinish();
-		    notifyDownloadListener();
-		}
-		catch (FileNotFoundException e)
-		{
-			Log.v("NJCTLLOG pdf save filenotfound", Log.getStackTraceString(e));
-		}
-		catch (IOException e)
-		{
-			Log.v("NJCTLLOG pdf save ioexception", Log.getStackTraceString(e));
-		}
+		Tripel<String, InputStream, WriteFinishListener> request = new Tripel<String, InputStream, WriteFinishListener>(absolutePath, pdfStream, this);
+		new FileWriterTask().execute(request);
+	}
+	
+	public void onWriteFinish()
+	{
+		state = DocumentState.OK;
+		onDownloadFinish();
+	    notifyDownloadListener();
 	}
 	
 	public void deleteFile()

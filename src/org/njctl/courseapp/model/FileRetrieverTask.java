@@ -89,13 +89,13 @@ public abstract class FileRetrieverTask<T> extends AsyncTask<Tripel<String,Strin
 		} catch (Exception e) {
 			// Oops
 			Log.w(NJCTLLOG, e.toString());
-		} finally {
+		}/* finally {
 			try {
 				if (inputStream != null)
 					inputStream.close();
 			} catch (Exception squish) {
 			}
-		}
+		}*/
 		return convertContents(null);
 	}
 	

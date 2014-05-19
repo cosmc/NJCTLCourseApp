@@ -1,6 +1,5 @@
 package org.njctl.courseapp;
 
-import org.njctl.courseapp.model.Class;
 import org.njctl.courseapp.model.Unit;
 
 import android.content.Intent;

@@ -218,7 +218,7 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
     protected static boolean checkJSON(JSONObject json)
 	{
 		try {
-			Integer id = json.getInt("ID"); //Log.v("NJCTLLOG", "unit id: " + id);
+			json.getInt("ID"); //Log.v("NJCTLLOG", "unit id: " + id);
 			json.getString("post_title");
 			json.getString("post_name");
 			json.getString("post_modified");
