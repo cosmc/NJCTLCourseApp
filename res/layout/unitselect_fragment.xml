@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 <ListView 
     android:background="#EFEFEF"
     android:id="@android:id/list"
@@ -9,18 +10,11 @@
     android:layout_height="match_parent">
 </ListView>
 
-<SlidingDrawer
-    android:id="@+id/slidingDrawer"
+<Button
+    android:id="@+id/button"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:content="@+id/content"
-    android:handle="@+id/handle" >
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@+string/button_unit_download" />
-</SlidingDrawer>
+    android:gravity="center_horizontal|center_vertical"
+    android:text="@+string/button_unit_download" />
 
 </FrameLayout>

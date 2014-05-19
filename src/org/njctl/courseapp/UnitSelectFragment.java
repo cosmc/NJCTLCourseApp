@@ -13,6 +13,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SlidingDrawer;
 
@@ -56,8 +57,12 @@ public class UnitSelectFragment extends ListFragment implements TwoStatesDecider
 				}
 				else
 				{
-					SlidingDrawer dLButtonDrawer = (SlidingDrawer) getActivity().findViewById(R.id.slidingDrawer);
-					dLButtonDrawer.animateOpen();
+					final Animation animTranslate = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_translate);
+					Button btnTranslate = (Button) getActivity().findViewById(R.id.button);
+					
+					btnTranslate.startAnimation(animTranslate);
+					//SlidingDrawer dLButtonDrawer = (SlidingDrawer) getActivity().findViewById(R.id.slidingDrawer);
+					//dLButtonDrawer.animateOpen();
 					
 					//TODO: Display download button, and then call unit.download();
 					
