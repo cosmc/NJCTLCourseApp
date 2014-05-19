@@ -55,8 +55,7 @@ public abstract class DrawerActivity extends FragmentActivity
 		*/
         
         //TODO DONT AUTO OPEN THE DRAWER?
-        //mDrawerLayout.openDrawer(mDrawerList);
-        mDrawerLayout.openDrawer(drawer);
+        //mDrawerLayout.openDrawer(drawer);
         
         Button button = (Button) findViewById(R.id.button_manage_subscriptions);
         button.setOnClickListener(new OnClickListener()
