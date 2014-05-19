@@ -9,11 +9,18 @@
     android:layout_height="match_parent">
 </ListView>
 
-<Button
-    android:id="@+id/button"
+<SlidingDrawer
+    android:id="@+id/slidingDrawer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="bottom"
-    android:text="@+string/button_unit_download" />
+    android:content="@+id/content"
+    android:handle="@+id/handle" >
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@+string/button_unit_download" />
+</SlidingDrawer>
 
 </FrameLayout>

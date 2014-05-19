@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SlidingDrawer;
 
 import org.njctl.courseapp.model.Class;
 import org.njctl.courseapp.model.Unit;
@@ -55,13 +56,19 @@ public class UnitSelectFragment extends ListFragment
 				}
 				else
 				{
+					SlidingDrawer dLButtonDrawer = (SlidingDrawer) getActivity().findViewById(R.id.slidingDrawer);
+					dLButtonDrawer.animateOpen();
+					
 					//TODO: Display download button, and then call unit.download();
+					
 					Log.v("NJCTLLOG", "Going to display download button for unit " + unit.getTitle());
 				}
 			}
 		});
 
-		setListAdapter(new ArrayAdapter<Unit>(getActivity(), android.R.layout.simple_list_item_activated_1,
-				theClass.getUnits()));
+		//setListAdapter(new ArrayAdapter<Unit>(getActivity(), android.R.layout.simple_list_item_activated_1,
+				//theClass.getUnits()));
+		UnitSelectAdapter listAdapter = new UnitSelectAdapter(getActivity(), theClass.getUnits());
+        setListAdapter(listAdapter);
 	}
 }
