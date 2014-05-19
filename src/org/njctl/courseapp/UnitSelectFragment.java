@@ -1,27 +1,29 @@
 package org.njctl.courseapp;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
+import android.widget.AbsListView;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.SlidingDrawer;
-
 import org.njctl.courseapp.model.Class;
+import org.njctl.courseapp.model.DownloadFinishListener;
 import org.njctl.courseapp.model.Unit;
 
 public class UnitSelectFragment extends ListFragment implements TwoStatesDecider<Unit>
 {
+	protected Unit currentSelectedUnit;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
@@ -36,8 +38,25 @@ public class UnitSelectFragment extends ListFragment implements TwoStatesDecider
 
 		UnitSelectActivity selector = (UnitSelectActivity) getActivity();
 		Class theClass = selector.getNJCTLClass();
+		
 		Button btnTranslate = (Button) getActivity().findViewById(R.id.button);
-		btnTranslate.setAlpha(0f);
+		btnTranslate.setVisibility(View.INVISIBLE);
+		
+		getListView().setOnScrollListener(new OnScrollListener() {
+			
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState)
+			{
+				
+			}
+			
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
+			{
+				Button btnTranslate = (Button) getActivity().findViewById(R.id.button);
+				btnTranslate.setVisibility(View.INVISIBLE);
+			}
+		});
 
 		getListView().setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -63,14 +82,25 @@ public class UnitSelectFragment extends ListFragment implements TwoStatesDecider
 					Button btnTranslate = (Button) getActivity().findViewById(R.id.button);
 					
 					//
-					btnTranslate.setAlpha(0.7f);
+					btnTranslate.setVisibility(View.VISIBLE);
 					btnTranslate.startAnimation(animTranslate);
-					//SlidingDrawer dLButtonDrawer = (SlidingDrawer) getActivity().findViewById(R.id.slidingDrawer);
-					//dLButtonDrawer.animateOpen();
 					
-					//TODO: Display download button, and then call unit.download();
+					currentSelectedUnit = unit;
 					
 					Log.v("NJCTLLOG", "Going to display download button for unit " + unit.getTitle());
+				}
+			}
+		});
+		
+		btnTranslate.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View arg0)
+			{
+				if(currentSelectedUnit != null)
+				{
+					UnitSelectActivity action = (UnitSelectActivity) getActivity();
+					currentSelectedUnit.download(action);
 				}
 			}
 		});

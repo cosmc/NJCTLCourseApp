@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import org.njctl.courseapp.model.Class;
+import org.njctl.courseapp.model.DownloadFinishListener;
+import org.njctl.courseapp.model.Unit;
 
-public class UnitSelectActivity extends DrawerActivity
+public class UnitSelectActivity extends DrawerActivity implements DownloadFinishListener<Unit>
 {
 	protected Class theClass;
 	
@@ -27,5 +29,14 @@ public class UnitSelectActivity extends DrawerActivity
 	public Class getNJCTLClass()
 	{
 		return theClass;
+	}
+
+	public void onDownloaded(Unit content)
+	{
+		// TODO Auto-generated method stub
+		//getFragmentManager().beginTransaction().replace(R.layout.unitselect_fragment, new UnitSelectFragment());
+		
+		//UnitSelectFragment select = new UnitSelectFragment();
+		//getSupportFragmentManager().beginTransaction().replace(R.id.container, select).commit();
 	}
 }
