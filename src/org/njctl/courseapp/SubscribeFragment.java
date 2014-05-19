@@ -42,7 +42,10 @@ public class SubscribeFragment extends ListFragment
 		//CustomListAdapter<Class> listAdapter = new CustomListAdapter<Class>(this , R.layout.drawer_list , subscribedClasses, Color.WHITE, Color.GRAY);
         //mDrawerList.setAdapter(listAdapter);
 		
-		setListAdapter(new ArrayAdapter<Class>(getActivity(), android.R.layout.simple_list_item_activated_1,
-				classes));
+		SubscribeAdapter listAdapter = new SubscribeAdapter(getActivity(), classes);
+		setListAdapter(listAdapter);
+		
+		//setListAdapter(new ArrayAdapter<Class>(getActivity(), android.R.layout.simple_list_item_activated_1,
+		//		classes));
 	}
 }
