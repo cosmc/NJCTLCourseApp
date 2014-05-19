@@ -1,8 +1,6 @@
 package org.njctl.courseapp.model;
 
-import java.io.BufferedReader;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -21,17 +19,17 @@ import android.util.Log;
  * 
  * Tripel containing URL, request content type, and listener.
  */
-public class FileRetrieverTask extends AsyncTask<Tripel<String,String,AsyncStringResponse>, Void, String>
+public abstract class FileRetrieverTask<T> extends AsyncTask<Tripel<String,String,AsyncResponse<T>>, Void, T>
 {
 	final String NJCTLLOG = "NJCTL";
-	protected AsyncStringResponse delegate = null;
+	protected AsyncResponse<T> delegate = null;
 	protected String url, contentType = "text/plain";
 
 	@SuppressWarnings("unchecked")
-	protected String doInBackground(Tripel<String,String,AsyncStringResponse>... request)
+	protected T doInBackground(Tripel<String,String,AsyncResponse<T>>... request)
 	{
 		try {
-			if(request.length != 1 || !(request[0].x instanceof String) || !(request[0].y instanceof String) || !(request[0].z instanceof AsyncStringResponse))
+			if(request.length != 1 || !(request[0].x instanceof String) || !(request[0].y instanceof String) || !(request[0].z instanceof AsyncResponse))
 				throw new Exception();
 		
 			url = request[0].x;
@@ -43,15 +41,17 @@ public class FileRetrieverTask extends AsyncTask<Tripel<String,String,AsyncStrin
 			Log.w(NJCTLLOG, e.toString());
 		}
 		
-		return getString();
+		return getContents();
 	}
 
-	protected void onPostExecute(String result)
+	protected void onPostExecute(T result)
 	{
-		delegate.processString(result);
+		delegate.processResult(result);
 	}
+	
+	abstract T convertContents(InputStream inputStream);
 
-	protected String getString()
+	protected T getContents()
 	{
 		DefaultHttpClient httpclient = new DefaultHttpClient(
 				new BasicHttpParams());
@@ -69,7 +69,10 @@ public class FileRetrieverTask extends AsyncTask<Tripel<String,String,AsyncStrin
 			HttpEntity entity = response.getEntity();
 
 			inputStream = entity.getContent();
+			
+			return convertContents(inputStream);
 			// json is UTF-8 by default
+			/*
 			BufferedReader reader = new BufferedReader(new InputStreamReader(
 					inputStream, "UTF-8"), 8);
 			StringBuilder sb = new StringBuilder();
@@ -81,7 +84,7 @@ public class FileRetrieverTask extends AsyncTask<Tripel<String,String,AsyncStrin
 			String result = sb.toString();
 
 			Log.v(NJCTLLOG, "length:" + result.length());
-			return result;
+			return result;*/
 
 		} catch (Exception e) {
 			// Oops
@@ -93,7 +96,7 @@ public class FileRetrieverTask extends AsyncTask<Tripel<String,String,AsyncStrin
 			} catch (Exception squish) {
 			}
 		}
-		return "";
+		return convertContents(null);
 	}
 	
 	public static String getMD5EncryptedString(String encTarget)

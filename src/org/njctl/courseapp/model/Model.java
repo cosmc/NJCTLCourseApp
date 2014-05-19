@@ -18,7 +18,7 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import android.content.Context;
 import android.util.Log;
 
-public class Model implements AsyncStringResponse, DownloadFinishListener<Subject>
+public class Model implements AsyncResponse<String>, DownloadFinishListener<Subject>
 {
 	final String NJCTLLOG = "NJCTLLOG";
 	private String jsonUrl = "http://content.sandbox-njctl.org/courses.json";
@@ -116,8 +116,8 @@ public class Model implements AsyncStringResponse, DownloadFinishListener<Subjec
 	public void update()
 	{
 		Log.v("NJCTLLOG", "Building class tree from online JSON...");
-		Tripel<String, String, AsyncStringResponse> request = new Tripel<String, String, AsyncStringResponse>(jsonUrl, "application/json", this);
-		new FileRetrieverTask().execute(request);
+		Tripel<String, String, AsyncResponse<String>> request = new Tripel<String, String, AsyncResponse<String>>(jsonUrl, "application/json", this);
+		new StringRetrieverTask().execute(request);
 	}
 	
 	public void update(DownloadFinishListener<Model> listener)
@@ -145,7 +145,7 @@ public class Model implements AsyncStringResponse, DownloadFinishListener<Subjec
 		}
 	}
 
-	public void processString(String jsonString)
+	public void processResult(String jsonString)
 	{
 		subjects = new ArrayList<Subject>();
 		

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,9 +13,10 @@ import java.util.Locale;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.njctl.courseapp.model.AsyncStringResponse;
+import org.njctl.courseapp.model.AsyncResponse;
+import org.njctl.courseapp.model.InputStreamRetrieverTask;
 import org.njctl.courseapp.model.DownloadFinishListener;
-import org.njctl.courseapp.model.FileRetrieverTask;
+import org.njctl.courseapp.model.StringRetrieverTask;
 import org.njctl.courseapp.model.useful.Tripel;
 
 import com.j256.ormlite.field.DatabaseField;
@@ -24,7 +26,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-public abstract class Document implements Parcelable, AsyncStringResponse
+public abstract class Document implements Parcelable, AsyncResponse<InputStream>
 {
 	/**
 	 * The Document's ID. Is not auto-generated, but fetched from
@@ -255,9 +257,9 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 		if(state != DocumentState.OK)
 		{
 			state = DocumentState.DOWNLOADING;
-			Tripel<String, String, AsyncStringResponse> request = new Tripel<String, String, AsyncStringResponse>(url, "application/pdf", this);
+			Tripel<String, String, AsyncResponse<InputStream>> request = new Tripel<String, String, AsyncResponse<InputStream>>(url, "application/pdf", this);
 			Log.v("NJCTLDOWNLOAD", "Starting pdf download for " + title);
-			new FileRetrieverTask().execute(request);
+			new InputStreamRetrieverTask().execute(request);
 		}
 		else
 		{
@@ -273,32 +275,28 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 	/**
 	 * The method dealing with the http response of the download request and saves it to the PDF file.
 	 */
-	public void processString(String pdfContent)
+	public void processResult(InputStream pdfStream)
 	{
 		//check md5 sum in a future release.
 		//String downloadedHash = FileRetrieverTask.getMD5EncryptedString(pdfContent);
 		
-		//Internal storage; http://stackoverflow.com/questions/14376807/how-to-read-write-string-from-a-file-in-android
-		String path = ctx.getFilesDir().getAbsolutePath();
-		fileName = id + ".pdf";
-		absolutePath = path + fileName;
-		File file = new File(absolutePath);
-		
-		Log.v("NJCTLDOWNLOAD", "Received " + pdfContent.length() + " bytes for " + title);
-		
-		FileOutputStream stream = null;
-		
 		try
 		{
-			stream = new FileOutputStream(file);
+			String path = ctx.getFilesDir().getAbsolutePath();
+			fileName = id + ".pdf";
+			absolutePath = path + fileName;
+			
+			FileOutputStream fos;
 		
-		    stream.write(pdfContent.getBytes());
-		    state = DocumentState.OK;
-		    stream.close();
-		    
-		    onDownloadFinish();
+			fos = new FileOutputStream(new File(absolutePath));
+		
+			int inByte;
+			while((inByte = pdfStream.read()) != -1) fos.write(inByte);
+			pdfStream.close();
+			fos.close();
+			
+			onDownloadFinish();
 		    notifyDownloadListener();
-		    
 		}
 		catch (FileNotFoundException e)
 		{
@@ -307,19 +305,6 @@ public abstract class Document implements Parcelable, AsyncStringResponse
 		catch (IOException e)
 		{
 			Log.v("NJCTLLOG pdf save ioexception", Log.getStackTraceString(e));
-		}
-		finally
-		{
-		    try
-		    {
-				if(stream != null)
-					stream.close();
-			}
-		    catch (IOException e)
-		    {
-				Log.v("NJCTLLOG pdf save", Log.getStackTraceString(e));
-				e.printStackTrace();
-			}
 		}
 	}
 	
