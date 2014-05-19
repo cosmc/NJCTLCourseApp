@@ -3,6 +3,7 @@ package org.njctl.courseapp;
 import java.util.ArrayList;
 
 import org.njctl.courseapp.model.Class;
+import org.njctl.courseapp.model.Unit;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,9 +14,11 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ArrayAdapter;
+import android.widget.AdapterView.OnItemClickListener;
 
 public abstract class DrawerActivity extends FragmentActivity
 {
@@ -67,6 +70,18 @@ public abstract class DrawerActivity extends FragmentActivity
 			}
 		});
         
+        mDrawerList.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3)
+			{
+				Class theClass = (Class) adapter.getItemAtPosition(position);
+				
+				Intent intent = new Intent(v.getContext(), UnitSelectActivity.class);
+				setDrawerIntent(intent);
+				intent.putExtra("class", theClass);
+				startActivity(intent);
+			}
+		});
         //TODO SET CLICK LISTENER
         //mDrawerList.setOnItemClickListener(new DrawerItemClickListener(model, mDrawerLayout, mDrawerList));
 	}
