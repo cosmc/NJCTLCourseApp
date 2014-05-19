@@ -23,6 +23,7 @@ public abstract class DrawerActivity extends FragmentActivity
 	private ListView mDrawerList;
 	private ListView mainContainerList;
 	protected ArrayList<Class> subscribedClasses;
+	protected ArrayList<Class> classes;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState)
@@ -33,6 +34,7 @@ public abstract class DrawerActivity extends FragmentActivity
 		
         Intent intent = getIntent();
         subscribedClasses = intent.getParcelableArrayListExtra("subscribedClasses");
+        classes = intent.getParcelableArrayListExtra("classes");
 		
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer_list);
@@ -60,13 +62,19 @@ public abstract class DrawerActivity extends FragmentActivity
 			public void onClick(View v)
 			{
 				Intent intent = new Intent(v.getContext(), SubscribeActivity.class);
-				intent.putParcelableArrayListExtra("subscribedClasses", subscribedClasses);
+				setDrawerIntent(intent);
 		        startActivity(intent);
 			}
 		});
         
         //TODO SET CLICK LISTENER
         //mDrawerList.setOnItemClickListener(new DrawerItemClickListener(model, mDrawerLayout, mDrawerList));
+	}
+	
+	protected void setDrawerIntent(Intent intent)
+	{
+		intent.putParcelableArrayListExtra("subscribedClasses", subscribedClasses);
+		intent.putParcelableArrayListExtra("classes", classes);
 	}
 	
 	public ArrayList<Class> getSubscribedClasses()

@@ -186,6 +186,7 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 			
 			Intent intent = new Intent(this, UnitSelectActivity.class);
 			intent.putParcelableArrayListExtra("subscribedClasses", myClasses);
+			intent.putParcelableArrayListExtra("classes", model.getClasses());
 			intent.putExtra("class", theClass);
 			
 	        startActivity(intent);
@@ -194,7 +195,7 @@ public class MainActivity extends ActionBarActivity implements NJCTLNavActivity,
 		{
 			Intent intent = new Intent(this, SubscribeActivity.class);
 			intent.putParcelableArrayListExtra("subscribedClasses", myClasses);
-			intent.putExtra("classes", model.getClasses());
+			intent.putParcelableArrayListExtra("classes", model.getClasses());
 			
 	        startActivity(intent);
 		}
