@@ -62,7 +62,7 @@ public class Model implements AsyncResponse<String>, DownloadFinishListener<Subj
 		try
 		{
 			QueryBuilder<Class, Integer> builder = classDao.queryBuilder();
-			builder.orderBy("lastOpened", false).limit(1l);
+			builder.orderBy("lastOpened", false).limit(1l).where().eq("subscribed", true);
 		
 			PreparedQuery<Class> preparedQuery = builder.prepare();
 			List<Class> classes = classDao.query(preparedQuery);
@@ -82,11 +82,9 @@ public class Model implements AsyncResponse<String>, DownloadFinishListener<Subj
 	{
 		retriever = retrieverObject;
 		
-		//if(true)
 		if(buildClassTreeFromDb())
 		{
 			return true;
-			
 		}
 		else
 		{
