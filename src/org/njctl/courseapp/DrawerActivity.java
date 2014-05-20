@@ -18,6 +18,7 @@ import android.widget.AdapterView.OnItemClickListener;
 public abstract class DrawerActivity extends FragmentActivity
 {
 	private ListView mDrawerList;
+	CustomListAdapter<Class> listAdapter;
 	protected ArrayList<Class> subscribedClasses;
 	protected ArrayList<Class> classes;
 	
@@ -34,7 +35,7 @@ public abstract class DrawerActivity extends FragmentActivity
 		
         mDrawerList = (ListView) findViewById(R.id.left_drawer_list);
         
-        CustomListAdapter<Class> listAdapter = new CustomListAdapter<Class>(this , R.layout.drawer_list , subscribedClasses, Color.WHITE, Color.GRAY);
+        listAdapter = new CustomListAdapter<Class>(this , R.layout.drawer_list , subscribedClasses, Color.WHITE, Color.GRAY);
         mDrawerList.setAdapter(listAdapter);
         
         // Uncomment this to auto open the drawer.
@@ -76,5 +77,11 @@ public abstract class DrawerActivity extends FragmentActivity
 	public ArrayList<Class> getSubscribedClasses()
 	{
 		return subscribedClasses;
+	}
+	
+	protected void updateSubscriptions(Class theClass)
+	{
+		if(theClass.isSubscribed())
+			listAdapter.update(theClass);
 	}
 }

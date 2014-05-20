@@ -14,6 +14,8 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class SubscribeFragment extends ListFragment implements TwoStatesDecider<Class>
 {
+	protected TwoStatesAdapter<Class> listAdapter;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
@@ -26,23 +28,28 @@ public class SubscribeFragment extends ListFragment implements TwoStatesDecider<
 	{
 		super.onActivityCreated(savedInstanceState);
 
-		SubscribeActivity selector = (SubscribeActivity) getActivity();
+		final SubscribeActivity selector = (SubscribeActivity) getActivity();
 		List<Class> classes = selector.getClasses();
+		
+		listAdapter = new TwoStatesAdapter<Class>(getActivity(), classes, this);
+		setListAdapter(listAdapter);
 
 		getListView().setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3)
 			{
 				//TODO Show subscription button, do subscription stuff.
-				//Class theClass = (Class) adapter.getItemAtPosition(position);
+				Class theClass = (Class) adapter.getItemAtPosition(position);
+				theClass.subscribe();
+				listAdapter.update(theClass);
+				selector.updateSubscriptions(theClass);
 			}
 		});
 
 		//CustomListAdapter<Class> listAdapter = new CustomListAdapter<Class>(this , R.layout.drawer_list , subscribedClasses, Color.WHITE, Color.GRAY);
         //mDrawerList.setAdapter(listAdapter);
 		
-		TwoStatesAdapter<Class> listAdapter = new TwoStatesAdapter<Class>(getActivity(), classes, this);
-		setListAdapter(listAdapter);
+		
 		
 		//setListAdapter(new ArrayAdapter<Class>(getActivity(), android.R.layout.simple_list_item_activated_1,
 		//		classes));

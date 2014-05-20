@@ -128,10 +128,14 @@ public class UnitSelectFragment extends ListFragment implements TwoStatesDecider
 	public boolean isActive(Unit content) {
 		return content.isDownloaded();
 	}
-
-	public void update(Unit content)
+	
+	public void onUnitDownloaded(Unit unit)
 	{
-		// TODO Auto-generated method stub
-		//listAdapter.
+		listAdapter.update(unit);
+	}
+	
+	public TwoStatesAdapter<Unit> getListAdapter()
+	{
+		return listAdapter;
 	}
 }

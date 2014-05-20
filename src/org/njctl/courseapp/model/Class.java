@@ -91,6 +91,8 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
     	{
     		unit.subscribe();
     	}
+    	
+    	dao.update(this);
     }
     
     public void unsubscribe()
@@ -101,6 +103,8 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
     	{
     		unit.unsubscribe();
     	}
+    	
+    	dao.update(this);
     }
     
     public boolean isSubscribed()

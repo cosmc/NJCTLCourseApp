@@ -30,6 +30,28 @@ public class TwoStatesAdapter<T> extends ArrayAdapter<T>
 		decisionMaker = decider;
 	}
 	
+	public void update(T element)
+	{
+		Integer index = contents.indexOf(element);
+		
+		if(index != -1)
+		{
+			this.remove(element);
+			this.insert(element, index);
+		}
+	}
+	/*
+	private void updateView(int index){
+	    View v = getChildAt(index - 
+	        getFirstVisiblePosition());
+
+	    if(v == null)
+	       return;
+
+	    TextView someText = (TextView) v.findViewById(R.id.sometextview);
+	    someText.setText("Hi! I updated you manually!");
+	}*/
+	
 	@Override
     public View getView(int position, View v, ViewGroup parent)
     {

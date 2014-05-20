@@ -13,7 +13,7 @@ public class CustomListAdapter<T> extends ArrayAdapter<T>
 {
 	private Context mContext;
     private int id;
-    private List <T>items ;
+    private List <T> items;
     private int textColor, backgroundColor;
 
     public CustomListAdapter(Context context, int textViewResourceId , List<T> list, int textColor, int backgroundColor ) 
@@ -25,6 +25,21 @@ public class CustomListAdapter<T> extends ArrayAdapter<T>
         this.textColor = textColor;
         this.backgroundColor = backgroundColor;
     }
+    
+    public void update(T element)
+	{
+		Integer index = items.indexOf(element);
+		
+		if(index != -1)
+		{
+			this.remove(element);
+			this.insert(element, index);
+		}
+		else
+		{
+			this.insert(element, items.size());
+		}
+	}
 
     @Override
     public View getView(int position, View v, ViewGroup parent)

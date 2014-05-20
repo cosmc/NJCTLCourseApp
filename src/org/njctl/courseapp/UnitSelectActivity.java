@@ -36,8 +36,18 @@ public class UnitSelectActivity extends DrawerActivity implements DownloadFinish
 	{
 		// TODO Auto-generated method stub
 		//getFragmentManager().beginTransaction().replace(R.layout.unitselect_fragment, new UnitSelectFragment());
+		/*
+		runOnUiThread(new Runnable() {
+		     @Override
+		     public void run() {
+		    	 
+		    	 fragment.getListAdapter().notifyDataSetChanged();
+		//stuff that updates ui
+
+		    }
+		});*/
+		fragment.onUnitDownloaded(content);
 		
-		fragment.update(content);
 		
 		//UnitSelectFragment select = new UnitSelectFragment();
 		//getSupportFragmentManager().beginTransaction().replace(R.id.container, select).commit();
