@@ -4,8 +4,9 @@ import java.util.ArrayList;
 
 import org.njctl.courseapp.model.Class;
 import org.njctl.courseapp.model.Model;
-import org.njctl.courseapp.model.Subject;
 import org.njctl.courseapp.model.ModelRetriever;
+
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -18,15 +19,20 @@ import android.view.MenuItem;
 public class MainActivity extends ActionBarActivity implements ModelRetriever {
 
 	private Model model;
-	private ArrayList<Subject> subjects;
+	ProgressDialog progress;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
     	
     	super.onCreate(savedInstanceState);
-    	
+    	Log.v("NJCTL", "called oncreate");
     	//TODO Put in loading gif.
         setContentView(R.layout.activity_main);
+        
+        progress = new ProgressDialog(this);
+		progress.setTitle("Loading");
+		progress.setMessage("Wait while fetching data...");
+		progress.show();
         
     	model = new Model(this);
     	
@@ -71,9 +77,10 @@ public class MainActivity extends ActionBarActivity implements ModelRetriever {
 	public void onModelReady()
 	{
 		Log.v("NJCTLModel", "Model Ready.");
-		this.subjects = model.getSubjects();
 		//TODO take out later, fake class subscription for testing.
-		this.subjects.get(0).getContents().get(0).subscribe();
+		//this.subjects.get(0).getContents().get(0).subscribe();
+		
+		progress.dismiss();
 		
 		ArrayList<Class> myClasses = model.getClassesSubscribed();
 		
