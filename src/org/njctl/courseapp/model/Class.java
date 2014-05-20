@@ -81,6 +81,7 @@ public class Class implements Parcelable, DownloadFinishListener<Unit>
     public void setLastOpened()
     {
     	lastOpened = new Date();
+    	dao.update(this);
     }
     
     public void subscribe()
