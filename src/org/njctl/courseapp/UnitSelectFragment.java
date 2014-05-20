@@ -1,5 +1,6 @@
 package org.njctl.courseapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.opengl.Visibility;
 import android.os.Bundle;
@@ -26,7 +27,8 @@ public class UnitSelectFragment extends ListFragment implements TwoStatesDecider
 {
 	protected Unit currentSelectedUnit;
 	TwoStatesAdapter<Unit> listAdapter;
-	protected boolean dLBtnVisible; 
+	protected boolean dLBtnVisible;
+	ProgressDialog progress;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -70,16 +72,7 @@ public class UnitSelectFragment extends ListFragment implements TwoStatesDecider
 				
 				if(unit.isDownloaded())
 				{
-					// Open MaterialsActivity.
-					Log.v("NJCTLLOG", "Going to open MaterialsActivity for unit " + unit.getTitle());
-					UnitSelectActivity selector = (UnitSelectActivity) getActivity();
-					
-					Intent intent = new Intent(selector, MaterialsActivity.class);
-					intent.putExtra("unit", unit);
-					selector.setDrawerIntent(intent);			
-					intent.putParcelableArrayListExtra("subscribedClasses", selector.getSubscribedClasses());
-					
-			        startActivity(intent);
+					openUnit(unit);
 				}
 				else //display Download Button if unit isn't downloaded yet.
 				{
@@ -114,6 +107,11 @@ public class UnitSelectFragment extends ListFragment implements TwoStatesDecider
 				{
 					UnitSelectActivity action = (UnitSelectActivity) getActivity();
 					currentSelectedUnit.download(action);
+					
+					progress = new ProgressDialog(action);
+					progress.setTitle("Loading");
+					progress.setMessage("Wait while loading...");
+					progress.show();
 				}
 			}
 		});
@@ -129,13 +127,23 @@ public class UnitSelectFragment extends ListFragment implements TwoStatesDecider
 		return content.isDownloaded();
 	}
 	
+	protected void openUnit(Unit unit)
+	{
+		Log.v("NJCTLLOG", "Going to open MaterialsActivity for unit " + unit.getTitle());
+		UnitSelectActivity selector = (UnitSelectActivity) getActivity();
+		
+		Intent intent = new Intent(selector, MaterialsActivity.class);
+		intent.putExtra("unit", unit);
+		selector.setDrawerIntent(intent);			
+		intent.putParcelableArrayListExtra("subscribedClasses", selector.getSubscribedClasses());
+		
+        startActivity(intent);
+	}
+	
 	public void onUnitDownloaded(Unit unit)
 	{
 		listAdapter.update(unit);
-	}
-	
-	public TwoStatesAdapter<Unit> getListAdapter()
-	{
-		return listAdapter;
+		progress.dismiss();
+		openUnit(unit);
 	}
 }
