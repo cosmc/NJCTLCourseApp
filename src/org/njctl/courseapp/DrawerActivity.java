@@ -99,6 +99,12 @@ public abstract class DrawerActivity extends FragmentActivity
 	protected void updateSubscriptions(Class theClass)
 	{
 		if(theClass.isSubscribed())
+		{
 			drawerListAdapter.update(theClass);
+		}
+		else
+		{
+			drawerListAdapter.remove(theClass);
+		}
 	}
 }
