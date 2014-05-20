@@ -41,9 +41,10 @@
 
 	    	<Button
 	        android:id="@+id/button_manage_subscriptions"
-	        android:text="@+string/button_manage_subscriptions"
+	        android:text="@+string/button_manage_subscriptions_text"
 	        android:layout_gravity="bottom"
 	        android:layout_width="240dp"
+	        android:textColor="#ffffff"
 		    android:layout_height="60dp" />
 	    	
 	        <!-- The navigation drawer -->
