@@ -127,38 +127,32 @@ public class MainActivity extends DrawerActivity implements ModelRetriever,  Two
 			{
 				//TODO Show subscription button, do subscription stuff.
 				final Class theClass = (Class) adapter.getItemAtPosition(position);
+				final String text = theClass.isSubscribed() ? "Unsubscribe " + theClass.getTitle() : "Subscribe " + theClass.getTitle();
 				
-				if(theClass.isSubscribed())
+				if (dLBtnVisible)
 				{
-					//TODO what to do with subscribed classes?
+					hideButton(new AnimationListener()
+					{
+						@Override
+						public void onAnimationEnd(Animation arg0)
+						{
+							button.setText(text);
+							showButton();
+						}
+						public void onAnimationRepeat(Animation arg0)
+						{
+						}
+						public void onAnimationStart(Animation arg0)
+						{
+						}
+					});
 				}
 				else
 				{
-					if (dLBtnVisible)
-					{
-						hideButton(new AnimationListener()
-						{
-							@Override
-							public void onAnimationEnd(Animation arg0)
-							{
-								button.setText("Subscribe " + theClass.getTitle());
-								showButton();
-							}
-							public void onAnimationRepeat(Animation arg0)
-							{
-							}
-							public void onAnimationStart(Animation arg0)
-							{
-							}
-						});
-					}
-					else
-					{
-						button.setText("Subscribe " + theClass.getTitle());
-						showButton();
-					}
-					currentSelectedClass = theClass;
+					button.setText(text);
+					showButton();
 				}
+				currentSelectedClass = theClass;
 			}
 		});
 		
@@ -169,10 +163,21 @@ public class MainActivity extends DrawerActivity implements ModelRetriever,  Two
 			{
 				if(currentSelectedClass != null)
 				{
-					currentSelectedClass.subscribe();
-					listAdapter.update(currentSelectedClass);
-					updateSubscriptions(currentSelectedClass);
-					openDrawer();
+					if(currentSelectedClass.isSubscribed())
+					{
+						currentSelectedClass.unsubscribe();
+						listAdapter.update(currentSelectedClass);
+						updateSubscriptions(currentSelectedClass);
+						hideButton();
+					}
+					else
+					{
+						currentSelectedClass.subscribe();
+						listAdapter.update(currentSelectedClass);
+						updateSubscriptions(currentSelectedClass);
+						hideButton();
+						openDrawer();
+					}
 				}
 			}
 		});
