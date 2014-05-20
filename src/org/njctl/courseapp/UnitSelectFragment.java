@@ -11,11 +11,13 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AbsListView;
 import android.widget.Button;
+
 import org.njctl.courseapp.model.Class;
 import org.njctl.courseapp.model.DownloadFinishListener;
 import org.njctl.courseapp.model.Unit;
@@ -24,6 +26,7 @@ public class UnitSelectFragment extends ListFragment implements TwoStatesDecider
 {
 	protected Unit currentSelectedUnit;
 	TwoStatesAdapter<Unit> listAdapter;
+	protected boolean dLBtnVisible; 
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -73,18 +76,27 @@ public class UnitSelectFragment extends ListFragment implements TwoStatesDecider
 					
 					Intent intent = new Intent(selector, MaterialsActivity.class);
 					intent.putExtra("unit", unit);
+					selector.setDrawerIntent(intent);			
 					intent.putParcelableArrayListExtra("subscribedClasses", selector.getSubscribedClasses());
 					
 			        startActivity(intent);
 				}
-				else
+				else //display Download Button if unit isn't downloaded yet.
 				{
-					final Animation animTranslate = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_translate);
+					//final Animation animTranslate = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_translate);
 					Button btnTranslate = (Button) getActivity().findViewById(R.id.button);
-					
-					//
 					btnTranslate.setVisibility(View.VISIBLE);
-					btnTranslate.startAnimation(animTranslate);
+					if (dLBtnVisible){
+						TranslateAnimation closeAnim=new TranslateAnimation(0.0f, 0.0f, 0.0f, btnTranslate.getHeight());
+						closeAnim.setDuration(100);
+						btnTranslate.startAnimation(closeAnim);
+						dLBtnVisible = false;
+					}
+					TranslateAnimation openAnim=new TranslateAnimation(0.0f, 0.0f, btnTranslate.getHeight(),
+							0.0f);
+					openAnim.setDuration(100);
+					btnTranslate.startAnimation(openAnim);
+					dLBtnVisible = true;
 					
 					currentSelectedUnit = unit;
 					

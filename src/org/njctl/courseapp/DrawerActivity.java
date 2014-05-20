@@ -67,7 +67,7 @@ public abstract class DrawerActivity extends FragmentActivity
 		});
 	}
 	
-	protected void setDrawerIntent(Intent intent)
+	public void setDrawerIntent(Intent intent)
 	{
 		intent.putParcelableArrayListExtra("subscribedClasses", subscribedClasses);
 		intent.putParcelableArrayListExtra("classes", classes);
