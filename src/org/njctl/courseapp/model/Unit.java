@@ -491,6 +491,11 @@ public class Unit implements Parcelable, DownloadFinishListener<Document>
 		if(downloading == 0 && downloadFinishListener != null)
 			downloadFinishListener.onDownloaded(this);
 	}
+	
+	public boolean isDownloading()
+	{
+		return downloading != 0;
+	}
 
 	public static RuntimeExceptionDao<Unit, Integer> getDao()
 	{

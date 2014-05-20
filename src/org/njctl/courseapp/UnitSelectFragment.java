@@ -60,7 +60,7 @@ public class UnitSelectFragment extends ListFragment implements TwoStatesDecider
 				{
 					openUnit(unit);
 				}
-				else //display Download Button if unit isn't downloaded yet.
+				else if(!unit.isDownloading())//display Download Button if unit isn't downloaded yet.
 				{
 					if (dLBtnVisible)
 					{
