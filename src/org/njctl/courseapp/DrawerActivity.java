@@ -18,25 +18,16 @@ import android.widget.AdapterView.OnItemClickListener;
 public abstract class DrawerActivity extends FragmentActivity
 {
 	private ListView mDrawerList;
-	CustomListAdapter<Class> listAdapter;
+	CustomListAdapter<Class> drawerListAdapter;
 	protected ArrayList<Class> subscribedClasses;
 	protected ArrayList<Class> classes;
 	
-	@Override
-    protected void onCreate(Bundle savedInstanceState)
+	protected void showDrawer()
 	{
-		super.onCreate(savedInstanceState);
-    	
-		setContentView(R.layout.activity_main);
-		
-        Intent intent = getIntent();
-        subscribedClasses = intent.getParcelableArrayListExtra("subscribedClasses");
-        classes = intent.getParcelableArrayListExtra("classes");
-		
-        mDrawerList = (ListView) findViewById(R.id.left_drawer_list);
+		mDrawerList = (ListView) findViewById(R.id.left_drawer_list);
         
-        listAdapter = new CustomListAdapter<Class>(this , R.layout.drawer_list , subscribedClasses, Color.WHITE, Color.GRAY);
-        mDrawerList.setAdapter(listAdapter);
+        drawerListAdapter = new CustomListAdapter<Class>(this , R.layout.drawer_list , subscribedClasses, Color.WHITE, Color.GRAY);
+        mDrawerList.setAdapter(drawerListAdapter);
         
         // Uncomment this to auto open the drawer.
         //View drawer = findViewById(R.id.left_drawer);
@@ -48,7 +39,7 @@ public abstract class DrawerActivity extends FragmentActivity
 			@Override
 			public void onClick(View v)
 			{
-				Intent intent = new Intent(v.getContext(), SubscribeActivity.class);
+				Intent intent = new Intent(v.getContext(), MainActivity.class);
 				setDrawerIntent(intent);
 		        startActivity(intent);
 			}
@@ -68,6 +59,24 @@ public abstract class DrawerActivity extends FragmentActivity
 		});
 	}
 	
+	@Override
+    protected void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+    	
+		setContentView(R.layout.activity_main);
+		
+        Intent intent = getIntent();
+        
+        if(intent.hasExtra("subscribedClasses"))
+        {
+        	subscribedClasses = intent.getParcelableArrayListExtra("subscribedClasses");
+            classes = intent.getParcelableArrayListExtra("classes");
+    		
+            showDrawer();
+        }
+	}
+	
 	public void setDrawerIntent(Intent intent)
 	{
 		intent.putParcelableArrayListExtra("subscribedClasses", subscribedClasses);
@@ -82,6 +91,6 @@ public abstract class DrawerActivity extends FragmentActivity
 	protected void updateSubscriptions(Class theClass)
 	{
 		if(theClass.isSubscribed())
-			listAdapter.update(theClass);
+			drawerListAdapter.update(theClass);
 	}
 }

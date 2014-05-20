@@ -1,6 +1,7 @@
 package org.njctl.courseapp;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.njctl.courseapp.model.Class;
 import org.njctl.courseapp.model.Model;
@@ -13,34 +14,38 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 
 //import org.njctl.courseapp.R;
 
-public class MainActivity extends ActionBarActivity implements ModelRetriever {
+public class MainActivity extends DrawerActivity implements ModelRetriever,  TwoStatesDecider<Class> {
 
 	private Model model;
 	ProgressDialog progress;
+	private TwoStatesAdapter<Class> listAdapter;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
     	
     	super.onCreate(savedInstanceState);
     	Log.v("NJCTL", "called oncreate");
-    	//TODO Put in loading gif.
+    	
         setContentView(R.layout.activity_main);
-        
-        progress = new ProgressDialog(this);
-		progress.setTitle("Loading");
-		progress.setMessage("Wait while fetching data...");
-		progress.show();
         
     	model = new Model(this);
     	
     	if (savedInstanceState == null) {
         	
-        	//useClasses(model.getClassTree( getResources().getString(R.string.course_manifest_rel_path), getResources()));
-            
-            model.fetchManifest(this);
+            if(!model.fetchManifest(this))
+            {
+            	progress = new ProgressDialog(this);
+        		progress.setTitle("Loading");
+        		progress.setMessage("Wait while fetching data...");
+        		progress.show();
+            }
         }
     }
 
@@ -73,16 +78,22 @@ public class MainActivity extends ActionBarActivity implements ModelRetriever {
     }
 
     //populate the drawer with my classes
-    //TODO pull out drawer specific stuff into its own method
 	public void onModelReady()
 	{
 		Log.v("NJCTLModel", "Model Ready.");
-		//TODO take out later, fake class subscription for testing.
-		//this.subjects.get(0).getContents().get(0).subscribe();
 		
-		progress.dismiss();
+		classes = model.getClasses();
+		subscribedClasses = model.getClassesSubscribed();
+		
+		if(progress != null)
+		{
+			progress.dismiss();
+		}
 		
 		ArrayList<Class> myClasses = model.getClassesSubscribed();
+		
+		showDrawer();
+		showSubscribe();
 		
 		if(myClasses.size() > 0) // Start UnitSelectActivity
 		{
@@ -95,23 +106,45 @@ public class MainActivity extends ActionBarActivity implements ModelRetriever {
 			
 	        startActivity(intent);
 		}
-		else // Start SubscribeActivity
-		{
-			showSubscribe(myClasses);
-		}
-	}
-	
-	protected void showSubscribe(ArrayList<Class> myClasses)
-	{
-		Intent intent = new Intent(this, SubscribeActivity.class);
-		intent.putParcelableArrayListExtra("subscribedClasses", myClasses);
-		intent.putParcelableArrayListExtra("classes", model.getClasses());
-		
-        startActivity(intent);
 	}
 	
 	protected void showSubscribe()
 	{
-		showSubscribe(model.getClassesSubscribed());
+		/*Intent intent = new Intent(this, SubscribeActivity.class);
+		intent.putParcelableArrayListExtra("subscribedClasses", myClasses);
+		intent.putParcelableArrayListExtra("classes", model.getClasses());
+		
+        startActivity(intent);*/
+		/*
+		getActionBar().setTitle("Classes");
+		
+		SubscribeFragment frag = new SubscribeFragment();
+		getSupportFragmentManager().beginTransaction().replace(R.id.container, frag).commit();*/
+		
+		listAdapter = new TwoStatesAdapter<Class>(this, classes, this);
+		ListView list = (ListView) findViewById(R.id.subscribing_classes_list);
+		list.setAdapter(listAdapter);
+
+		list.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3)
+			{
+				//TODO Show subscription button, do subscription stuff.
+				Class theClass = (Class) adapter.getItemAtPosition(position);
+				theClass.subscribe();
+				listAdapter.update(theClass);
+				updateSubscriptions(theClass);
+			}
+		});
+	}
+	
+	public boolean isActive(Class content)
+	{
+		return content.isSubscribed();
+	}
+	
+	public List<Class> getClasses()
+	{
+		return classes;
 	}
 }

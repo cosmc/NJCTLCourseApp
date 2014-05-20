@@ -78,14 +78,20 @@ public class Model implements AsyncResponse<String>, DownloadFinishListener<Subj
 		//return subjects.get(0).getContents().get(0);
 	}
 	
-	public void fetchManifest(ModelRetriever retrieverObject)
+	public boolean fetchManifest(ModelRetriever retrieverObject)
 	{
 		retriever = retrieverObject;
 		
 		//if(true)
-		if(!buildClassTreeFromDb())
+		if(buildClassTreeFromDb())
+		{
+			return true;
+			
+		}
+		else
 		{
 			update();
+			return false;
 		}
 	}
 	
