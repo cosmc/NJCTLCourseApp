@@ -4,10 +4,13 @@ import java.util.ArrayList;
 
 import org.njctl.courseapp.model.Class;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
@@ -60,6 +63,33 @@ public abstract class DrawerActivity extends FragmentActivity
 		});
 	}
 	
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+            	toggleDrawer();
+            	return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+	
+	protected void toggleDrawer()
+	{
+		View drawer = findViewById(R.id.left_drawer);
+		DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		
+		if(mDrawerLayout.isDrawerOpen(drawer))
+		{
+			mDrawerLayout.closeDrawer(drawer);
+		}
+		else
+		{
+			mDrawerLayout.openDrawer(drawer);
+		}
+		
+	}
+	
 	protected void openDrawer()
 	{
 		View drawer = findViewById(R.id.left_drawer);
@@ -67,12 +97,17 @@ public abstract class DrawerActivity extends FragmentActivity
 		mDrawerLayout.openDrawer(drawer);
 	}
 	
+	@SuppressLint("NewApi")
 	@Override
     protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
     	
 		setContentView(R.layout.activity_main);
+		
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+        	getActionBar().setHomeButtonEnabled(true);
+        }
 		
         Intent intent = getIntent();
         
