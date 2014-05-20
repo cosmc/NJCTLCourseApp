@@ -1,11 +1,15 @@
 package org.njctl.courseapp;
 
 import org.njctl.courseapp.model.Class;
+import org.njctl.courseapp.model.DownloadFinishListener;
 import org.njctl.courseapp.model.Model;
 import org.njctl.courseapp.model.ModelRetriever;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -22,7 +26,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 //import org.njctl.courseapp.R;
 
-public class MainActivity extends DrawerActivity implements ModelRetriever,  TwoStatesDecider<Class> {
+public class MainActivity extends DrawerActivity implements ModelRetriever,  TwoStatesDecider<Class>, DownloadFinishListener<Model> {
 
 	private Model model;
 	ProgressDialog progress;
@@ -66,23 +70,27 @@ public class MainActivity extends DrawerActivity implements ModelRetriever,  Two
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         switch (item.getItemId()) {
-            case R.id.action_home:
-            	// Build the class tree!
-            	//ArrayList<NJCTLClass> classes = model.getClassTree( getResources().getString(R.string.course_manifest_rel_path), getResources());
-                // Display the classes!
-            	showSubscribe();
+            case R.id.action_update:
+            	runUpdate();
                 return true;
-            /*case R.id.action_settings:
-            	Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-            	startActivity(intent);
-                return true;*/
         }
         return super.onOptionsItemSelected(item);
+    }
+    
+    protected void runUpdate()
+    {
+    	if(isNetworkAvailable())
+    	{
+    		progress = new ProgressDialog(this);
+    		progress.setTitle("Loading");
+    		progress.setMessage("Wait while fetching data...");
+    		progress.show();
+    		
+        	model.update(this);
+    	}
     }
 
     //populate the drawer with my classes
@@ -211,5 +219,19 @@ public class MainActivity extends DrawerActivity implements ModelRetriever,  Two
 	public boolean isActive(Class content)
 	{
 		return content.isSubscribed();
+	}
+
+	// When update is done.
+	public void onDownloaded(Model content)
+	{
+		if(progress != null)
+			progress.dismiss();
+	}
+	
+	private boolean isNetworkAvailable() {
+	    ConnectivityManager connectivityManager 
+	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 }

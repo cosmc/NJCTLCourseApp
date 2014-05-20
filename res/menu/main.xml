@@ -1,8 +1,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:myapp="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/action_home"
-        android:title="@string/action_home"
+    <item android:id="@+id/action_update"
+        android:title="@string/action_update"
         android:orderInCategory="100"
         myapp:showAsAction="ifRoom" />
     <!--<item android:id="@+id/action_settings"
