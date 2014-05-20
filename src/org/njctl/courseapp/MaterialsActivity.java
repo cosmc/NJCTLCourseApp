@@ -16,7 +16,9 @@ public class MaterialsActivity extends DrawerActivity
 		
 		Intent intent = getIntent();
 		unit = (Unit) intent.getParcelableExtra("unit");
-		unit.getCTLClass().setLastOpened();
+		
+		//Log.v("NJCTL", "Displaying materials for unit " + unit.getTitle() + " within class " + unit.getCTLClass().getTitle());
+		//unit.getCTLClass().setLastOpened();
 		
 		getActionBar().setTitle(unit.getTitle());
 		
