@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView.OnScrollListener;
@@ -28,6 +29,7 @@ public class UnitSelectFragment extends ListFragment implements TwoStatesDecider
 	protected Unit currentSelectedUnit;
 	TwoStatesAdapter<Unit> listAdapter;
 	protected boolean dLBtnVisible;
+	protected Button button;
 	ProgressDialog progress;
 	
 	@Override
@@ -45,30 +47,14 @@ public class UnitSelectFragment extends ListFragment implements TwoStatesDecider
 		UnitSelectActivity selector = (UnitSelectActivity) getActivity();
 		Class theClass = selector.getNJCTLClass();
 		
-		Button btnTranslate = (Button) getActivity().findViewById(R.id.button);
-		btnTranslate.setVisibility(View.INVISIBLE);
-		
-		getListView().setOnScrollListener(new OnScrollListener() {
-			
-			@Override
-			public void onScrollStateChanged(AbsListView view, int scrollState)
-			{
-				
-			}
-			
-			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
-			{
-				Button btnTranslate = (Button) getActivity().findViewById(R.id.button);
-				btnTranslate.setVisibility(View.INVISIBLE);
-			}
-		});
+		button = (Button) getActivity().findViewById(R.id.button_unit_download);
+		button.setVisibility(View.INVISIBLE);
 
 		getListView().setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3)
 			{
-				Unit unit = (Unit) adapter.getItemAtPosition(position);
+				final Unit unit = (Unit) adapter.getItemAtPosition(position);
 				
 				if(unit.isDownloaded())
 				{
@@ -76,21 +62,29 @@ public class UnitSelectFragment extends ListFragment implements TwoStatesDecider
 				}
 				else //display Download Button if unit isn't downloaded yet.
 				{
-					//final Animation animTranslate = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_translate);
-					Button btnTranslate = (Button) getActivity().findViewById(R.id.button);
-					btnTranslate.setVisibility(View.VISIBLE);
-					if (dLBtnVisible){
-						TranslateAnimation closeAnim=new TranslateAnimation(0.0f, 0.0f, 0.0f, btnTranslate.getHeight());
-						closeAnim.setDuration(100);
-						btnTranslate.startAnimation(closeAnim);
-						dLBtnVisible = false;
+					if (dLBtnVisible)
+					{
+						hideButton(new AnimationListener()
+						{
+							@Override
+							public void onAnimationEnd(Animation arg0)
+							{
+								button.setText("Download " + unit.getTitle());
+								showButton();
+							}
+							public void onAnimationRepeat(Animation arg0)
+							{
+							}
+							public void onAnimationStart(Animation arg0)
+							{
+							}
+						});
 					}
-					TranslateAnimation openAnim=new TranslateAnimation(0.0f, 0.0f, btnTranslate.getHeight(),
-							0.0f);
-					openAnim.setDuration(100);
-					btnTranslate.startAnimation(openAnim);
-					dLBtnVisible = true;
-					
+					else
+					{
+						button.setText("Download " + unit.getTitle());
+						showButton();
+					}
 					currentSelectedUnit = unit;
 					
 					Log.v("NJCTLLOG", "Going to display download button for unit " + unit.getTitle());
@@ -98,7 +92,7 @@ public class UnitSelectFragment extends ListFragment implements TwoStatesDecider
 			}
 		});
 		
-		btnTranslate.setOnClickListener(new OnClickListener()
+		button.setOnClickListener(new OnClickListener()
 		{
 			@Override
 			public void onClick(View arg0)
@@ -109,17 +103,40 @@ public class UnitSelectFragment extends ListFragment implements TwoStatesDecider
 					currentSelectedUnit.download(action);
 					
 					progress = new ProgressDialog(action);
-					progress.setTitle("Loading");
-					progress.setMessage("Wait while loading...");
+					progress.setTitle("Downloading");
+					progress.setMessage("Wait while downloading " + currentSelectedUnit.getTitle());
 					progress.show();
 				}
 			}
 		});
 
-		//setListAdapter(new ArrayAdapter<Unit>(getActivity(), android.R.layout.simple_list_item_activated_1,
-				//theClass.getUnits()));
 		listAdapter = new TwoStatesAdapter<Unit>(getActivity(), theClass.getUnits(), this);
         setListAdapter(listAdapter);
+	}
+	
+	protected void hideButton(AnimationListener listener)
+	{
+		TranslateAnimation closeAnim=new TranslateAnimation(0.0f, 0.0f, 0.0f, button.getHeight());
+		closeAnim.setDuration(100);
+		if(listener != null) closeAnim.setAnimationListener(listener);
+		button.startAnimation(closeAnim);
+		dLBtnVisible = false;
+		button.setVisibility(View.INVISIBLE);
+	}
+	
+	protected void hideButton()
+	{
+		hideButton(null);
+	}
+	
+	protected void showButton()
+	{
+		button.setVisibility(View.VISIBLE);
+		TranslateAnimation openAnim=new TranslateAnimation(0.0f, 0.0f, button.getHeight(),
+				0.0f);
+		openAnim.setDuration(100);
+		button.startAnimation(openAnim);
+		dLBtnVisible = true;
 	}
 
 	@Override

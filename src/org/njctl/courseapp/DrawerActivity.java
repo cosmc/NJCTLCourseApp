@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.DrawerLayout;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -18,7 +19,7 @@ import android.widget.AdapterView.OnItemClickListener;
 public abstract class DrawerActivity extends FragmentActivity
 {
 	private ListView mDrawerList;
-	CustomListAdapter<Class> drawerListAdapter;
+	protected CustomListAdapter<Class> drawerListAdapter;
 	protected ArrayList<Class> subscribedClasses;
 	protected ArrayList<Class> classes;
 	
@@ -57,6 +58,13 @@ public abstract class DrawerActivity extends FragmentActivity
 				startActivity(intent);
 			}
 		});
+	}
+	
+	protected void openDrawer()
+	{
+		View drawer = findViewById(R.id.left_drawer);
+		DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		mDrawerLayout.openDrawer(drawer);
 	}
 	
 	@Override
