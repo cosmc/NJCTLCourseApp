@@ -43,6 +43,7 @@ public abstract class DrawerActivity extends FragmentActivity
 			@Override
 			public void onClick(View v)
 			{
+				closeDrawer();
 				Intent intent = new Intent(v.getContext(), MainActivity.class);
 				setDrawerIntent(intent);
 		        startActivity(intent);
@@ -88,6 +89,13 @@ public abstract class DrawerActivity extends FragmentActivity
 			mDrawerLayout.openDrawer(drawer);
 		}
 		
+	}
+	
+	protected void closeDrawer()
+	{
+		View drawer = findViewById(R.id.left_drawer);
+		DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		mDrawerLayout.closeDrawer(drawer);
 	}
 	
 	protected void openDrawer()
