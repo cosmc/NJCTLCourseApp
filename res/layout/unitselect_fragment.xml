@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-<ListView 
-    android:background="#EFEFEF"
-    android:id="@android:id/list"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-</ListView>
+
 
 <Button
     android:id="@+id/button_unit_download"
@@ -17,6 +12,20 @@
     android:layout_height="wrap_content"
     android:gravity="center_horizontal|center_vertical"
     android:layout_gravity="bottom"
+    android:layout_alignParentBottom="true"
+    android:visibility="invisible"
+    android:background="#366f9b"
+    android:textColor="#fff"
     android:text="@+string/button_unit_download" />
 
-</FrameLayout>
+<ListView 
+    android:id="@android:id/list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentTop="true"
+    android:layout_above="@id/button_unit_download"
+    android:background="#ccc"
+    >
+</ListView>
+
+</RelativeLayout>

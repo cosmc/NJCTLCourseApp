@@ -18,8 +18,8 @@ public class TwoStatesAdapter<T> extends ArrayAdapter<T>
 	
 	private int textColorActive = Color.BLACK;
 	private int textColorInactive = Color.BLACK;
-	private int backgroundColorActive = Color.GREEN;
-	private int backgroundColorInactive = Color.WHITE;
+	private int backgroundColorActive = Color.WHITE;
+	private int backgroundColorInactive = Color.LTGRAY;
 	
 	public TwoStatesAdapter(Context theContext, List<T> list, TwoStatesDecider<T> decider)
 	{

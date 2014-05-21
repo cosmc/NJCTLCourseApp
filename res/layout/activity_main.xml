@@ -27,7 +27,11 @@
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
 		    android:layout_gravity="bottom"
-		    android:text="@+string/subscribe_class" />
+		    android:visibility="invisible"
+		    android:text="@+string/subscribe_class"
+		    android:background="#366f9b"
+		    android:textColor="#fff"
+		     /> 
 	    
 	</FrameLayout>
 
@@ -36,21 +40,22 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
 	    android:orientation="vertical"
-	    android:background="#111"
+	    android:background="#000"
 	    android:layout_gravity="left" >
 
 	    	<Button
 	        android:id="@+id/button_manage_subscriptions"
 	        android:text="@+string/button_manage_subscriptions_text"
 	        android:layout_gravity="bottom"
-	        android:layout_width="240dp"
+	        android:layout_width="match_parent"
 	        android:textColor="#ffffff"
+	        android:background="#366f9b"
 		    android:layout_height="60dp" />
 	    	
 	        <!-- The navigation drawer -->
 		    <ListView
 		        android:id="@+id/left_drawer_list"
-		        android:layout_width="240dp"
+		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
 		        android:choiceMode="singleChoice"
 		        android:divider="@android:color/white"

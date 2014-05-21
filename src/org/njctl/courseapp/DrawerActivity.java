@@ -30,7 +30,7 @@ public abstract class DrawerActivity extends FragmentActivity
 	{
 		mDrawerList = (ListView) findViewById(R.id.left_drawer_list);
         
-        drawerListAdapter = new CustomListAdapter<Class>(this , R.layout.drawer_list , subscribedClasses, Color.WHITE, Color.GRAY);
+        drawerListAdapter = new CustomListAdapter<Class>(this , R.layout.drawer_list , subscribedClasses, Color.WHITE, Color.BLACK);
         mDrawerList.setAdapter(drawerListAdapter);
         
         // Uncomment this to auto open the drawer.

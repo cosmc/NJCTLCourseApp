@@ -127,7 +127,7 @@ public class MainActivity extends DrawerActivity implements ModelRetriever,  Two
 		listAdapter = new TwoStatesAdapter<Class>(this, classes, this);
 		ListView list = (ListView) findViewById(R.id.subscribing_classes_list);
 		list.setAdapter(listAdapter);
-
+		
 		list.setOnItemClickListener(new OnItemClickListener()
 		{
 			@Override
