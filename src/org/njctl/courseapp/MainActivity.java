@@ -55,7 +55,7 @@ public class MainActivity extends DrawerActivity implements ModelRetriever,  Two
             {
             	progress = new ProgressDialog(this);
         		progress.setTitle("Loading");
-        		progress.setMessage("Wait while fetching data...");
+        		progress.setMessage("Please wait while fetching courses...");
         		progress.show();
             }
         }
@@ -86,7 +86,7 @@ public class MainActivity extends DrawerActivity implements ModelRetriever,  Two
     	{
     		progress = new ProgressDialog(this);
     		progress.setTitle("Loading");
-    		progress.setMessage("Please wait while fetching courses...");
+    		progress.setMessage("Please wait while fetching update...");
     		progress.show();
     		
         	model.update(this);

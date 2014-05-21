@@ -24,7 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class MaterialsFragment extends ListFragment
+public class MaterialsFragment extends ListFragment implements TwoStatesDecider<Document>
 {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -58,8 +58,10 @@ public class MaterialsFragment extends ListFragment
 		}
 		data.addAll(unit.getHandouts());
 
-		docView.setAdapter(new ArrayAdapter<Document>(getActivity(), android.R.layout.simple_list_item_activated_1,
-				data));
+		TwoStatesAdapter<Document> adapter = new TwoStatesAdapter<Document>(getActivity(), data, this);
+		docView.setAdapter(adapter);
+		//docView.setAdapter(new ArrayAdapter<Document>(getActivity(), android.R.layout.simple_list_item_activated_1,
+		//		data));
 
 		ListView lv = getListView();
 		lv.setOnItemClickListener(new OnItemClickListener() {
@@ -119,5 +121,11 @@ public class MaterialsFragment extends ListFragment
 			Log.w("ERROR", e.toString());
 			Log.v("NJCTLLOG", Log.getStackTraceString(e));
 		}
+	}
+
+	@Override
+	public boolean isActive(Document content)
+	{
+		return true;
 	}
 }
