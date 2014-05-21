@@ -86,7 +86,7 @@ public class MainActivity extends DrawerActivity implements ModelRetriever,  Two
     	{
     		progress = new ProgressDialog(this);
     		progress.setTitle("Loading");
-    		progress.setMessage("Wait while fetching data...");
+    		progress.setMessage("Please wait while fetching courses...");
     		progress.show();
     		
         	model.update(this);
@@ -135,7 +135,7 @@ public class MainActivity extends DrawerActivity implements ModelRetriever,  Two
 			{
 				//TODO Show subscription button, do subscription stuff.
 				final Class theClass = (Class) adapter.getItemAtPosition(position);
-				final String text = theClass.isSubscribed() ? "Unsubscribe " + theClass.getTitle() : "Subscribe " + theClass.getTitle();
+				final String text = theClass.isSubscribed() ? "Unsubscribe from " + theClass.getTitle() : "Subscribe to " + theClass.getTitle();
 				
 				if (dLBtnVisible)
 				{
@@ -161,6 +161,11 @@ public class MainActivity extends DrawerActivity implements ModelRetriever,  Two
 					showButton();
 				}
 				currentSelectedClass = theClass;
+				
+				if(theClass.isSubscribed())
+				{
+					openDrawer();
+				}
 			}
 		});
 		

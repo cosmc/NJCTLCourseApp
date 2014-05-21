@@ -104,7 +104,7 @@ public class UnitSelectFragment extends ListFragment implements TwoStatesDecider
 					
 					progress = new ProgressDialog(action);
 					progress.setTitle("Downloading");
-					progress.setMessage("Wait while downloading " + currentSelectedUnit.getTitle());
+					progress.setMessage("Please wait while downloading " + currentSelectedUnit.getTitle());
 					progress.show();
 					hideButton();
 				}

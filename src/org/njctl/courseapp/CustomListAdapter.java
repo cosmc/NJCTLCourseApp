@@ -57,7 +57,7 @@ public class CustomListAdapter<T> extends ArrayAdapter<T>
             text.setTextColor(textColor);
             text.setText(items.get(position).toString());
             text.setBackgroundColor(backgroundColor); 
-            text.setPadding(30,12,20,12);
+            //text.setPadding(30,12,20,12);
         }
 
         return mView;

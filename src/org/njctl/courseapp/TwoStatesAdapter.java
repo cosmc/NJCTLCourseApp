@@ -68,7 +68,8 @@ public class TwoStatesAdapter<T> extends ArrayAdapter<T>
         if(content != null )
         {
         	text.setText(content.toString());
-        	text.setPadding(30,12,20,12);
+        	//text.setPadding(30,12,20,12);
+        	
         	
         	if(decisionMaker.isActive(content))
         	{
