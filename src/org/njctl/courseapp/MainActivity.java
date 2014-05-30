@@ -24,10 +24,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
-//import org.njctl.courseapp.R;
-
-public class MainActivity extends DrawerActivity implements ModelRetriever,  TwoStatesDecider<Class>, DownloadFinishListener<Model> {
-
+public class MainActivity extends DrawerActivity implements ModelRetriever,  TwoStatesDecider<Class>, DownloadFinishListener<Model>
+{
 	private Model model;
 	ProgressDialog progress;
 	private TwoStatesAdapter<Class> listAdapter;
@@ -35,65 +33,70 @@ public class MainActivity extends DrawerActivity implements ModelRetriever,  Two
 	private boolean dLBtnVisible;
 	private Class currentSelectedClass;
 	
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-    	
-    	super.onCreate(savedInstanceState);
-    	Log.v("NJCTL", "called oncreate");
-    	
-        setContentView(R.layout.activity_main);
-        getActionBar().setTitle("CTL Classes");
-        
-        button = (Button) findViewById(R.id.button_subscribe);
+	@Override
+	protected void onCreate(Bundle savedInstanceState)
+	{
+		
+		super.onCreate(savedInstanceState);
+		Log.v("NJCTL", "called oncreate");
+		
+		setContentView(R.layout.activity_main);
+		getActionBar().setTitle("CTL Classes");
+		
+		button = (Button) findViewById(R.id.button_subscribe);
 		button.setVisibility(View.INVISIBLE);
-        
-    	model = new Model(this);
-    	
-    	if (savedInstanceState == null) {
-        	
-            if(!model.fetchManifest(this))
-            {
-            	progress = new ProgressDialog(this);
-        		progress.setTitle("Loading");
-        		progress.setMessage("Please wait while fetching courses...");
-        		progress.show();
-            }
-        }
-    }
+		
+		if (savedInstanceState == null)
+		{
+			model = new Model(this);
+			
+			if(!model.fetchManifest(this))
+			{
+				progress = new ProgressDialog(this);
+				progress.setTitle("Loading");
+				progress.setMessage("Please wait while fetching courses...");
+				progress.show();
+			}
+		}
+		else
+		{
+			showActivity();
+		}
+	}
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId()) {
-            case R.id.action_update:
-            	runUpdate();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-    
-    protected void runUpdate()
-    {
-    	if(isNetworkAvailable())
-    	{
-    		progress = new ProgressDialog(this);
-    		progress.setTitle("Loading");
-    		progress.setMessage("Please wait while fetching update...");
-    		progress.show();
-    		
-        	model.update(this);
-    	}
-    }
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId()) {
+			case R.id.action_update:
+				runUpdate();
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
+	protected void runUpdate()
+	{
+		if(isNetworkAvailable())
+		{
+			progress = new ProgressDialog(this);
+			progress.setTitle("Loading");
+			progress.setMessage("Please wait while fetching update...");
+			progress.show();
+			
+			model.update(this);
+		}
+	}
 
-    //populate the drawer with my classes
+	//populate the drawer with my classes
 	public void onModelReady()
 	{
 		Log.v("NJCTLModel", "Model Ready.");
@@ -106,6 +109,11 @@ public class MainActivity extends DrawerActivity implements ModelRetriever,  Two
 			progress.dismiss();
 		}
 		
+		showActivity();
+	}
+	
+	protected void showActivity()
+	{
 		showDrawer();
 		showSubscribe();
 		
@@ -118,7 +126,7 @@ public class MainActivity extends DrawerActivity implements ModelRetriever,  Two
 			intent.putParcelableArrayListExtra("classes", model.getClasses());
 			intent.putExtra("class", theClass);
 			
-	        startActivity(intent);
+			startActivity(intent);
 		}
 	}
 	
@@ -233,10 +241,36 @@ public class MainActivity extends DrawerActivity implements ModelRetriever,  Two
 			progress.dismiss();
 	}
 	
-	private boolean isNetworkAvailable() {
-	    ConnectivityManager connectivityManager 
-	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+	private boolean isNetworkAvailable()
+	{
+		ConnectivityManager connectivityManager 
+			  = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState)
+	{
+		super.onSaveInstanceState(savedInstanceState);
+	  
+		// Save UI state changes to the savedInstanceState.
+		// This bundle will be passed to onCreate if the process is
+		// killed and restarted.
+		
+		savedInstanceState.putParcelableArrayList("classes", classes);
+		savedInstanceState.putParcelableArrayList("subscribedClasses", subscribedClasses);
+	}
+	
+	@Override
+	public void onRestoreInstanceState(Bundle savedInstanceState)
+	{
+		super.onRestoreInstanceState(savedInstanceState);
+		
+		// Restore UI state from the savedInstanceState.
+		// This bundle has also been passed to onCreate.
+		
+		classes = savedInstanceState.getParcelableArrayList("classes");
+		subscribedClasses = savedInstanceState.getParcelableArrayList("subscribedClasses");
 	}
 }
