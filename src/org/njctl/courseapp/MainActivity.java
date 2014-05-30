@@ -5,8 +5,10 @@ import org.njctl.courseapp.model.DownloadFinishListener;
 import org.njctl.courseapp.model.Model;
 import org.njctl.courseapp.model.ModelRetriever;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -94,6 +96,36 @@ public class MainActivity extends DrawerActivity implements ModelRetriever,  Two
 			
 			model.update(this);
 		}
+		else
+		{
+			showNoConnectionDialog();
+		}
+	}
+	
+	private void showNoConnectionDialog()
+	{
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+ 
+		// set title
+		alertDialogBuilder.setTitle("No Connection");
+ 
+			// set dialog message
+		alertDialogBuilder
+			.setMessage("Could not connect to the internet for updating. Please check your connection.")
+			.setCancelable(false)
+			.setNegativeButton("Ok",new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog,int id) {
+					// if this button is clicked, just close
+					// the dialog box and do nothing
+						dialog.cancel();
+					}
+				});
+ 
+			// create alert dialog
+		AlertDialog alertDialog = alertDialogBuilder.create();
+
+		// show it
+		alertDialog.show();
 	}
 
 	//populate the drawer with my classes

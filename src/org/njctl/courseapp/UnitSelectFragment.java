@@ -1,7 +1,12 @@
 package org.njctl.courseapp;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -10,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
@@ -100,19 +106,62 @@ public class UnitSelectFragment extends ListFragment implements TwoStatesDecider
 				if(currentSelectedUnit != null)
 				{
 					UnitSelectActivity action = (UnitSelectActivity) getActivity();
-					currentSelectedUnit.download(action);
 					
-					progress = new ProgressDialog(action);
-					progress.setTitle("Downloading");
-					progress.setMessage("Please wait while downloading " + currentSelectedUnit.getTitle());
-					progress.show();
-					hideButton();
+					if(isNetworkAvailable())
+					{
+						currentSelectedUnit.download(action);
+						
+						progress = new ProgressDialog(action);
+						progress.setTitle("Downloading");
+						progress.setMessage("Please wait while downloading " + currentSelectedUnit.getTitle());
+						progress.show();
+						hideButton();
+					}
+					else
+					{
+						showNoConnectionDialog();
+					}
 				}
 			}
 		});
 
 		listAdapter = new TwoStatesAdapter<Unit>(getActivity(), theClass.getUnits(), this);
         setListAdapter(listAdapter);
+	}
+	
+	private void showNoConnectionDialog()
+	{
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+				getActivity());
+ 
+			// set title
+			alertDialogBuilder.setTitle("No Connection");
+ 
+			// set dialog message
+			alertDialogBuilder
+				.setMessage("Could not connect to the internet for downloading the materials. Please check your connection.")
+				.setCancelable(false)
+				.setNegativeButton("Ok",new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog,int id) {
+						// if this button is clicked, just close
+						// the dialog box and do nothing
+						dialog.cancel();
+					}
+				});
+ 
+			// create alert dialog
+			AlertDialog alertDialog = alertDialogBuilder.create();
+
+			// show it
+			alertDialog.show();
+	}
+	
+	private boolean isNetworkAvailable()
+	{
+		ConnectivityManager connectivityManager 
+			  = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 	
 	protected void hideButton(AnimationListener listener)
