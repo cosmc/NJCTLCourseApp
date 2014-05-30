@@ -60,6 +60,13 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper
 		try {
 			Log.i(DatabaseHelper.class.getName(), "onUpgrade");
 			TableUtils.dropTable(connectionSource, Subject.class, true);
+			TableUtils.dropTable(connectionSource, Class.class, true);
+			TableUtils.dropTable(connectionSource, Unit.class, true);
+			TableUtils.dropTable(connectionSource, Handout.class, true);
+			TableUtils.dropTable(connectionSource, Lab.class, true);
+			TableUtils.dropTable(connectionSource, Homework.class, true);
+			TableUtils.dropTable(connectionSource, Presentation.class, true);
+			TableUtils.dropTable(connectionSource, Topic.class, true);
 			// after we drop the old databases, we create the new ones
 			onCreate(db, connectionSource);
 		} catch (SQLException e) {
