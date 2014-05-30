@@ -88,7 +88,7 @@ public class Model implements AsyncResponse<String>, DownloadFinishListener<Subj
 		}
 		else
 		{
-			update();
+			//update();
 			return false;
 		}
 	}

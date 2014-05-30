@@ -54,10 +54,11 @@ public class MainActivity extends DrawerActivity implements ModelRetriever,  Two
 			
 			if(!model.fetchManifest(this))
 			{
-				progress = new ProgressDialog(this);
+				/*progress = new ProgressDialog(this);
 				progress.setTitle("Loading");
 				progress.setMessage("Please wait while fetching courses...");
-				progress.show();
+				progress.show();*/
+				runUpdate(); // Download JSON
 			}
 		}
 		else
@@ -91,7 +92,7 @@ public class MainActivity extends DrawerActivity implements ModelRetriever,  Two
 		{
 			progress = new ProgressDialog(this);
 			progress.setTitle("Loading");
-			progress.setMessage("Please wait while fetching update...");
+			progress.setMessage("Please wait while fetching courses...");
 			progress.show();
 			
 			model.update(this);
